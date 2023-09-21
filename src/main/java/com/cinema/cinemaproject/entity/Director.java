@@ -1,7 +1,13 @@
 package com.cinema.cinemaproject.entity;
 
+import com.cinema.cinemaproject.ServiceContracts.dto.DirectorDTO;
+import com.cinema.cinemaproject.ServiceContracts.dto.MovieDTO;
 import com.cinema.cinemaproject.entity.enums.Country;
 import jakarta.persistence.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Entity
 @Table(name = "director")
@@ -57,5 +63,21 @@ public class Director {
                 ", directorName='" + directorName + '\'' +
                 ", directorNationality=" + directorNationality +
                 '}';
+    }
+
+
+    public static DirectorDTO toMovieDTO(Optional<Director> director) {
+
+        if (director.isEmpty()) {
+            return null; // Handle null input gracefully if needed
+        }
+
+
+        DirectorDTO directorDTO = new DirectorDTO();
+        directorDTO.setDirectorID(director.get().getDirectorID());
+        directorDTO.setDirectorName(director.get().getDirectorName());
+        directorDTO.setDirectorNationality(director.get().getDirectorNationality());
+
+        return directorDTO;
     }
 }

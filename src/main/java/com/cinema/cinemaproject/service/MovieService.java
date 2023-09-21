@@ -1,5 +1,6 @@
 package com.cinema.cinemaproject.service;
 
+import com.cinema.cinemaproject.ServiceContracts.dto.MovieDTO;
 import com.cinema.cinemaproject.entity.Movie;
 import com.cinema.cinemaproject.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,12 +22,12 @@ public class MovieService{
         return movieRepository.findAll();
     }
 
-    public Movie findById(int Id) {
+    public MovieDTO findById(int Id) {
         Optional<Movie> result = movieRepository.findById(Id);
 
-        Movie movie = null;
+        MovieDTO movie = null;
          if(result.isPresent()) {
-             movie = result.get();
+             movie = Movie.toMovieDTO(result);
          }
          else {
              throw new RuntimeException("Movie not found with ID: "+Id);
@@ -44,10 +45,10 @@ public class MovieService{
     }
 
 
-    public Movie findMovieByTitle(String title) {
-        Optional<Movie> result = movieRepository.findByTitle(title);
+    public MovieDTO findMovieByTitle(String title) {
+        Optional<MovieDTO> result = movieRepository.findByTitle(title);
 
-        Movie movie = null;
+        MovieDTO movie = null;
 
         if(result.isPresent()) {
             movie = result.get();
@@ -59,10 +60,10 @@ public class MovieService{
         return movie;
     }
 
-    public List<Movie> findMoviesByMinDuration(int minDuration) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByMinDuration(minDuration);
+    public List<MovieDTO> findMoviesByMinDuration(int minDuration) {
+        Optional<List<MovieDTO>> result = movieRepository.findMoviesByMinDuration(minDuration);
 
-        List<Movie> movie = null;
+        List<MovieDTO> movie = null;
 
         if(result.isPresent()) {
             movie = result.get();
@@ -75,10 +76,10 @@ public class MovieService{
     }
 
 
-    public List<Movie> findMoviesByMaxDuration(int maxDuration) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByMaxDuration(maxDuration);
+    public List<MovieDTO> findMoviesByMaxDuration(int maxDuration) {
+        Optional<List<MovieDTO>> result = movieRepository.findMoviesByMaxDuration(maxDuration);
 
-        List<Movie> movie = null;
+        List<MovieDTO> movie = null;
 
         if(result.isPresent()) {
             movie = result.get();
@@ -90,16 +91,31 @@ public class MovieService{
         return movie;
     }
 
-    public List<Movie> findMoviesByDuration(int duration) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByDuration(duration);
+    public List<MovieDTO> findMoviesByDuration(int duration) {
+        Optional<List<MovieDTO>> result = movieRepository.findMoviesByDuration(duration);
 
-        List<Movie> movie = null;
+        List<MovieDTO> movie = null;
 
         if(result.isPresent()) {
             movie = result.get();
         }
         else {
             throw new NoSuchElementException("No movies found with duration: "+ duration+" mins.");
+        }
+
+        return movie;
+    }
+
+    public List<MovieDTO> findMoviesByMinPrice(long minPrice) {
+        Optional<List<MovieDTO>> result = movieRepository.findMoviesByMinPrice(minPrice);
+
+        List<MovieDTO> movie = null;
+
+        if(result.isPresent()) {
+            movie = result.get();
+        }
+        else {
+            throw new NoSuchElementException("No movies found with duration: "+ minPrice+" mins.");
         }
 
         return movie;
