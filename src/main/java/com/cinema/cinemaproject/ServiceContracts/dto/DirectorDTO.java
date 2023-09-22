@@ -1,11 +1,13 @@
 package com.cinema.cinemaproject.ServiceContracts.dto;
 
+import com.cinema.cinemaproject.entity.Movie;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
+import org.springframework.stereotype.Component;
 
-import java.util.Date;
+import java.util.Set;
 
-
+@Component
 public class DirectorDTO {
 
     private int directorID;
@@ -13,6 +15,7 @@ public class DirectorDTO {
     private Country directorNationality;
     private int directorAge;
     private Gender directorGender;
+    private Set<Movie> directorMovies;
 
     public DirectorDTO() {
     }
@@ -57,6 +60,14 @@ public class DirectorDTO {
         this.directorGender = directorGender;
     }
 
+    public Set<Movie> getDirectorMovies() {
+        return directorMovies;
+    }
+
+    public void setDirectorMovies(Set<Movie> directorMovies) {
+        this.directorMovies = directorMovies;
+    }
+
     @Override
     public String toString() {
         return "DirectorDTO{" +
@@ -65,6 +76,7 @@ public class DirectorDTO {
                 ", directorNationality=" + directorNationality +
                 ", directorAge=" + directorAge +
                 ", directorGender=" + directorGender +
+                ", directorMovies=" + directorMovies +
                 '}';
     }
 }

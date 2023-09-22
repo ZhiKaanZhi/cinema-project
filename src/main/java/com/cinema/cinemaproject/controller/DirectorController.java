@@ -1,8 +1,7 @@
 package com.cinema.cinemaproject.controller;
 
-import com.cinema.cinemaproject.ServiceContracts.dto.MovieDTO;
-import com.cinema.cinemaproject.entity.Movie;
-import com.cinema.cinemaproject.service.MovieService;
+import com.cinema.cinemaproject.entity.Director;
+import com.cinema.cinemaproject.service.DirectorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,20 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movies")
-public class MovieController {
-    private final MovieService movieService;
+@RequestMapping("/directors")
+public class DirectorController {
 
+    private final DirectorService directorService;
 
     @Autowired
-    public MovieController(MovieService movieService) {
-        this.movieService = movieService;
+    public DirectorController(DirectorService directorService) {
+        this.directorService = directorService;
     }
-
 
     @GetMapping("")
     // make a request and final all the pieces of content in the system
-    public List<Movie> findAll() {
-        return movieService.findAll();
+    public List<Director> findAll() {
+        return directorService.findAll();
     }
 }

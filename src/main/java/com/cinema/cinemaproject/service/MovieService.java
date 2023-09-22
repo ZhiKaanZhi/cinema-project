@@ -5,7 +5,6 @@ import com.cinema.cinemaproject.entity.Movie;
 import com.cinema.cinemaproject.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -15,6 +14,10 @@ import java.util.Optional;
 public class MovieService{
     private final MovieRepository movieRepository;
 
+    /**
+     * Dependeny Injection of the movieRepository
+     * @param movieRepository
+     */
     @Autowired
     public MovieService(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
@@ -63,63 +66,105 @@ public class MovieService{
     }
 
     public List<MovieDTO> findMoviesByMinDuration(int minDuration) {
-        Optional<List<MovieDTO>> result = movieRepository.findMoviesByMinDuration(minDuration);
+        Optional<List<Movie>> result = movieRepository.findMoviesByMinDuration(minDuration);
 
-        List<MovieDTO> movie = null;
+        List<MovieDTO> movieDTOList = null;
 
         if(result.isPresent()) {
-            movie = result.get();
+            for (Movie movie: result.get()) {
+                movieDTOList.add(Movie.toMovieDTO(Optional.ofNullable(movie)));
+            }
         }
         else {
             throw new NoSuchElementException("No movies found with minimum duration: "+ minDuration+" mins.");
         }
 
-        return movie;
+        return movieDTOList;
     }
 
 
     public List<MovieDTO> findMoviesByMaxDuration(int maxDuration) {
-        Optional<List<MovieDTO>> result = movieRepository.findMoviesByMaxDuration(maxDuration);
+        Optional<List<Movie>> result = movieRepository.findMoviesByMaxDuration(maxDuration);
 
-        List<MovieDTO> movie = null;
+        List<MovieDTO> movieDTOList = null;
 
         if(result.isPresent()) {
-            movie = result.get();
+            for (Movie movie: result.get()) {
+                movieDTOList.add(Movie.toMovieDTO(Optional.ofNullable(movie)));
+            }
         }
         else {
-            throw new NoSuchElementException("No movies found with maximum duration: "+ maxDuration+" mins.");
+            throw new NoSuchElementException("No movies found with minimum duration: "+ maxDuration+" mins.");
         }
 
-        return movie;
+        return movieDTOList;
     }
 
     public List<MovieDTO> findMoviesByDuration(int duration) {
-        Optional<List<MovieDTO>> result = movieRepository.findMoviesByDuration(duration);
+        Optional<List<Movie>> result = movieRepository.findMoviesByDuration(duration);
 
-        List<MovieDTO> movie = null;
+        List<MovieDTO> movieDTOList = null;
 
         if(result.isPresent()) {
-            movie = result.get();
+            for (Movie movie: result.get()) {
+                movieDTOList.add(Movie.toMovieDTO(Optional.ofNullable(movie)));
+            }
         }
         else {
-            throw new NoSuchElementException("No movies found with duration: "+ duration+" mins.");
+            throw new NoSuchElementException("No movies found with minimum duration: "+ duration+" mins.");
         }
 
-        return movie;
+        return movieDTOList;
     }
 
     public List<MovieDTO> findMoviesByMinPrice(long minPrice) {
-        Optional<List<MovieDTO>> result = movieRepository.findMoviesByMinPrice(minPrice);
+        Optional<List<Movie>> result = movieRepository.findMoviesByMinPrice(minPrice);
 
-        List<MovieDTO> movie = null;
+        List<MovieDTO> movieDTOList = null;
 
         if(result.isPresent()) {
-            movie = result.get();
+            for (Movie movie: result.get()) {
+                movieDTOList.add(Movie.toMovieDTO(Optional.ofNullable(movie)));
+            }
         }
         else {
-            throw new NoSuchElementException("No movies found with duration: "+ minPrice+" mins.");
+            throw new NoSuchElementException("No movies found with minimum price: "+ minPrice+" euros.");
         }
 
-        return movie;
+        return movieDTOList;
+    }
+
+    public List<MovieDTO> findMoviesByMaxPrice(long maxPrice) {
+        Optional<List<Movie>> result = movieRepository.findMoviesByMaxPrice(maxPrice);
+
+        List<MovieDTO> movieDTOList = null;
+
+        if(result.isPresent()) {
+            for (Movie movie: result.get()) {
+                movieDTOList.add(Movie.toMovieDTO(Optional.ofNullable(movie)));
+            }
+        }
+        else {
+            throw new NoSuchElementException("No movies found with maximum price: "+ maxPrice+" euros.");
+        }
+
+        return movieDTOList;
+    }
+
+    public List<MovieDTO> findMoviesByPrice(long price) {
+        Optional<List<Movie>> result = movieRepository.findMoviesByMaxPrice(price);
+
+        List<MovieDTO> movieDTOList = null;
+
+        if(result.isPresent()) {
+            for (Movie movie: result.get()) {
+                movieDTOList.add(Movie.toMovieDTO(Optional.ofNullable(movie)));
+            }
+        }
+        else {
+            throw new NoSuchElementException("No movies found with price: "+ price+" euros.");
+        }
+
+        return movieDTOList;
     }
 }

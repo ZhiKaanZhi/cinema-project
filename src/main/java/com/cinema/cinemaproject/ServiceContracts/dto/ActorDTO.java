@@ -3,9 +3,11 @@ package com.cinema.cinemaproject.ServiceContracts.dto;
 import com.cinema.cinemaproject.entity.Movie;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
+import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+@Component
 public class ActorDTO {
 
     private int actorID;
@@ -14,7 +16,7 @@ public class ActorDTO {
     private int actorAge;
     private Gender actorGender;
 
-    private Set<Movie> actorMovie;
+    private Set<Movie> actorMovies;
 
     public ActorDTO() {
     }
@@ -59,11 +61,11 @@ public class ActorDTO {
         this.actorGender = actorGender;
     }
 
-    public Set<Movie> getActorMovie() {
-        return actorMovie;
+    public Set<Movie> getActorMovies() {
+        return actorMovies;
     }
 
-    public void setActorMovie(Set<Movie> actorMovie) {
-        this.actorMovie = actorMovie;
+    public void setActorMovies(Set<Movie> actorMovies) {
+        this.actorMovies = actorMovies;
     }
 }

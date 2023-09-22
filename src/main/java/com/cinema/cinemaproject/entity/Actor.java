@@ -1,10 +1,14 @@
 package com.cinema.cinemaproject.entity;
 
+import com.cinema.cinemaproject.ServiceContracts.dto.ActorDTO;
+import com.cinema.cinemaproject.components.AgeCalculator;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -104,5 +108,22 @@ public class Actor {
                 ", actorNationality=" + actorNationality +
                 ", actorMovies=" + actorMovies +
                 '}';
+    }
+
+    public static ActorDTO toActorDTO(Optional<Actor> actor) {
+        if (actor.isEmpty()) {
+            return null; // Handle null input gracefully if needed
+        }
+
+
+        ActorDTO actorDTO = new ActorDTO();
+        actorDTO.setActorID(actor.get().getActorID());
+        actorDTO.setActorName(actor.get().getActorName());
+        actorDTO.setActorGender(actor.get().getActorGender());
+        actorDTO.setActorNationality(actor.get().getActorNationality());
+        actorDTO.setActorAge(AgeCalculator.calculateAge(LocalDate.now(),actor.get().getActorDateOfBirth()));
+
+
+        return actorDTO;
     }
 }

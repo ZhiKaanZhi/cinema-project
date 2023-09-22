@@ -1,18 +1,15 @@
 package com.cinema.cinemaproject.entity;
 
 import com.cinema.cinemaproject.ServiceContracts.dto.DirectorDTO;
-import com.cinema.cinemaproject.ServiceContracts.dto.MovieDTO;
 import com.cinema.cinemaproject.components.AgeCalculator;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import jakarta.persistence.*;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "director")
@@ -35,14 +32,18 @@ public class Director {
     @Column(name = "directorGender")
     private Gender directorGender;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "director")
+    private Set<Movie> directorMovies;
+
     public Director() {
     }
 
-    public Director(String directorName, Country directorNationality, Date directorDateOfBirth, Gender directorGender) {
+    public Director(String directorName, Country directorNationality, Date directorDateOfBirth, Gender directorGender, Set<Movie> directorMovies) {
         this.directorName = directorName;
         this.directorNationality = directorNationality;
         this.directorDateOfBirth = directorDateOfBirth;
         this.directorGender = directorGender;
+        this.directorMovies = directorMovies;
     }
 
     public int getDirectorID() {
@@ -85,6 +86,14 @@ public class Director {
         this.directorGender = directorGender;
     }
 
+    public Set<Movie> getDirectorMovies() {
+        return directorMovies;
+    }
+
+    public void setDirectorMovies(Set<Movie> directorMovies) {
+        this.directorMovies = directorMovies;
+    }
+
     @Override
     public String toString() {
         return "Director{" +
@@ -93,10 +102,11 @@ public class Director {
                 ", directorNationality=" + directorNationality +
                 ", directorDateOfBirth=" + directorDateOfBirth +
                 ", directorGender=" + directorGender +
+                ", directorMovies=" + directorMovies +
                 '}';
     }
 
-    public static DirectorDTO toMovieDTO(Optional<Director> director) {
+    public static DirectorDTO toDirectorDTO(Optional<Director> director) {
 
         if (director.isEmpty()) {
             return null; // Handle null input gracefully if needed
@@ -108,6 +118,7 @@ public class Director {
         directorDTO.setDirectorName(director.get().getDirectorName());
         directorDTO.setDirectorNationality(director.get().getDirectorNationality());
         directorDTO.setDirectorAge(AgeCalculator.calculateAge(LocalDate.now(),director.get().getDirectorDateOfBirth()));
+        directorDTO.setDirectorMovies(director.get().getDirectorMovies());
 
         return directorDTO;
     }
