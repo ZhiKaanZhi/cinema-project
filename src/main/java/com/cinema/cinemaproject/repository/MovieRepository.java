@@ -15,44 +15,44 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
 
     @Query("""
            SELECT * FROM movie
-           where title = :title
+           where movieTitle = :title
            """)
     Optional<MovieDTO> findByTitle(@Param("title") String title);
 
     @Query("""
             SELECT * FROM movie
-            where durationInMin >= :minDuration
+            where movieDurationInMin >= :minDuration
             """)
     Optional<List<MovieDTO>> findMoviesByMinDuration(@Param("minDuration") int minDuration);
 
     @Query("""
             SELECT * FROM movie
-            where durationInMin <= :minDuration
+            where movieDurationInMin <= :minDuration
             """)
     Optional<List<MovieDTO>> findMoviesByMaxDuration(@Param("maxDuration") int maxDuration);
 
     @Query("""
             SELECT * FROM movie
-            where durationInMin = :duration
+            where movieDurationInMin = :duration
             """)
     Optional<List<MovieDTO>> findMoviesByDuration(@Param("duration") int duration);
 
 
     @Query("""
             SELECT * FROM movie
-            where price >= :price
+            where moviePrice >= :price
             """)
     Optional<List<MovieDTO>> findMoviesByMinPrice(@Param("price") long minPrice);
 
     @Query("""
             SELECT * FROM movie
-            where price <= :maxPrice
+            where moviePrice <= :maxPrice
             """)
     Optional<List<MovieDTO>> findMoviesByMaxPrice(@Param("maxPrice") long maxPrice);
 
     @Query("""
             SELECT * FROM movie
-            where price = :price
+            where moviePrice = :price
             """)
     Optional<List<MovieDTO>> findMoviesByPrice(@Param("price") long price);
 }

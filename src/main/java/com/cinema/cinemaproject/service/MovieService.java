@@ -4,12 +4,14 @@ import com.cinema.cinemaproject.ServiceContracts.dto.MovieDTO;
 import com.cinema.cinemaproject.entity.Movie;
 import com.cinema.cinemaproject.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Service
 public class MovieService{
     private final MovieRepository movieRepository;
 

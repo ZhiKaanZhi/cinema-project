@@ -3,6 +3,7 @@ import com.cinema.cinemaproject.ServiceContracts.dto.MovieDTO;
 import jakarta.persistence.*;
 
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @Table(name = "movie")
@@ -10,13 +11,13 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "movieID")
     private int movieID;
 
-    @Column(name = "title")
+    @Column(name = "movieTitle")
     private String movieTitle;
 
-    @Column(name = "description")
+    @Column(name = "movieDescription")
     private String movieDescription;
 
     @ManyToOne(cascade =
@@ -24,20 +25,24 @@ public class Movie {
     @JoinColumn(name = "director_id")
     private Director movieDirector;
 
-    @Column(name = "durationInMin")
+    @ManyToMany(mappedBy = "actorMovies")
+    private Set<Actor> movieActors;
+
+    @Column(name = "movieDurationInMin")
     private int movieDurationInMin;
 
-    @Column(name = "price")
+    @Column(name = "moviePrice")
     private long movieTicketPrice;
 
     public Movie() {
     }
 
 
-    public Movie(String movieTitle, String movieDescription, Director movieDirector, int movieDurationInMin, long movieTicketPrice) {
+    public Movie(String movieTitle, String movieDescription, Director movieDirector, Set<Actor> movieActors, int movieDurationInMin, long movieTicketPrice) {
         this.movieTitle = movieTitle;
         this.movieDescription = movieDescription;
         this.movieDirector = movieDirector;
+        this.movieActors = movieActors;
         this.movieDurationInMin = movieDurationInMin;
         this.movieTicketPrice = movieTicketPrice;
     }
@@ -74,6 +79,14 @@ public class Movie {
         this.movieDirector = movieDirector;
     }
 
+    public Set<Actor> getMovieActors() {
+        return movieActors;
+    }
+
+    public void setMovieActors(Set<Actor> movieActors) {
+        this.movieActors = movieActors;
+    }
+
     public int getMovieDurationInMin() {
         return movieDurationInMin;
     }
@@ -97,6 +110,7 @@ public class Movie {
                 ", movieTitle='" + movieTitle + '\'' +
                 ", movieDescription='" + movieDescription + '\'' +
                 ", movieDirector=" + movieDirector +
+                ", movieActors=" + movieActors +
                 ", movieDurationInMin=" + movieDurationInMin +
                 ", movieTicketPrice=" + movieTicketPrice +
                 '}';
@@ -115,6 +129,7 @@ public class Movie {
         movieDTO.setMovieDirector(movie.get().getMovieDirector());
         movieDTO.setMovieDurationInMin(movie.get().getMovieDurationInMin());
         movieDTO.setMovieTicketPrice(movie.get().getMovieTicketPrice());
+        movieDTO.setMovieActors(movie.get().getMovieActors());
 
         return movieDTO;
     }

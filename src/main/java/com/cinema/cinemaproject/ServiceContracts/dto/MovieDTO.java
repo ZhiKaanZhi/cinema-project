@@ -1,11 +1,8 @@
 package com.cinema.cinemaproject.ServiceContracts.dto;
 
 import com.cinema.cinemaproject.entity.Director;
-import com.cinema.cinemaproject.entity.Movie;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.cinema.cinemaproject.entity.Actor;
+import java.util.Set;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +14,7 @@ public class MovieDTO {
     private Director movieDirector;
     private int movieDurationInMin;
     private long movieTicketPrice;
+    private Set<Actor> movieActors;
 
     public MovieDTO() {
     }
@@ -67,6 +65,14 @@ public class MovieDTO {
 
     public void setMovieTicketPrice(long movieTicketPrice) {
         this.movieTicketPrice = movieTicketPrice;
+    }
+
+    public Set<Actor> getMovieActors() {
+        return movieActors;
+    }
+
+    public void setMovieActors(Set<Actor> movieActors) {
+        this.movieActors = movieActors;
     }
 }
 

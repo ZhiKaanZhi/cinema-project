@@ -1,0 +1,108 @@
+package com.cinema.cinemaproject.entity;
+
+import com.cinema.cinemaproject.entity.enums.Country;
+import com.cinema.cinemaproject.entity.enums.Gender;
+import jakarta.persistence.*;
+
+import java.util.Date;
+import java.util.Set;
+
+@Entity
+@Table(name = "actor")
+public class Actor {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "actorID")
+    private int actorID;
+
+    @Column(name = "actorName")
+    private String actorName;
+
+    @Column(name = "actorDateOfBirth")
+    private Date actorDateOfBirth;
+
+    @Column(name = "actorGender")
+    private Gender actorGender;
+
+    @Column(name = "actorNationality")
+    private Country actorNationality;
+
+    @ManyToMany
+    @JoinTable(
+            name = "movie_actor",
+            joinColumns = @JoinColumn(name = "actorID"),
+            inverseJoinColumns = @JoinColumn(name = "movieID"))
+    private Set<Movie> actorMovies;
+
+    public Actor() {
+    }
+
+    public Actor(String actorName, Date actorDateOfBirth, Gender actorGender, Country actorNationality, Set<Movie> actorMovies) {
+        this.actorName = actorName;
+        this.actorDateOfBirth = actorDateOfBirth;
+        this.actorGender = actorGender;
+        this.actorNationality = actorNationality;
+        this.actorMovies = actorMovies;
+    }
+
+    public int getActorID() {
+        return actorID;
+    }
+
+    public void setActorID(int actorID) {
+        this.actorID = actorID;
+    }
+
+    public String getActorName() {
+        return actorName;
+    }
+
+    public void setActorName(String actorName) {
+        this.actorName = actorName;
+    }
+
+    public Date getActorDateOfBirth() {
+        return actorDateOfBirth;
+    }
+
+    public void setActorDateOfBirth(Date actorDateOfBirth) {
+        this.actorDateOfBirth = actorDateOfBirth;
+    }
+
+    public Gender getActorGender() {
+        return actorGender;
+    }
+
+    public void setActorGender(Gender actorGender) {
+        this.actorGender = actorGender;
+    }
+
+    public Country getActorNationality() {
+        return actorNationality;
+    }
+
+    public void setActorNationality(Country actorNationality) {
+        this.actorNationality = actorNationality;
+    }
+
+    public Set<Movie> getActorMovies() {
+        return actorMovies;
+    }
+
+    public void setActorMovies(Set<Movie> actorMovies) {
+        this.actorMovies = actorMovies;
+    }
+
+    @Override
+    public String toString() {
+        return "Actor{" +
+                "actorID=" + actorID +
+                ", actorName='" + actorName + '\'' +
+                ", actorDateOfBirth=" + actorDateOfBirth +
+                ", actorGender=" + actorGender +
+                ", actorNationality=" + actorNationality +
+                ", actorMovies=" + actorMovies +
+                '}';
+    }
+}
