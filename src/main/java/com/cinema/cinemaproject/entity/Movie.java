@@ -22,7 +22,7 @@ public class Movie {
 
     @ManyToOne(cascade =
             {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "director_id")
+    @JoinColumn(name = "directorID")
     private Director movieDirector;
 
     @ManyToMany(mappedBy = "actorMovies")

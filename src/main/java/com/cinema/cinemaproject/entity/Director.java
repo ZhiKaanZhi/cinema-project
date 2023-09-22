@@ -32,7 +32,7 @@ public class Director {
     @Column(name = "directorGender")
     private Gender directorGender;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "director")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movieDirector")
     private Set<Movie> directorMovies;
 
     public Director() {
