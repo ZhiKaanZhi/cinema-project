@@ -14,31 +14,31 @@ public class Movie {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "movieID")
+    @Column(name = "movie_id")
     private int movieID;
 
-    @Column(name = "movieTitle")
+    @Column(name = "movie_title")
     private String movieTitle;
 
-    @Column(name = "movieDescription")
+    @Column(name = "movie_description")
     private String movieDescription;
 
     @ManyToOne(cascade =
             {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
-    @JoinColumn(name = "directorID")
+    @JoinColumn(name = "director_id")
     private Director movieDirector;
 
     @ManyToMany(mappedBy = "actorMovies")
     private Set<Actor> movieActors;
 
-    @Column(name = "movieDurationInMin")
+    @Column(name = "movie_duration_in_min")
     private int movieDurationInMin;
 
-    @Column(name = "moviePrice")
+    @Column(name = "movie_price")
     private long movieTicketPrice;
 
-    @Column(name = "movieReleaseDate")
-    @DateTimeFormat(pattern="dd/MM/yyyy")
+    @Column(name = "movie_release_date")
+    //@DateTimeFormat(pattern="dd/MM/yyyy")
     private Date movieReleaseDate;
 
     public Movie() {

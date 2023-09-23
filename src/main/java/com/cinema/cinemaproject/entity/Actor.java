@@ -19,27 +19,27 @@ public class Actor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "actorID")
+    @Column(name = "actor_id")
     private int actorID;
 
-    @Column(name = "actorName")
+    @Column(name = "actor_name")
     private String actorName;
 
-    @Column(name = "actorDateOfBirth")
+    @Column(name = "actor_date_of_birth")
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date actorDateOfBirth;
 
-    @Column(name = "actorGender")
+    @Column(name = "actor_gender")
     private Gender actorGender;
 
-    @Column(name = "actorNationality")
+    @Column(name = "actor_nationality")
     private Country actorNationality;
 
     @ManyToMany
     @JoinTable(
             name = "movie_actor",
-            joinColumns = @JoinColumn(name = "actorID"),
-            inverseJoinColumns = @JoinColumn(name = "movieID"))
+            joinColumns = @JoinColumn(name = "actor_id"),
+            inverseJoinColumns = @JoinColumn(name = "movie_id"))
     private Set<Movie> actorMovies;
 
     public Actor() {

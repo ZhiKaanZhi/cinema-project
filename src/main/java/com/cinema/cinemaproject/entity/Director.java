@@ -19,20 +19,20 @@ public class Director {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "directorID")
+    @Column(name = "director_id")
     private int directorID;
 
-    @Column(name = "directorName")
+    @Column(name = "director_name")
     private String directorName;
 
-    @Column(name = "directorNationality")
+    @Column(name = "director_nationality")
     private Country directorNationality;
 
-    @Column(name = "directorDateOfBirth")
+    @Column(name = "director_date_of_birth")
     @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date directorDateOfBirth;
 
-    @Column(name = "directorGender")
+    @Column(name = "director_gender")
     private Gender directorGender;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "movieDirector")
