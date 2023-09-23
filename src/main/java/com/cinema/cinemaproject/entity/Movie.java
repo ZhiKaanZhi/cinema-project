@@ -1,7 +1,10 @@
 package com.cinema.cinemaproject.entity;
 import com.cinema.cinemaproject.ServiceContracts.dto.MovieDTO;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -34,17 +37,19 @@ public class Movie {
     @Column(name = "moviePrice")
     private long movieTicketPrice;
 
+    @Column(name = "movieReleaseDate")
+    @DateTimeFormat(pattern="dd/MM/yyyy")
+    private Date movieReleaseDate;
+
     public Movie() {
     }
 
-
-    public Movie(String movieTitle, String movieDescription, Director movieDirector, Set<Actor> movieActors, int movieDurationInMin, long movieTicketPrice) {
+    public Movie(String movieTitle, String movieDescription, int movieDurationInMin, long movieTicketPrice, Date movieReleaseDate) {
         this.movieTitle = movieTitle;
         this.movieDescription = movieDescription;
-        this.movieDirector = movieDirector;
-        this.movieActors = movieActors;
         this.movieDurationInMin = movieDurationInMin;
         this.movieTicketPrice = movieTicketPrice;
+        this.movieReleaseDate = movieReleaseDate;
     }
 
     public int getMovieID() {
@@ -103,6 +108,14 @@ public class Movie {
         this.movieTicketPrice = movieTicketPrice;
     }
 
+    public Date getMovieReleaseDate() {
+        return movieReleaseDate;
+    }
+
+    public void setMovieReleaseDate(Date movieReleaseDate) {
+        this.movieReleaseDate = movieReleaseDate;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -113,7 +126,18 @@ public class Movie {
                 ", movieActors=" + movieActors +
                 ", movieDurationInMin=" + movieDurationInMin +
                 ", movieTicketPrice=" + movieTicketPrice +
+                ", movieReleaseDate=" + movieReleaseDate +
                 '}';
+    }
+
+    public void addActor(Actor actor) {
+
+        if (movieActors == null) {
+            movieActors = new HashSet<Actor>();
+        }
+        else {
+            movieActors.add(actor);
+        }
     }
 
     public static MovieDTO toMovieDTO(Optional<Movie> movie) {
@@ -130,6 +154,7 @@ public class Movie {
         movieDTO.setMovieDurationInMin(movie.get().getMovieDurationInMin());
         movieDTO.setMovieTicketPrice(movie.get().getMovieTicketPrice());
         movieDTO.setMovieActors(movie.get().getMovieActors());
+        movieDTO.setMovieRealeaseDate(movie.get().getMovieReleaseDate());
 
         return movieDTO;
     }

@@ -68,4 +68,16 @@ public class ActorDTO {
     public void setActorMovies(Set<Movie> actorMovies) {
         this.actorMovies = actorMovies;
     }
+
+    @Override
+    public String toString() {
+        return "ActorDTO{" +
+                "actorID=" + actorID +
+                ", actorName='" + actorName + '\'' +
+                ", actorNationality=" + actorNationality +
+                ", actorAge=" + actorAge +
+                ", actorGender=" + actorGender +
+                ", actorMovies=" + actorMovies +
+                '}';
+    }
 }

@@ -4,11 +4,12 @@ USE `movies_db`;
 --
 -- Table structure for table `student`
 --
-
-DROP TABLE IF EXISTS `movie`;
-DROP TABLE IF EXISTS `director`;
+SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `actor`;
+DROP TABLE IF EXISTS `director`;
+DROP TABLE IF EXISTS `movie`;
 DROP TABLE IF EXISTS `movie_actor`;
+SET FOREIGN_KEY_CHECKS=1;
 
 CREATE TABLE `director` (
   `directorID` int NOT NULL AUTO_INCREMENT,
@@ -25,6 +26,7 @@ CREATE TABLE `movie` (
   `movieDescription` varchar(45) DEFAULT NULL,
   `movieDurationInMin` int DEFAULT NULL,
   `moviePrice` long DEFAULT NULL,
+  `movieReleaseDate` date,
   `directorID` int,
   PRIMARY KEY (`movieID`),
   FOREIGN KEY (directorID) REFERENCES director(directorID)

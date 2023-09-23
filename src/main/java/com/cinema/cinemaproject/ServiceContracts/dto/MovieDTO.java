@@ -2,6 +2,8 @@ package com.cinema.cinemaproject.ServiceContracts.dto;
 
 import com.cinema.cinemaproject.entity.Director;
 import com.cinema.cinemaproject.entity.Actor;
+
+import java.util.Date;
 import java.util.Set;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,7 @@ public class MovieDTO {
     private int movieDurationInMin;
     private long movieTicketPrice;
     private Set<Actor> movieActors;
+    private Date movieRealeaseDate;
 
     public MovieDTO() {
     }
@@ -73,6 +76,28 @@ public class MovieDTO {
 
     public void setMovieActors(Set<Actor> movieActors) {
         this.movieActors = movieActors;
+    }
+
+    public Date getMovieRealeaseDate() {
+        return movieRealeaseDate;
+    }
+
+    public void setMovieRealeaseDate(Date movieRealeaseDate) {
+        this.movieRealeaseDate = movieRealeaseDate;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieDTO{" +
+                "movieID=" + movieID +
+                ", movieTitle='" + movieTitle + '\'' +
+                ", movieDescription='" + movieDescription + '\'' +
+                ", movieDirector=" + movieDirector +
+                ", movieDurationInMin=" + movieDurationInMin +
+                ", movieTicketPrice=" + movieTicketPrice +
+                ", movieActors=" + movieActors +
+                ", movieRealeaseDate=" + movieRealeaseDate +
+                '}';
     }
 }
 

@@ -5,9 +5,11 @@ import com.cinema.cinemaproject.components.AgeCalculator;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -27,6 +29,7 @@ public class Director {
     private Country directorNationality;
 
     @Column(name = "directorDateOfBirth")
+    @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date directorDateOfBirth;
 
     @Column(name = "directorGender")
@@ -38,12 +41,11 @@ public class Director {
     public Director() {
     }
 
-    public Director(String directorName, Country directorNationality, Date directorDateOfBirth, Gender directorGender, Set<Movie> directorMovies) {
+    public Director(String directorName, Country directorNationality, Date directorDateOfBirth, Gender directorGender) {
         this.directorName = directorName;
         this.directorNationality = directorNationality;
         this.directorDateOfBirth = directorDateOfBirth;
         this.directorGender = directorGender;
-        this.directorMovies = directorMovies;
     }
 
     public int getDirectorID() {
@@ -104,6 +106,16 @@ public class Director {
                 ", directorGender=" + directorGender +
                 ", directorMovies=" + directorMovies +
                 '}';
+    }
+
+    public void addMovies(Movie movie) {
+        if (directorMovies == null) {
+            directorMovies = new HashSet<Movie>();
+        }
+        else {
+            directorMovies.add(movie);
+            movie.setMovieDirector(this);
+        }
     }
 
     public static DirectorDTO toDirectorDTO(Optional<Director> director) {

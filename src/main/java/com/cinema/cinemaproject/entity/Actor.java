@@ -5,9 +5,11 @@ import com.cinema.cinemaproject.components.AgeCalculator;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import jakarta.persistence.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ public class Actor {
     private String actorName;
 
     @Column(name = "actorDateOfBirth")
+    @DateTimeFormat(pattern="dd/MM/yyyy")
     private Date actorDateOfBirth;
 
     @Column(name = "actorGender")
@@ -42,12 +45,11 @@ public class Actor {
     public Actor() {
     }
 
-    public Actor(String actorName, Date actorDateOfBirth, Gender actorGender, Country actorNationality, Set<Movie> actorMovies) {
+    public Actor(String actorName, Date actorDateOfBirth, Gender actorGender, Country actorNationality) {
         this.actorName = actorName;
         this.actorDateOfBirth = actorDateOfBirth;
         this.actorGender = actorGender;
         this.actorNationality = actorNationality;
-        this.actorMovies = actorMovies;
     }
 
     public int getActorID() {
@@ -108,6 +110,15 @@ public class Actor {
                 ", actorNationality=" + actorNationality +
                 ", actorMovies=" + actorMovies +
                 '}';
+    }
+
+    public void addMovie(Movie movie) {
+        if (actorMovies == null) {
+            actorMovies = new HashSet<Movie>();
+        }
+        else {
+            actorMovies.add(movie);
+        }
     }
 
     public static ActorDTO toActorDTO(Optional<Actor> actor) {

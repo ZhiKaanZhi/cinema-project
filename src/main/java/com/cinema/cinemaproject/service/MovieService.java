@@ -6,6 +6,7 @@ import com.cinema.cinemaproject.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -163,6 +164,23 @@ public class MovieService{
         }
         else {
             throw new NoSuchElementException("No movies found with price: "+ price+" euros.");
+        }
+
+        return movieDTOList;
+    }
+
+    public List<MovieDTO> findMoviesByReleaseDate(Date movieReleaseDate) {
+        Optional<List<Movie>> result = movieRepository.findMoviesByReleaseDate(movieReleaseDate);
+
+        List<MovieDTO> movieDTOList = null;
+
+        if(result.isPresent()) {
+            for (Movie movie: result.get()) {
+                movieDTOList.add(Movie.toMovieDTO(Optional.ofNullable(movie)));
+            }
+        }
+        else {
+            throw new NoSuchElementException("No movies found with release date: "+ movieReleaseDate);
         }
 
         return movieDTOList;
