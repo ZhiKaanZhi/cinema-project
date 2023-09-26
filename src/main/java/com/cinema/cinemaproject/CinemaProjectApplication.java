@@ -5,6 +5,8 @@ import com.cinema.cinemaproject.entity.Director;
 import com.cinema.cinemaproject.entity.Movie;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
+import com.cinema.cinemaproject.entity.enums.Genre;
+import com.cinema.cinemaproject.mapstruct.mappers.MapStructMapper;
 import com.cinema.cinemaproject.service.ActorService;
 import com.cinema.cinemaproject.service.DirectorService;
 import com.cinema.cinemaproject.service.MovieService;
@@ -25,18 +27,18 @@ public class CinemaProjectApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(MovieService movieService, DirectorService directorService, ActorService actorService) {
+	public CommandLineRunner commandLineRunner(MovieService movieService, DirectorService directorService, ActorService actorService, MapStructMapper mapStructMapper) {
 
 		return runner -> {
 
-			addExampleMovies(movieService, directorService, actorService);
+			addExampleMovies(movieService, directorService, actorService, mapStructMapper);
 
 		};
 	}
 
-	private void addExampleMovies(MovieService movieService, DirectorService directorService, ActorService actorService) {
+	private void addExampleMovies(MovieService movieService, DirectorService directorService, ActorService actorService, MapStructMapper mapStructMapper) {
 		// create a Movie
-		Movie tempMovie = new Movie("Star Wars", "Pew Pew", 120, 8, new Date(1977, 5, 04));
+		Movie tempMovie = new Movie("Star Wars", "Pew Pew", 120, 8, new Date(1977, 5, 04), Genre.SCIFI);
 
 		// create the Director
 		Director tempDirector = new Director("George Lucas", Country.USA, new Date(1944, 5, 14), Gender.MALE);
@@ -52,7 +54,7 @@ public class CinemaProjectApplication {
 		tempMovie.addActor(tempActor1);
 		tempMovie.addActor(tempActor2);
 		tempMovie.addActor(tempActor3);
-		movieService.save(tempMovie);
+		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie));
 		System.out.println("Saving the movie: " + tempMovie);
 
 		// add movie to the director

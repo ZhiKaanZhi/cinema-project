@@ -1,13 +1,11 @@
 package com.cinema.cinemaproject.entity;
 
-import com.cinema.cinemaproject.ServiceContracts.dto.ActorDTO;
-import com.cinema.cinemaproject.components.AgeCalculator;
+import com.cinema.cinemaproject.mapstruct.dtos.ActorDto;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import jakarta.persistence.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
@@ -30,9 +28,11 @@ public class Actor {
     private Date actorDateOfBirth;
 
     @Column(name = "actor_gender")
+    @Enumerated(EnumType.STRING)
     private Gender actorGender;
 
     @Column(name = "actor_nationality")
+    @Enumerated(EnumType.STRING)
     private Country actorNationality;
 
     @ManyToMany
@@ -121,18 +121,18 @@ public class Actor {
         }
     }
 
-    public static ActorDTO toActorDTO(Optional<Actor> actor) {
+    public static ActorDto toActorDTO(Optional<Actor> actor) {
         if (actor.isEmpty()) {
             return null; // Handle null input gracefully if needed
         }
 
 
-        ActorDTO actorDTO = new ActorDTO();
+        ActorDto actorDTO = new ActorDto();
         actorDTO.setActorID(actor.get().getActorID());
         actorDTO.setActorName(actor.get().getActorName());
         actorDTO.setActorGender(actor.get().getActorGender());
         actorDTO.setActorNationality(actor.get().getActorNationality());
-        actorDTO.setActorAge(AgeCalculator.calculateAge(LocalDate.now(),actor.get().getActorDateOfBirth()));
+        actorDTO.setActorDateOfBirth(actor.get().getActorDateOfBirth());
 
 
         return actorDTO;

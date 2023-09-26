@@ -1,6 +1,6 @@
 package com.cinema.cinemaproject.repository;
 
-import com.cinema.cinemaproject.ServiceContracts.dto.MovieDTO;
+import com.cinema.cinemaproject.mapstruct.dtos.MovieDto;
 import com.cinema.cinemaproject.entity.Movie;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -18,7 +18,7 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
            SELECT * FROM Movie
            where movieTitle = :title
            """, nativeQuery = true)
-    Optional<MovieDTO> findByTitle(@Param("title") String title);
+    Optional<Movie> findByTitle(@Param("title") String title);
 
     @Query(value = """
             SELECT * FROM Movie
@@ -62,4 +62,11 @@ public interface MovieRepository extends JpaRepository<Movie, Integer> {
             where movieReleaseDate = :movieReleaseDate
             """, nativeQuery = true)
     Optional<List<Movie>> findMoviesByReleaseDate(@Param("movieReleaseDate") Date movieReleaseDate);
+
+
+    @Query(value = """
+           SELECT * FROM Movie
+           where director_ID = :director_ID
+           """, nativeQuery = true)
+    Optional<List<Movie>> findMoviesByDirectorId(@Param("director_ID") Integer director_ID);
 }

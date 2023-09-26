@@ -1,6 +1,6 @@
 package com.cinema.cinemaproject.entity;
 
-import com.cinema.cinemaproject.ServiceContracts.dto.DirectorDTO;
+import com.cinema.cinemaproject.mapstruct.dtos.DirectorAllDto;
 import com.cinema.cinemaproject.components.AgeCalculator;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
@@ -26,6 +26,7 @@ public class Director {
     private String directorName;
 
     @Column(name = "director_nationality")
+    @Enumerated(EnumType.STRING)
     private Country directorNationality;
 
     @Column(name = "director_date_of_birth")
@@ -33,6 +34,7 @@ public class Director {
     private Date directorDateOfBirth;
 
     @Column(name = "director_gender")
+    @Enumerated(EnumType.STRING)
     private Gender directorGender;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "movieDirector")
@@ -118,20 +120,20 @@ public class Director {
         }
     }
 
-    public static DirectorDTO toDirectorDTO(Optional<Director> director) {
+    public static DirectorAllDto toDirectorDTO(Optional<Director> director) {
 
         if (director.isEmpty()) {
             return null; // Handle null input gracefully if needed
         }
 
 
-        DirectorDTO directorDTO = new DirectorDTO();
-        directorDTO.setDirectorID(director.get().getDirectorID());
-        directorDTO.setDirectorName(director.get().getDirectorName());
-        directorDTO.setDirectorNationality(director.get().getDirectorNationality());
-        directorDTO.setDirectorAge(AgeCalculator.calculateAge(LocalDate.now(),director.get().getDirectorDateOfBirth()));
-        directorDTO.setDirectorMovies(director.get().getDirectorMovies());
+        DirectorAllDto directorAllDTO = new DirectorAllDto();
+        directorAllDTO.setDirectorID(director.get().getDirectorID());
+        directorAllDTO.setDirectorName(director.get().getDirectorName());
+        directorAllDTO.setDirectorNationality(director.get().getDirectorNationality());
+        directorAllDTO.setDirectorAge(AgeCalculator.calculateAge(LocalDate.now(),director.get().getDirectorDateOfBirth()));
+        directorAllDTO.setDirectorMovies(director.get().getDirectorMovies());
 
-        return directorDTO;
+        return directorAllDTO;
     }
 }

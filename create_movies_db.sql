@@ -27,6 +27,7 @@ CREATE TABLE movie (
   movie_duration_in_min int DEFAULT NULL,
   movie_price long DEFAULT NULL,
   movie_release_date date,
+  movie_genre  varchar(45) DEFAULT NULL,
   director_id int,
   PRIMARY KEY (movie_id),
   FOREIGN KEY (director_id) REFERENCES director(director_id)
