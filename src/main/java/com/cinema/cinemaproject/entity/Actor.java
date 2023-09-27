@@ -24,7 +24,7 @@ public class Actor {
     private String actorName;
 
     @Column(name = "actor_date_of_birth")
-    @DateTimeFormat(pattern="dd/MM/yyyy")
+    //@DateTimeFormat(pattern="dd/MM/yyyy")
     private Date actorDateOfBirth;
 
     @Column(name = "actor_gender")
@@ -121,20 +121,4 @@ public class Actor {
         }
     }
 
-    public static ActorDto toActorDTO(Optional<Actor> actor) {
-        if (actor.isEmpty()) {
-            return null; // Handle null input gracefully if needed
-        }
-
-
-        ActorDto actorDTO = new ActorDto();
-        actorDTO.setActorID(actor.get().getActorID());
-        actorDTO.setActorName(actor.get().getActorName());
-        actorDTO.setActorGender(actor.get().getActorGender());
-        actorDTO.setActorNationality(actor.get().getActorNationality());
-        actorDTO.setActorDateOfBirth(actor.get().getActorDateOfBirth());
-
-
-        return actorDTO;
-    }
 }

@@ -19,7 +19,7 @@ public interface DirectorRepository extends JpaRepository<Director, Integer> {
            SELECT * FROM Director
            where directorName = :directorName
            """, nativeQuery = true)
-    Optional<List<Director>> findDirectorByName(@Param("directorName") String directorName);
+    Optional<Director> findDirectorByName(@Param("directorName") String directorName);
 
     @Query(value = """
            SELECT * FROM Director

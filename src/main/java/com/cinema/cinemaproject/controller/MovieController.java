@@ -25,8 +25,8 @@ public class MovieController {
 
     @GetMapping("")
     // make a request and final all the pieces of content in the system
-    public List<Movie> findAll() {
-        return movieService.findAll();
+    public List<MovieDto> findAll() {
+        return movieService.findAllMovieDtos();
     }
 
     @GetMapping("/{id}")
@@ -43,5 +43,30 @@ public class MovieController {
     @PostMapping("")
     public void addMovie(@RequestBody MovieAllDto movie){
         movieService.save(movie);
+    }
+
+    @ResponseStatus(HttpStatus.FOUND)
+    @DeleteMapping("/{id}")
+    public void deleteMovie(@PathVariable int id){
+        movieService.deleteById(id);
+    }
+
+
+    @ResponseStatus(HttpStatus.FOUND)
+    @GetMapping("/{title}")
+    public MovieDto findMovieById(@PathVariable String title){
+        return movieService.findMovieByTitle(title);
+    }
+
+    @ResponseStatus(HttpStatus.FOUND)
+    @GetMapping("/by-director/{id}")
+    public List<MovieDto> findMoviesByDirectorId(@PathVariable Integer id) {
+        List<MovieDto> tempMovies = movieService.findMoviesByDirectorId(id);
+        if(tempMovies.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No movies directed from director with ID: "+ id);
+        }
+        else{
+            return tempMovies;
+        }
     }
 }

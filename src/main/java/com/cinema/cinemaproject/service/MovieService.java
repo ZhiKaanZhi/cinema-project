@@ -9,10 +9,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class MovieService{
@@ -26,8 +23,26 @@ public class MovieService{
     }
 
 
+
     public List<Movie> findAll() {
         return movieRepository.findAll();
+    }
+
+    public List<MovieDto> findAllMovieDtos() {
+        List<Movie> result = movieRepository.findAll();
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
+
+        if(!result.isEmpty()) {
+            for (Movie movie: result) {
+                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
+            }
+        }
+        else {
+            return null;
+        }
+
+        return movieDtoList;
+
     }
 
     public MovieDto findById(int Id) {
@@ -55,7 +70,7 @@ public class MovieService{
     public List<MovieDto> findMoviesByMinDuration(int minDuration) {
         Optional<List<Movie>> result = movieRepository.findMoviesByMinDuration(minDuration);
 
-        List<MovieDto> movieDtoList = null;
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
 
         if(result.isPresent()) {
             for (Movie movie: result.get()) {
@@ -74,7 +89,7 @@ public class MovieService{
     public List<MovieDto> findMoviesByMaxDuration(int maxDuration) {
         Optional<List<Movie>> result = movieRepository.findMoviesByMaxDuration(maxDuration);
 
-        List<MovieDto> movieDtoList = null;
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
 
         if(result.isPresent()) {
             for (Movie movie: result.get()) {
@@ -92,7 +107,7 @@ public class MovieService{
     public List<MovieDto> findMoviesByDuration(int duration) {
         Optional<List<Movie>> result = movieRepository.findMoviesByDuration(duration);
 
-        List<MovieDto> movieDtoList = null;
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
 
         if(result.isPresent()) {
             for (Movie movie: result.get()) {
@@ -110,7 +125,7 @@ public class MovieService{
     public List<MovieDto> findMoviesByMinPrice(long minPrice) {
         Optional<List<Movie>> result = movieRepository.findMoviesByMinPrice(minPrice);
 
-        List<MovieDto> movieDtoList = null;
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
 
         if(result.isPresent()) {
             for (Movie movie: result.get()) {
@@ -128,7 +143,7 @@ public class MovieService{
     public List<MovieDto> findMoviesByMaxPrice(long maxPrice) {
         Optional<List<Movie>> result = movieRepository.findMoviesByMaxPrice(maxPrice);
 
-        List<MovieDto> movieDtoList = null;
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
 
         if(result.isPresent()) {
             for (Movie movie: result.get()) {
@@ -146,7 +161,7 @@ public class MovieService{
     public List<MovieDto> findMoviesByPrice(long price) {
         Optional<List<Movie>> result = movieRepository.findMoviesByMaxPrice(price);
 
-        List<MovieDto> movieDtoList = null;
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
 
         if(result.isPresent()) {
             for (Movie movie: result.get()) {
@@ -164,7 +179,7 @@ public class MovieService{
     public List<MovieDto> findMoviesByReleaseDate(Date movieReleaseDate) {
         Optional<List<Movie>> result = movieRepository.findMoviesByReleaseDate(movieReleaseDate);
 
-        List<MovieDto> movieDtoList = null;
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
 
         if(result.isPresent()) {
             for (Movie movie: result.get()) {
@@ -183,7 +198,7 @@ public class MovieService{
     public List<MovieDto> findMoviesByDirectorId(Integer director_ID){
         Optional<List<Movie>> result = movieRepository.findMoviesByDirectorId(director_ID);
 
-        List<MovieDto> movieDtoList = null;
+        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
 
         if(result.isPresent()) {
             for (Movie movie: result.get()) {

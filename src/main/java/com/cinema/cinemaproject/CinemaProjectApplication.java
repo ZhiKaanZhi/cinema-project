@@ -38,44 +38,68 @@ public class CinemaProjectApplication {
 
 	private void addExampleMovies(MovieService movieService, DirectorService directorService, ActorService actorService, MapStructMapper mapStructMapper) {
 		// create a Movie
-		Movie tempMovie = new Movie("Star Wars", "Pew Pew", 120, 8, new Date(1977, 5, 04), Genre.SCIFI);
+		Movie tempMovie1 = new Movie("Star Wars", "Pew Pew", 120, 8, new Date(1977, 5, 4), Genre.SCIFI);
+		Movie tempMovie2 = new Movie("Indiana Jones", "LASO", 110, 9, new Date(1981, 5, 4), Genre.ADVENTURE);
+		Movie tempMovie3 = new Movie("Blah", "blah blah", 110, 9, new Date(1999, 5, 4), Genre.ADVENTURE);
 
 		// create the Director
-		Director tempDirector = new Director("George Lucas", Country.USA, new Date(1944, 5, 14), Gender.MALE);
+		Director tempDirector1 = new Director("George Lucas", Country.USA, new Date(1944, 5, 14), Gender.MALE);
+		Director tempDirector2 = new Director("Blah director", Country.USA, new Date(1944, 5, 14), Gender.MALE);
 
 		// create the Actors
 		Actor tempActor1 = new Actor("Mark Hamill", new Date(1951, 9, 25), Gender.MALE, USA);
 		Actor tempActor2 = new Actor("Harrison Ford", new Date(1942, 7, 13), Gender.MALE, USA);
 		Actor tempActor3 = new Actor("Carrie Fisher", new Date(1956, 10, 21), Gender.FEMALE, USA);
+		Actor tempActor4 = new Actor("Blah Actor", new Date(1956, 10, 21), Gender.FEMALE, USA);
 
 
 
 		//add actors to the movie
-		tempMovie.addActor(tempActor1);
-		tempMovie.addActor(tempActor2);
-		tempMovie.addActor(tempActor3);
-		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie));
-		System.out.println("Saving the movie: " + tempMovie);
+		tempMovie1.addActor(tempActor1);
+		tempMovie1.addActor(tempActor2);
+		tempMovie1.addActor(tempActor3);
+		tempMovie1.setMovieDirector(tempDirector1);
+		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie1));
+		System.out.println("Saving the movie: " + tempMovie1);
+
+		tempMovie2.addActor(tempActor2);
+		tempMovie2.setMovieDirector(tempDirector1);
+		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie2));
+		System.out.println("Saving the movie: " + tempMovie2);
+
+		tempMovie3.addActor(tempActor4);
+		tempMovie3.setMovieDirector(tempDirector2);
+		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie3));
+		System.out.println("Saving the movie: " + tempMovie3);
 
 		// add movie to the director
-		tempDirector.addMovies(tempMovie);
-		directorService.save(tempDirector);
-		System.out.println("Saving the director: " + tempDirector);
+		tempDirector1.addMovies(tempMovie1);
+		tempDirector1.addMovies(tempMovie2);
+		directorService.save(mapStructMapper.directorToDirectorAllDto(tempDirector1));
+		System.out.println("Saving the director: " + tempDirector1);
+
+		tempDirector2.addMovies(tempMovie3);
+		directorService.save(mapStructMapper.directorToDirectorAllDto(tempDirector2));
+		System.out.println("Saving the director: " + tempDirector2);
 
 
 		//add movie to the actors
-		tempActor1.addMovie(tempMovie);
-		tempActor2.addMovie(tempMovie);
-		tempActor3.addMovie(tempMovie);
+		tempActor1.addMovie(tempMovie1);
+		tempActor2.addMovie(tempMovie1);
+		tempActor2.addMovie(tempMovie2);
+		tempActor3.addMovie(tempMovie1);
+		tempActor4.addMovie(tempMovie3);
 
-		actorService.save(tempActor1);
-		actorService.save(tempActor2);
-		actorService.save(tempActor3);
+		actorService.save(mapStructMapper.actorToActorAllDto(tempActor1));
+		actorService.save(mapStructMapper.actorToActorAllDto(tempActor2));
+		actorService.save(mapStructMapper.actorToActorAllDto(tempActor3));
+		actorService.save(mapStructMapper.actorToActorAllDto(tempActor4));
 
 
 		System.out.println("Saving the Actor: " + tempActor1);
 		System.out.println("Saving the Actor: " + tempActor2);
 		System.out.println("Saving the Actor: " + tempActor3);
+		System.out.println("Saving the Actor: " + tempActor4);
 
 
 

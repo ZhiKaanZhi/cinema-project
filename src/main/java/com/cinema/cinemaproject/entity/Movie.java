@@ -27,7 +27,7 @@ public class Movie {
     private String movieDescription;
 
     @ManyToOne(cascade =
-            {CascadeType.DETACH, CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+            {CascadeType.MERGE})
     @JoinColumn(name = "director_id")
     private Director movieDirector;
 
@@ -83,6 +83,7 @@ public class Movie {
             movieActors.add(actor);
         }
     }
+
 
 
 }

@@ -30,7 +30,7 @@ public class Director {
     private Country directorNationality;
 
     @Column(name = "director_date_of_birth")
-    @DateTimeFormat(pattern="dd/MM/yyyy")
+    //@DateTimeFormat(pattern="dd/MM/yyyy")
     private Date directorDateOfBirth;
 
     @Column(name = "director_gender")
@@ -120,20 +120,4 @@ public class Director {
         }
     }
 
-    public static DirectorAllDto toDirectorDTO(Optional<Director> director) {
-
-        if (director.isEmpty()) {
-            return null; // Handle null input gracefully if needed
-        }
-
-
-        DirectorAllDto directorAllDTO = new DirectorAllDto();
-        directorAllDTO.setDirectorID(director.get().getDirectorID());
-        directorAllDTO.setDirectorName(director.get().getDirectorName());
-        directorAllDTO.setDirectorNationality(director.get().getDirectorNationality());
-        directorAllDTO.setDirectorAge(AgeCalculator.calculateAge(LocalDate.now(),director.get().getDirectorDateOfBirth()));
-        directorAllDTO.setDirectorMovies(director.get().getDirectorMovies());
-
-        return directorAllDTO;
-    }
 }

@@ -19,7 +19,7 @@ public interface ActorRepository extends JpaRepository<Actor, Integer> {
            SELECT * FROM Actor
            where actorName = :actorName
            """, nativeQuery = true)
-    Optional<List<Actor>> findActorByName(@Param("actorName") String actorName);
+    Optional<Actor> findActorByName(@Param("actorName") String actorName);
 
     @Query(value = """
            SELECT * FROM Actor
