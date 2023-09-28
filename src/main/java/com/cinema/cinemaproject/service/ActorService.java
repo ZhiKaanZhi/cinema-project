@@ -29,7 +29,7 @@ public class ActorService {
 
     @Transactional
     public void save(ActorAllDto actor) {
-        actorRepository.save(mapstructMapper.actorAllDtoToActor(actor));
+        actorRepository.saveAndFlush(mapstructMapper.actorAllDtoToActor(actor));
     }
 
     public List<Actor> findAll() {

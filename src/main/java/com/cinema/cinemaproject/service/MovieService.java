@@ -52,7 +52,7 @@ public class MovieService{
 
     @Transactional
     public void save(MovieAllDto movieAllDto) {
-        movieRepository.save(mapstructMapper.movieAllDtoToMovie(movieAllDto));
+        movieRepository.saveAndFlush(mapstructMapper.movieAllDtoToMovie(movieAllDto));
     }
 
     @Transactional

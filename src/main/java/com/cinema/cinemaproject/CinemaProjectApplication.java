@@ -59,28 +59,25 @@ public class CinemaProjectApplication {
 		tempMovie1.addActor(tempActor2);
 		tempMovie1.addActor(tempActor3);
 		tempMovie1.setMovieDirector(tempDirector1);
-		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie1));
-		System.out.println("Saving the movie: " + tempMovie1);
 
-		tempMovie2.addActor(tempActor2);
-		tempMovie2.setMovieDirector(tempDirector1);
-		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie2));
-		System.out.println("Saving the movie: " + tempMovie2);
-
-		tempMovie3.addActor(tempActor4);
-		tempMovie3.setMovieDirector(tempDirector2);
-		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie3));
-		System.out.println("Saving the movie: " + tempMovie3);
 
 		// add movie to the director
 		tempDirector1.addMovies(tempMovie1);
 		tempDirector1.addMovies(tempMovie2);
-		directorService.save(mapStructMapper.directorToDirectorAllDto(tempDirector1));
-		System.out.println("Saving the director: " + tempDirector1);
+
+
+		tempMovie2.addActor(tempActor2);
+		tempMovie2.setMovieDirector(tempDirector1);
+
+
+		tempMovie3.addActor(tempActor4);
+		tempMovie3.setMovieDirector(tempDirector2);
+
+
+
 
 		tempDirector2.addMovies(tempMovie3);
-		directorService.save(mapStructMapper.directorToDirectorAllDto(tempDirector2));
-		System.out.println("Saving the director: " + tempDirector2);
+
 
 
 		//add movie to the actors
@@ -89,6 +86,27 @@ public class CinemaProjectApplication {
 		tempActor2.addMovie(tempMovie2);
 		tempActor3.addMovie(tempMovie1);
 		tempActor4.addMovie(tempMovie3);
+
+
+
+		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie1));
+		System.out.println("Saving the movie: " + tempMovie1);
+
+		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie2));
+		System.out.println("Saving the movie: " + tempMovie2);
+
+		movieService.save(mapStructMapper.movieToMovieAllDto(tempMovie3));
+		System.out.println("Saving the movie: " + tempMovie3);
+
+		directorService.save(mapStructMapper.directorToDirectorAllDto(tempDirector1));
+		System.out.println("Saving the director: " + tempDirector1);
+
+		directorService.save(mapStructMapper.directorToDirectorAllDto(tempDirector2));
+		System.out.println("Saving the director: " + tempDirector2);
+
+
+
+
 
 		actorService.save(mapStructMapper.actorToActorAllDto(tempActor1));
 		actorService.save(mapStructMapper.actorToActorAllDto(tempActor2));
@@ -100,11 +118,6 @@ public class CinemaProjectApplication {
 		System.out.println("Saving the Actor: " + tempActor2);
 		System.out.println("Saving the Actor: " + tempActor3);
 		System.out.println("Saving the Actor: " + tempActor4);
-
-
-
-
-
 
 		System.out.println("Done!");
 	}

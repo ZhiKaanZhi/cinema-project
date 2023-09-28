@@ -31,7 +31,7 @@ public class DirectorService {
 
     @Transactional
     public void save(DirectorAllDto directorAllDto) {
-        directorRepository.save(mapstructMapper.directorAllDtoToDirector(directorAllDto));
+        directorRepository.saveAndFlush(mapstructMapper.directorAllDtoToDirector(directorAllDto));
     }
 
     public List<Director> findAll() {

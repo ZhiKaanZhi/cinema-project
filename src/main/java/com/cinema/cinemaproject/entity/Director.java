@@ -5,15 +5,16 @@ import com.cinema.cinemaproject.components.AgeCalculator;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "director")
 public class Director {
 
@@ -37,7 +38,7 @@ public class Director {
     @Enumerated(EnumType.STRING)
     private Gender directorGender;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "movieDirector")
+    @OneToMany(mappedBy = "movieDirector", cascade=CascadeType.ALL)
     private Set<Movie> directorMovies;
 
     public Director() {
@@ -50,53 +51,7 @@ public class Director {
         this.directorGender = directorGender;
     }
 
-    public int getDirectorID() {
-        return directorID;
-    }
 
-    public void setDirectorID(int directorID) {
-        this.directorID = directorID;
-    }
-
-    public String getDirectorName() {
-        return directorName;
-    }
-
-    public void setDirectorName(String directorName) {
-        this.directorName = directorName;
-    }
-
-    public Country getDirectorNationality() {
-        return directorNationality;
-    }
-
-    public void setDirectorNationality(Country directorNationality) {
-        this.directorNationality = directorNationality;
-    }
-
-    public Date getDirectorDateOfBirth() {
-        return directorDateOfBirth;
-    }
-
-    public void setDirectorDateOfBirth(Date directorDateOfBirth) {
-        this.directorDateOfBirth = directorDateOfBirth;
-    }
-
-    public Gender getDirectorGender() {
-        return directorGender;
-    }
-
-    public void setDirectorGender(Gender directorGender) {
-        this.directorGender = directorGender;
-    }
-
-    public Set<Movie> getDirectorMovies() {
-        return directorMovies;
-    }
-
-    public void setDirectorMovies(Set<Movie> directorMovies) {
-        this.directorMovies = directorMovies;
-    }
 
     @Override
     public String toString() {
@@ -106,7 +61,7 @@ public class Director {
                 ", directorNationality=" + directorNationality +
                 ", directorDateOfBirth=" + directorDateOfBirth +
                 ", directorGender=" + directorGender +
-                ", directorMovies=" + directorMovies +
+                ", directorMovies=" + (directorMovies != null ? directorMovies.toString() : "null") +
                 '}';
     }
 
@@ -118,6 +73,20 @@ public class Director {
             directorMovies.add(movie);
             movie.setMovieDirector(this);
         }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Director director = (Director) o;
+        return Objects.equals(directorID, director.directorID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(directorID);
     }
 
 }

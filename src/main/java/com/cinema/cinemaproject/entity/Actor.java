@@ -4,14 +4,15 @@ import com.cinema.cinemaproject.mapstruct.dtos.ActorDto;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "actor")
 public class Actor {
 
@@ -35,7 +36,7 @@ public class Actor {
     @Enumerated(EnumType.STRING)
     private Country actorNationality;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.PERSIST })
     @JoinTable(
             name = "movie_actor",
             joinColumns = @JoinColumn(name = "actor_id"),
@@ -52,53 +53,7 @@ public class Actor {
         this.actorNationality = actorNationality;
     }
 
-    public int getActorID() {
-        return actorID;
-    }
 
-    public void setActorID(int actorID) {
-        this.actorID = actorID;
-    }
-
-    public String getActorName() {
-        return actorName;
-    }
-
-    public void setActorName(String actorName) {
-        this.actorName = actorName;
-    }
-
-    public Date getActorDateOfBirth() {
-        return actorDateOfBirth;
-    }
-
-    public void setActorDateOfBirth(Date actorDateOfBirth) {
-        this.actorDateOfBirth = actorDateOfBirth;
-    }
-
-    public Gender getActorGender() {
-        return actorGender;
-    }
-
-    public void setActorGender(Gender actorGender) {
-        this.actorGender = actorGender;
-    }
-
-    public Country getActorNationality() {
-        return actorNationality;
-    }
-
-    public void setActorNationality(Country actorNationality) {
-        this.actorNationality = actorNationality;
-    }
-
-    public Set<Movie> getActorMovies() {
-        return actorMovies;
-    }
-
-    public void setActorMovies(Set<Movie> actorMovies) {
-        this.actorMovies = actorMovies;
-    }
 
     @Override
     public String toString() {
@@ -119,6 +74,19 @@ public class Actor {
         else {
             actorMovies.add(movie);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Actor actor = (Actor) o;
+        return Objects.equals(actorID, actor.actorID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(actorID);
     }
 
 }

@@ -7,11 +7,12 @@ import lombok.Setter;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
+@Entity
 @Getter
 @Setter
-@Entity
 @Table(name = "movie")
 public class Movie {
 
@@ -26,12 +27,11 @@ public class Movie {
     @Column(name = "movie_description")
     private String movieDescription;
 
-    @ManyToOne(cascade =
-            {CascadeType.MERGE})
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "director_id")
     private Director movieDirector;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "actorMovies")
+    @ManyToMany(mappedBy = "actorMovies", cascade = CascadeType.PERSIST)
     private Set<Actor> movieActors;
 
     @Column(name = "movie_duration_in_min")
@@ -66,7 +66,7 @@ public class Movie {
                 "movieID=" + movieID +
                 ", movieTitle='" + movieTitle + '\'' +
                 ", movieDescription='" + movieDescription + '\'' +
-                ", movieDirector=" + movieDirector +
+                ", movieDirector=" + (movieDirector != null ? movieDirector.getDirectorName() : "null") +
                 ", movieActors=" + movieActors +
                 ", movieDurationInMin=" + movieDurationInMin +
                 ", movieTicketPrice=" + movieTicketPrice +
@@ -82,6 +82,19 @@ public class Movie {
         else {
             movieActors.add(actor);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return Objects.equals(movieID, movie.movieID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(movieID);
     }
 
 
