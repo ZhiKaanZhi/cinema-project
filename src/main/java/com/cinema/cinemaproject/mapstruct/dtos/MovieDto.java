@@ -31,6 +31,17 @@ public class MovieDto {
     @JsonProperty("movie_genre")
     private Genre movieGenre;
 
-
+    @Override
+    public String toString() {
+        return "MovieDto{" +
+                "movieID=" + movieID +
+                ", movieTitle='" + movieTitle + '\'' +
+                ", movieDescription='" + movieDescription + '\'' +
+                ", movieDurationInMin=" + movieDurationInMin +
+                ", movieTicketPrice=" + movieTicketPrice +
+                ", movieReleaseDate=" + movieReleaseDate +
+                ", movieGenre=" + movieGenre +
+                '}';
+    }
 }
 

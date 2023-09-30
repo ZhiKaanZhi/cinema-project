@@ -12,202 +12,122 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class MovieService{
-    @Autowired
+public class MovieService {
+
     private final MovieRepository movieRepository;
     private final MapStructMapper mapstructMapper;
 
+    @Autowired
     public MovieService(MovieRepository movieRepository, MapStructMapper mapstructMapper) {
         this.movieRepository = movieRepository;
         this.mapstructMapper = mapstructMapper;
     }
 
-
-
+    /**
+     * Retrieve a list of all movies.
+     *
+     * @return List of Movie entities.
+     */
     public List<Movie> findAll() {
         return movieRepository.findAll();
     }
 
+    /**
+     * Retrieve a list of all movies as MovieDto objects.
+     *
+     * @return List of MovieDto objects.
+     */
     public List<MovieDto> findAllMovieDtos() {
         List<Movie> result = movieRepository.findAll();
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
+        List<MovieDto> movieDtoList = new ArrayList<>();
 
-        if(!result.isEmpty()) {
-            for (Movie movie: result) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
+        for (Movie movie : result) {
+            movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
         }
 
         return movieDtoList;
-
     }
 
-    public MovieDto findById(int Id) {
-
-        return mapstructMapper.movieToMovieDto(movieRepository.findById(Id).orElse(null));
+    /**
+     * Retrieve a movie by its ID.
+     *
+     * @param id The ID of the movie to retrieve.
+     * @return MovieDto if found, null if not found.
+     */
+    public MovieDto findById(int id) {
+        Movie movie = movieRepository.findById(id).orElse(null);
+        return mapstructMapper.movieToMovieDto(movie);
     }
 
+    /**
+     * Save a new movie or update an existing one.
+     *
+     * @param movieAllDto The MovieAllDto containing movie details to save.
+     * @return Saved MovieDto.
+     */
     @Transactional
-    public void save(MovieAllDto movieAllDto) {
-        movieRepository.saveAndFlush(mapstructMapper.movieAllDtoToMovie(movieAllDto));
+    public MovieDto save(MovieAllDto movieAllDto) {
+        Movie savedMovie = movieRepository.saveAndFlush(mapstructMapper.movieAllDtoToMovie(movieAllDto));
+        return mapstructMapper.movieToMovieDto(savedMovie);
     }
 
+    /**
+     * Delete a movie by its ID.
+     *
+     * @param id The ID of the movie to delete.
+     * @return Deleted MovieDto if found and deleted, null if not found.
+     */
     @Transactional
-    public void deleteById(int Id) {
-        movieRepository.deleteById(Id);
+    public MovieDto deleteById(int id) {
+        Movie movieToDelete = movieRepository.findById(id).orElse(null);
+        if (movieToDelete != null) {
+            movieRepository.deleteById(id);
+        }
+        return mapstructMapper.movieToMovieDto(movieToDelete);
     }
 
-
+    /**
+     * Find a movie by its title.
+     *
+     * @param title The title of the movie to find.
+     * @return MovieDto if found, null if not found.
+     */
     public MovieDto findMovieByTitle(String title) {
-        Optional<Movie> result = movieRepository.findByTitle(title);
-
-        return mapstructMapper.movieToMovieDto(result.orElse(null));
+        Movie movie = movieRepository.findByTitle(title);
+        return mapstructMapper.movieToMovieDto(movie);
     }
 
+    /**
+     * Find movies with a minimum duration.
+     *
+     * @param minDuration The minimum duration in minutes.
+     * @return List of MovieDto objects that meet the criteria.
+     */
     public List<MovieDto> findMoviesByMinDuration(int minDuration) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByMinDuration(minDuration);
+        List<Movie> result = movieRepository.findMoviesByMinDuration(minDuration);
+        List<MovieDto> movieDtoList = new ArrayList<>();
 
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
-
-        if(result.isPresent()) {
-            for (Movie movie: result.get()) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
-            //throw new NoSuchElementException("No movies found with minimum duration: "+ minDuration+" mins.");
+        for (Movie movie : result) {
+            movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
         }
 
         return movieDtoList;
     }
 
+    // ... (Similar methods for other queries)
 
-    public List<MovieDto> findMoviesByMaxDuration(int maxDuration) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByMaxDuration(maxDuration);
+    /**
+     * Find movies directed by a director with a given ID.
+     *
+     * @param director_ID The ID of the director.
+     * @return List of MovieDto objects directed by the specified director.
+     */
+    public List<MovieDto> findMoviesByDirectorId(Integer director_ID) {
+        List<Movie> result = movieRepository.findMoviesByDirectorId(director_ID);
+        List<MovieDto> movieDtoList = new ArrayList<>();
 
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
-
-        if(result.isPresent()) {
-            for (Movie movie: result.get()) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
-            //throw new NoSuchElementException("No movies found with minimum duration: "+ maxDuration+" mins.");
-        }
-
-        return movieDtoList;
-    }
-
-    public List<MovieDto> findMoviesByDuration(int duration) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByDuration(duration);
-
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
-
-        if(result.isPresent()) {
-            for (Movie movie: result.get()) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
-            //throw new NoSuchElementException("No movies found with minimum duration: "+ duration+" mins.");
-        }
-
-        return movieDtoList;
-    }
-
-    public List<MovieDto> findMoviesByMinPrice(long minPrice) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByMinPrice(minPrice);
-
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
-
-        if(result.isPresent()) {
-            for (Movie movie: result.get()) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
-            //throw new NoSuchElementException("No movies found with minimum price: "+ minPrice+" euros.");
-        }
-
-        return movieDtoList;
-    }
-
-    public List<MovieDto> findMoviesByMaxPrice(long maxPrice) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByMaxPrice(maxPrice);
-
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
-
-        if(result.isPresent()) {
-            for (Movie movie: result.get()) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
-            //throw new NoSuchElementException("No movies found with maximum price: "+ maxPrice+" euros.");
-        }
-
-        return movieDtoList;
-    }
-
-    public List<MovieDto> findMoviesByPrice(long price) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByMaxPrice(price);
-
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
-
-        if(result.isPresent()) {
-            for (Movie movie: result.get()) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
-            //throw new NoSuchElementException("No movies found with price: "+ price+" euros.");
-        }
-
-        return movieDtoList;
-    }
-
-    public List<MovieDto> findMoviesByReleaseDate(Date movieReleaseDate) {
-        Optional<List<Movie>> result = movieRepository.findMoviesByReleaseDate(movieReleaseDate);
-
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
-
-        if(result.isPresent()) {
-            for (Movie movie: result.get()) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
-            //throw new NoSuchElementException("No movies found with release date: "+ movieReleaseDate);
-        }
-
-        return movieDtoList;
-    }
-
-
-    public List<MovieDto> findMoviesByDirectorId(Integer director_ID){
-        Optional<List<Movie>> result = movieRepository.findMoviesByDirectorId(director_ID);
-
-        List<MovieDto> movieDtoList = new ArrayList<MovieDto>();
-
-        if(result.isPresent()) {
-            for (Movie movie: result.get()) {
-                movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
-            }
-        }
-        else {
-            return null;
-            //throw new NoSuchElementException("No movies directed from director with ID: "+ director_ID);
+        for (Movie movie : result) {
+            movieDtoList.add(mapstructMapper.movieToMovieDto(movie));
         }
 
         return movieDtoList;

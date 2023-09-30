@@ -36,12 +36,8 @@ public class Actor {
     @Enumerated(EnumType.STRING)
     private Country actorNationality;
 
-    @ManyToMany(cascade = { CascadeType.PERSIST })
-    @JoinTable(
-            name = "movie_actor",
-            joinColumns = @JoinColumn(name = "actor_id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id"))
-    private Set<Movie> actorMovies;
+    @ManyToMany(mappedBy = "movieActors", cascade = CascadeType.PERSIST)
+    private Set<Movie> actorMovies = new HashSet<>(); // Initialize the set with an empty HashSet;
 
     public Actor() {
     }
@@ -63,7 +59,7 @@ public class Actor {
                 ", actorDateOfBirth=" + actorDateOfBirth +
                 ", actorGender=" + actorGender +
                 ", actorNationality=" + actorNationality +
-                ", actorMovies=" + actorMovies +
+                //", actorMovies=" + actorMovies +
                 '}';
     }
 
@@ -71,9 +67,8 @@ public class Actor {
         if (actorMovies == null) {
             actorMovies = new HashSet<Movie>();
         }
-        else {
-            actorMovies.add(movie);
-        }
+        actorMovies.add(movie); // Add the movie to the actor's set
+        movie.getMovieActors().add(this); // Add the actor to the movie's set
     }
 
     @Override

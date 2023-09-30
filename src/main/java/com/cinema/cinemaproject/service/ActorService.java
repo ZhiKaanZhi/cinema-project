@@ -22,96 +22,158 @@ public class ActorService {
     private final ActorRepository actorRepository;
     private final MapStructMapper mapstructMapper;
 
+    // Constructor to inject dependencies
     public ActorService(ActorRepository actorRepository, MapStructMapper mapstructMapper) {
         this.actorRepository = actorRepository;
         this.mapstructMapper = mapstructMapper;
     }
 
+    /**
+     * Save a new actor or update an existing one.
+     *
+     * @param actor The ActorAllDto containing actor details to save.
+     * @return Saved ActorDto.
+     */
     @Transactional
-    public void save(ActorAllDto actor) {
-        actorRepository.saveAndFlush(mapstructMapper.actorAllDtoToActor(actor));
+    public ActorDto save(ActorAllDto actor) {
+        // Save the actor entity and flush changes to the database
+        Actor savedActor = actorRepository.saveAndFlush(mapstructMapper.actorAllDtoToActor(actor));
+        // Convert the saved actor entity to a DTO and return it
+        return mapstructMapper.actorToActorDto(savedActor);
     }
 
+    /**
+     * Retrieve a list of all actors.
+     *
+     * @return List of all Actor entities.
+     */
     public List<Actor> findAll() {
         return actorRepository.findAll();
     }
 
+    /**
+     * Retrieve a list of all actors as ActorDto objects.
+     *
+     * @return List of ActorDto objects.
+     */
     public List<ActorDto> findAllActorDtos() {
+        // Retrieve all actor entities from the repository
         List<Actor> result = actorRepository.findAll();
-        List<ActorDto> actorDtoList = new ArrayList<ActorDto>();
+        List<ActorDto> actorDtoList = new ArrayList<>();
 
-        if(!result.isEmpty()) {
-            for(Actor actor: result){
+        if (!result.isEmpty()) {
+            // Convert each actor entity to a DTO and add it to the list
+            for (Actor actor : result) {
                 actorDtoList.add(mapstructMapper.actorToActorDto(actor));
             }
-        }
-        else {
+        } else {
+            // Return null if no actors are found
             return null;
         }
         return actorDtoList;
     }
 
+    /**
+     * Retrieve an actor by its ID and return as an ActorDto.
+     *
+     * @param Id The ID of the actor to retrieve.
+     * @return ActorDto if found, null if not found.
+     */
     public ActorDto findById(int Id) {
+        // Find the actor entity by ID and convert it to a DTO, or return null if not found
         return mapstructMapper.actorToActorDto(actorRepository.findById(Id).orElse(null));
     }
 
+    /**
+     * Delete an actor by its ID.
+     *
+     * @param Id The ID of the actor to delete.
+     * @return Deleted ActorDto if found and deleted, null if not found.
+     */
     @Transactional
-    public void deleteById(int Id) {
-        actorRepository.deleteById(Id);
+    public ActorDto deleteById(int Id) {
+        Actor actorToDelete = actorRepository.findById(Id).orElse(null);
+        if (actorToDelete != null) {
+            actorRepository.deleteById(Id);
+        }
+        return mapstructMapper.actorToActorDto(actorToDelete);
     }
 
+    /**
+     * Find an actor by name and return as an ActorDto.
+     *
+     * @param actorName The name of the actor to find.
+     * @return ActorDto if found, null if not found.
+     */
     public ActorDto findActorByName(String actorName) {
-        Optional<Actor> result = actorRepository.findActorByName(actorName);
-
-        return mapstructMapper.actorToActorDto(result.orElse(null));
+        Actor actor = actorRepository.findActorByName(actorName);
+        return mapstructMapper.actorToActorDto(actor);
     }
 
+    /**
+     * Find actors by gender and return as a list of ActorDto objects.
+     *
+     * @param actorGender The gender of actors to find.
+     * @return List of ActorDto objects.
+     */
     public List<ActorDto> findActorByGender(Gender actorGender) {
-        Optional<List<Actor>> result = actorRepository.findActorByGender(actorGender);
+        List<Actor> result = actorRepository.findActorByGender(actorGender);
+        List<ActorDto> actorDtoList = new ArrayList<>();
 
-        List<ActorDto> actorDtoList = new ArrayList<ActorDto>();
-        if(result.isPresent()) {
-            for (Actor actor: result.get()) {
+        if (!result.isEmpty()) {
+            // Convert each actor entity to a DTO and add it to the list
+            for (Actor actor : result) {
                 actorDtoList.add(mapstructMapper.actorToActorDto(actor));
             }
-        }
-        else {
+        } else {
+            // Return null if no actors are found
             return null;
-            //throw new RuntimeException("Actors not found with gender: "+directorGender);
         }
 
         return actorDtoList;
     }
 
+    /**
+     * Find actors by date of birth and return as a list of ActorDto objects.
+     *
+     * @param actorDateOfBirth The date of birth of actors to find.
+     * @return List of ActorDto objects.
+     */
     public List<ActorDto> findActorByDateOfBirth(Date actorDateOfBirth) {
-        Optional<List<Actor>> result = actorRepository.findActorByDateOfBirth(actorDateOfBirth);
+        List<Actor> result = actorRepository.findActorByDateOfBirth(actorDateOfBirth);
+        List<ActorDto> actorDtoList = new ArrayList<>();
 
-        List<ActorDto> actorDtoList = new ArrayList<ActorDto>();
-        if(result.isPresent()) {
-            for (Actor actor: result.get()) {
+        if (!result.isEmpty()) {
+            // Convert each actor entity to a DTO and add it to the list
+            for (Actor actor : result) {
                 actorDtoList.add(mapstructMapper.actorToActorDto(actor));
             }
-        }
-        else {
+        } else {
+            // Return null if no actors are found
             return null;
-            //throw new RuntimeException("Actors not found with date of birth: "+actorDateOfBirth);
         }
+
         return actorDtoList;
     }
 
+    /**
+     * Find actors by nationality and return as a list of ActorDto objects.
+     *
+     * @param actorNationality The nationality of actors to find.
+     * @return List of ActorDto objects.
+     */
     public List<ActorDto> findActorByNationality(Country actorNationality) {
-        Optional<List<Actor>> result = actorRepository.findActorByNationality(actorNationality);
+        List<Actor> result = actorRepository.findActorByNationality(actorNationality);
+        List<ActorDto> actorDtoList = new ArrayList<>();
 
-        List<ActorDto> actorDtoList = new ArrayList<ActorDto>();
-        if(result.isPresent()) {
-            for (Actor actor: result.get()) {
+        if (!result.isEmpty()) {
+            // Convert each actor entity to a DTO and add it to the list
+            for (Actor actor : result) {
                 actorDtoList.add(mapstructMapper.actorToActorDto(actor));
             }
-
-        }
-        else {
+        } else {
+            // Return null if no actors are found
             return null;
-            //throw new RuntimeException("Actors not found with nationality: "+actorNationality);
         }
 
         return actorDtoList;

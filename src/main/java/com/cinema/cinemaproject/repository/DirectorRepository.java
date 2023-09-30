@@ -15,29 +15,31 @@ import java.util.Optional;
 @Repository
 public interface DirectorRepository extends JpaRepository<Director, Integer> {
 
+    // Find a director by name
     @Query(value = """
            SELECT * FROM Director
-           where directorName = :directorName
+           WHERE directorName = :directorName
            """, nativeQuery = true)
-    Optional<Director> findDirectorByName(@Param("directorName") String directorName);
+    Director findDirectorByName(@Param("directorName") String directorName);
 
+    // Find directors by gender
     @Query(value = """
            SELECT * FROM Director
-           where directorGender = :directorGender
+           WHERE directorGender = :directorGender
            """, nativeQuery = true)
-    Optional<List<Director>> findDirectorByGender(@Param("directorGender") Gender directorGender);
+    List<Director> findDirectorsByGender(@Param("directorGender") Gender directorGender);
 
+    // Find directors by date of birth
     @Query(value = """
            SELECT * FROM Director
-           where directorDateOfBirth = :directorDateOfBirth
+           WHERE directorDateOfBirth = :directorDateOfBirth
            """, nativeQuery = true)
-    Optional<List<Director>> findDirectorByDateOfBirth(@Param("directorDateOfBirth") Date directorDateOfBirth);
+    List<Director> findDirectorsByDateOfBirth(@Param("directorDateOfBirth") Date directorDateOfBirth);
 
+    // Find directors by nationality
     @Query(value = """
            SELECT * FROM Director
-           where directorNationality = :directorNationality
+           WHERE directorNationality = :directorNationality
            """, nativeQuery = true)
-    Optional<List<Director>> findDirectorByNationality(@Param("directorNationality") Country directorNationality);
-
-
+    List<Director> findDirectorsByNationality(@Param("directorNationality") Country directorNationality);
 }

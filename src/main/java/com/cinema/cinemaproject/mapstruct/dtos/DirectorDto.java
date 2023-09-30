@@ -26,4 +26,14 @@ public class DirectorDto {
     @JsonProperty("director_gender")
     private Gender directorGender;
 
+    @Override
+    public String toString() {
+        return "DirectorDto{" +
+                "directorID=" + directorID +
+                ", directorName='" + directorName + '\'' +
+                ", directorNationality=" + directorNationality +
+                ", directorAge=" + directorAge +
+                ", directorGender=" + directorGender +
+                '}';
+    }
 }

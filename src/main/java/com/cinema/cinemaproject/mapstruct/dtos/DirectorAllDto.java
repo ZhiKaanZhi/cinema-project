@@ -31,5 +31,15 @@ public class DirectorAllDto {
     @JsonProperty("director_movies")
     private Set<Movie> directorMovies;
 
-
+    @Override
+    public String toString() {
+        return "DirectorAllDto{" +
+                "directorID=" + directorID +
+                ", directorName='" + directorName + '\'' +
+                ", directorNationality=" + directorNationality +
+                ", directorAge=" + directorAge +
+                ", directorGender=" + directorGender +
+                ", directorMovies=" + directorMovies +
+                '}';
+    }
 }

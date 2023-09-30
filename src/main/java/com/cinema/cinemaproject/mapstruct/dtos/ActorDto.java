@@ -27,5 +27,14 @@ public class ActorDto {
     @JsonProperty("actor_gender")
     private Gender actorGender;
 
-
+    @Override
+    public String toString() {
+        return "ActorDto{" +
+                "actorID=" + actorID +
+                ", actorName='" + actorName + '\'' +
+                ", actorNationality=" + actorNationality +
+                ", actorDateOfBirth=" + actorDateOfBirth +
+                ", actorGender=" + actorGender +
+                '}';
+    }
 }

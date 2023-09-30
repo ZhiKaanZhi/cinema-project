@@ -31,8 +31,12 @@ public class Movie {
     @JoinColumn(name = "director_id")
     private Director movieDirector;
 
-    @ManyToMany(mappedBy = "actorMovies", cascade = CascadeType.PERSIST)
-    private Set<Actor> movieActors;
+    @ManyToMany(cascade = { CascadeType.PERSIST })
+    @JoinTable(
+            name = "movie_actor",
+            joinColumns = @JoinColumn(name = "movie_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    private Set<Actor> movieActors = new HashSet<>(); // Initialize the set with an empty HashSet;
 
     @Column(name = "movie_duration_in_min")
     private int movieDurationInMin;
@@ -67,7 +71,7 @@ public class Movie {
                 ", movieTitle='" + movieTitle + '\'' +
                 ", movieDescription='" + movieDescription + '\'' +
                 ", movieDirector=" + (movieDirector != null ? movieDirector.getDirectorName() : "null") +
-                ", movieActors=" + movieActors +
+                //", movieActors=" + movieActors +
                 ", movieDurationInMin=" + movieDurationInMin +
                 ", movieTicketPrice=" + movieTicketPrice +
                 ", movieReleaseDate=" + movieReleaseDate +
@@ -75,13 +79,11 @@ public class Movie {
     }
 
     public void addActor(Actor actor) {
-
         if (movieActors == null) {
             movieActors = new HashSet<Actor>();
         }
-        else {
-            movieActors.add(actor);
-        }
+        movieActors.add(actor); // Add the actor to the movie's set
+        actor.getActorMovies().add(this); // Add the movie to the actor's set
     }
 
     @Override
@@ -96,7 +98,5 @@ public class Movie {
     public int hashCode() {
         return Objects.hash(movieID);
     }
-
-
 
 }

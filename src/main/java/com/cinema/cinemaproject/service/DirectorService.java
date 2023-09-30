@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Driver;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class DirectorService {
@@ -28,94 +25,134 @@ public class DirectorService {
         this.mapstructMapper = mapstructMapper;
     }
 
-
+    /**
+     * Save a new director or update an existing one.
+     *
+     * @param directorAllDto The DirectorAllDto containing director details to save.
+     * @return Saved DirectorDto.
+     */
     @Transactional
-    public void save(DirectorAllDto directorAllDto) {
-        directorRepository.saveAndFlush(mapstructMapper.directorAllDtoToDirector(directorAllDto));
+    public DirectorDto save(DirectorAllDto directorAllDto) {
+        // Save and flush the director entity, then map it to DTO
+        Director savedDirector = directorRepository.saveAndFlush(mapstructMapper.directorAllDtoToDirector(directorAllDto));
+        return mapstructMapper.directorToDirectorDto(savedDirector);
     }
 
+    /**
+     * Retrieve a list of all directors.
+     *
+     * @return List of Director entities.
+     */
     public List<Director> findAll() {
+        // Retrieve all directors
         return directorRepository.findAll();
     }
 
-    public List<DirectorDto> findAllDiretctorDtos() {
+    /**
+     * Retrieve a list of all directors as DirectorDto objects.
+     *
+     * @return List of DirectorDto objects.
+     */
+    public List<DirectorDto> findAllDirectorDtos() {
+        // Retrieve all directors and map them to DTOs
         List<Director> result = directorRepository.findAll();
-        List<DirectorDto> directorDtoList = new ArrayList<DirectorDto>();
-        if(!result.isEmpty()) {
-            for(Director director: result){
-                directorDtoList.add(mapstructMapper.directorToDirectorDto(director));
-            }
+        List<DirectorDto> directorDtoList = new ArrayList<>();
+
+        for (Director director : result) {
+            directorDtoList.add(mapstructMapper.directorToDirectorDto(director));
         }
-        else {
-            return null;
-        }
+
         return directorDtoList;
     }
 
-    public DirectorDto findById(int Id) {
-        return mapstructMapper.directorToDirectorDto(directorRepository.findById(Id).orElse(null));
+    /**
+     * Retrieve a director by its ID.
+     *
+     * @param id The ID of the director to retrieve.
+     * @return DirectorDto if found, null if not found.
+     */
+    public DirectorDto findById(int id) {
+        // Find director by ID and map to DTO
+        return mapstructMapper.directorToDirectorDto(directorRepository.findById(id).orElse(null));
     }
 
-
+    /**
+     * Delete a director by its ID.
+     *
+     * @param id The ID of the director to delete.
+     * @return Deleted DirectorDto if found and deleted, null if not found.
+     */
     @Transactional
-    public void deleteById(int Id) {
-        directorRepository.deleteById(Id);
+    public DirectorDto deleteById(int id) {
+        // Find and delete director by ID, then map it to DTO
+        Director directorToDelete = directorRepository.findById(id).orElse(null);
+        if (directorToDelete != null) {
+            directorRepository.deleteById(id);
+        }
+        return mapstructMapper.directorToDirectorDto(directorToDelete);
     }
 
+    /**
+     * Find a director by their name.
+     *
+     * @param directorName The name of the director to find.
+     * @return DirectorDto if found, null if not found.
+     */
     public DirectorDto findDirectorByName(String directorName) {
-        Optional<Director> result = directorRepository.findDirectorByName(directorName);
-
-        return mapstructMapper.directorToDirectorDto(result.orElse(null));
+        // Find director by name and map to DTO
+        Director director = directorRepository.findDirectorByName(directorName);
+        return mapstructMapper.directorToDirectorDto(director);
     }
 
-    public List<DirectorDto> findDirectorByGender(Gender directorGender) {
-        Optional<List<Director>> result = directorRepository.findDirectorByGender(directorGender);
+    /**
+     * Find directors by gender.
+     *
+     * @param directorGender The gender of directors to find.
+     * @return List of DirectorDto objects that meet the criteria.
+     */
+    public List<DirectorDto> findDirectorsByGender(Gender directorGender) {
+        // Find directors by gender and map to DTOs
+        List<Director> result = directorRepository.findDirectorsByGender(directorGender);
+        List<DirectorDto> directorDtoList = new ArrayList<>();
 
-        List<DirectorDto> directorDtoList = new ArrayList<DirectorDto>();
-        if(result.isPresent()) {
-            for (Director director: result.get()) {
-                directorDtoList.add(mapstructMapper.directorToDirectorDto(director));
-            }
-        }
-        else {
-            return null;
-            //throw new RuntimeException("Directors not found with gender: "+directorGender);
+        for (Director director : result) {
+            directorDtoList.add(mapstructMapper.directorToDirectorDto(director));
         }
 
         return directorDtoList;
     }
 
-    public List<DirectorDto> findDirectorByDateOfBirth(Date directorDateOfBirth) {
-        Optional<List<Director>> result = directorRepository.findDirectorByDateOfBirth(directorDateOfBirth);
+    /**
+     * Find directors by date of birth.
+     *
+     * @param directorDateOfBirth The date of birth of directors to find.
+     * @return List of DirectorDto objects that meet the criteria.
+     */
+    public List<DirectorDto> findDirectorsByDateOfBirth(Date directorDateOfBirth) {
+        // Find directors by date of birth and map to DTOs
+        List<Director> result = directorRepository.findDirectorsByDateOfBirth(directorDateOfBirth);
+        List<DirectorDto> directorDtoList = new ArrayList<>();
 
-        List<DirectorDto> directorDtoList = new ArrayList<DirectorDto>();
-        if(result.isPresent()) {
-            for (Director director: result.get()) {
-                directorDtoList.add(mapstructMapper.directorToDirectorDto(director));
-            }
-
-        }
-        else {
-            return null;
-            //throw new RuntimeException("Directors not found with date of birth: "+directorDateOfBirth);
+        for (Director director : result) {
+            directorDtoList.add(mapstructMapper.directorToDirectorDto(director));
         }
 
         return directorDtoList;
     }
 
-    public List<DirectorDto> findDirectorByNationality(Country directorNationality) {
-        Optional<List<Director>> result = directorRepository.findDirectorByNationality(directorNationality);
+    /**
+     * Find directors by nationality.
+     *
+     * @param directorNationality The nationality of directors to find.
+     * @return List of DirectorDto objects that meet the criteria.
+     */
+    public List<DirectorDto> findDirectorsByNationality(Country directorNationality) {
+        // Find directors by nationality and map to DTOs
+        List<Director> result = directorRepository.findDirectorsByNationality(directorNationality);
+        List<DirectorDto> directorDtoList = new ArrayList<>();
 
-        List<DirectorDto> directorDtoList = new ArrayList<DirectorDto>();
-        if(result.isPresent()) {
-            for (Director director: result.get()) {
-                directorDtoList.add(mapstructMapper.directorToDirectorDto(director));
-            }
-
-        }
-        else {
-            return null;
-            //throw new RuntimeException("Directors not found with nationality: "+directorNationality);
+        for (Director director : result) {
+            directorDtoList.add(mapstructMapper.directorToDirectorDto(director));
         }
 
         return directorDtoList;

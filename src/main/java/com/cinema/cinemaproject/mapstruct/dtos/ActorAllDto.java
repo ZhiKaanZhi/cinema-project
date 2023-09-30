@@ -31,4 +31,16 @@ public class ActorAllDto {
 
     @JsonProperty("actor_movies")
     private Set<Movie> actorMovies;
+
+    @Override
+    public String toString() {
+        return "ActorAllDto{" +
+                "actorID=" + actorID +
+                ", actorName='" + actorName + '\'' +
+                ", actorNationality=" + actorNationality +
+                ", actorDateOfBirth=" + actorDateOfBirth +
+                ", actorGender=" + actorGender +
+                ", actorMovies=" + actorMovies +
+                '}';
+    }
 }

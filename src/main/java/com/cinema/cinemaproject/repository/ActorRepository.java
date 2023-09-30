@@ -15,27 +15,31 @@ import java.util.Optional;
 @Repository
 public interface ActorRepository extends JpaRepository<Actor, Integer> {
 
+    // Find an actor by name
     @Query(value = """
            SELECT * FROM Actor
-           where actorName = :actorName
+           WHERE actorName = :actorName
            """, nativeQuery = true)
-    Optional<Actor> findActorByName(@Param("actorName") String actorName);
+    Actor findActorByName(@Param("actorName") String actorName);
 
+    // Find actors by gender
     @Query(value = """
            SELECT * FROM Actor
-           where actorGender = :actorGender
+           WHERE actorGender = :actorGender
            """, nativeQuery = true)
-    Optional<List<Actor>> findActorByGender(@Param("actorGender") Gender actorGender);
+    List<Actor> findActorByGender(@Param("actorGender") Gender actorGender);
 
+    // Find actors by date of birth
     @Query(value = """
            SELECT * FROM Actor
-           where actorDateOfBirth = :actorDateOfBirth
+           WHERE actorDateOfBirth = :actorDateOfBirth
            """, nativeQuery = true)
-    Optional<List<Actor>> findActorByDateOfBirth(@Param("actorDateOfBirth") Date actorDateOfBirth);
+    List<Actor> findActorByDateOfBirth(@Param("actorDateOfBirth") Date actorDateOfBirth);
 
+    // Find actors by nationality
     @Query(value = """
            SELECT * FROM Actor
-           where actorNationality = :actorNationality
+           WHERE actorNationality = :actorNationality
            """, nativeQuery = true)
-    Optional<List<Actor>> findActorByNationality(@Param("actorNationality") Country actorNationality);
+    List<Actor> findActorByNationality(@Param("actorNationality") Country actorNationality);
 }
