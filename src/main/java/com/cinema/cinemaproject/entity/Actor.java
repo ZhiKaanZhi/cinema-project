@@ -49,7 +49,13 @@ public class Actor {
         this.actorNationality = actorNationality;
     }
 
-
+    public Actor(String actorName, Date actorDateOfBirth, Gender actorGender, Country actorNationality, Set<Movie> actorMovies) {
+        this.actorName = actorName;
+        this.actorDateOfBirth = actorDateOfBirth;
+        this.actorGender = actorGender;
+        this.actorNationality = actorNationality;
+        this.actorMovies = actorMovies;
+    }
 
     @Override
     public String toString() {
@@ -72,16 +78,18 @@ public class Actor {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Actor actor = (Actor) o;
-        return Objects.equals(actorID, actor.actorID);
+    public boolean equals(Object obj) {
+        if (this == obj) return true; // Check if the reference is to the same object
+        if (obj == null || getClass() != obj.getClass()) return false; // Check if obj is null or not an instance of Actor
+
+        Actor actor = (Actor) obj; // Cast obj to Actor
+
+        return actorID == actor.actorID; // Check if actorID of both instances are the same
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(actorID);
+        return actorID; // Use actorID as the hash code
     }
 
 }

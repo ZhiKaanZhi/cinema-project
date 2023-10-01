@@ -1,8 +1,5 @@
 package com.cinema.cinemaproject.configuration;
 
-import com.cinema.cinemaproject.mapstruct.mappers.MapStructMapper;
-import org.mapstruct.factory.Mappers;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration

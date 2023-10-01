@@ -64,6 +64,17 @@ public class Movie {
         this.movieGenre = movieGenre;
     }
 
+    public Movie(String movieTitle, String movieDescription, Director movieDirector, Set<Actor> movieActors, int movieDurationInMin, long movieTicketPrice, Date movieReleaseDate, Genre movieGenre) {
+        this.movieTitle = movieTitle;
+        this.movieDescription = movieDescription;
+        this.movieDirector = movieDirector;
+        this.movieActors = movieActors;
+        this.movieDurationInMin = movieDurationInMin;
+        this.movieTicketPrice = movieTicketPrice;
+        this.movieReleaseDate = movieReleaseDate;
+        this.movieGenre = movieGenre;
+    }
+
     @Override
     public String toString() {
         return "Movie{" +
@@ -71,7 +82,7 @@ public class Movie {
                 ", movieTitle='" + movieTitle + '\'' +
                 ", movieDescription='" + movieDescription + '\'' +
                 ", movieDirector=" + (movieDirector != null ? movieDirector.getDirectorName() : "null") +
-                //", movieActors=" + movieActors +
+                ", movieActors=" + movieActors +
                 ", movieDurationInMin=" + movieDurationInMin +
                 ", movieTicketPrice=" + movieTicketPrice +
                 ", movieReleaseDate=" + movieReleaseDate +
@@ -82,7 +93,9 @@ public class Movie {
         if (movieActors == null) {
             movieActors = new HashSet<Actor>();
         }
+        System.out.println("Before adding: " + movieActors.size());
         movieActors.add(actor); // Add the actor to the movie's set
+        System.out.println("After adding: " + movieActors.size());
         actor.getActorMovies().add(this); // Add the movie to the actor's set
     }
 

@@ -39,7 +39,7 @@ public class Director {
     private Gender directorGender;
 
     @OneToMany(mappedBy = "movieDirector", cascade=CascadeType.ALL)
-    private Set<Movie> directorMovies;
+    private Set<Movie> directorMovies = new HashSet<>();;
 
     public Director() {
     }
@@ -51,7 +51,13 @@ public class Director {
         this.directorGender = directorGender;
     }
 
-
+    public Director(String directorName, Country directorNationality, Date directorDateOfBirth, Gender directorGender, Set<Movie> directorMovies) {
+        this.directorName = directorName;
+        this.directorNationality = directorNationality;
+        this.directorDateOfBirth = directorDateOfBirth;
+        this.directorGender = directorGender;
+        this.directorMovies = directorMovies;
+    }
 
     @Override
     public String toString() {
@@ -65,7 +71,7 @@ public class Director {
                 '}';
     }
 
-    public void addMovies(Movie movie) {
+    public void addMovie(Movie movie) {
         if (directorMovies == null) {
             directorMovies = new HashSet<Movie>();
         }

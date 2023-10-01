@@ -3,13 +3,16 @@ package com.cinema.cinemaproject.mapstruct.dtos;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor  // generates a default no-arg constructor
+@AllArgsConstructor  // generates an all-args constructor
+@ToString            // generates a toString method
 public class ActorDto {
 
     @JsonProperty("actor_id")
@@ -26,15 +29,4 @@ public class ActorDto {
 
     @JsonProperty("actor_gender")
     private Gender actorGender;
-
-    @Override
-    public String toString() {
-        return "ActorDto{" +
-                "actorID=" + actorID +
-                ", actorName='" + actorName + '\'' +
-                ", actorNationality=" + actorNationality +
-                ", actorDateOfBirth=" + actorDateOfBirth +
-                ", actorGender=" + actorGender +
-                '}';
-    }
 }

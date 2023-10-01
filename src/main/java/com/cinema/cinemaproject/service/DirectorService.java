@@ -5,22 +5,21 @@ import com.cinema.cinemaproject.entity.Director;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import com.cinema.cinemaproject.mapstruct.dtos.DirectorDto;
-import com.cinema.cinemaproject.mapstruct.mappers.MapStructMapper;
+import com.cinema.cinemaproject.mapstruct.mappers.DirectorMapper;
 import com.cinema.cinemaproject.repository.DirectorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Driver;
 import java.util.*;
 
 @Service
 public class DirectorService {
     private final DirectorRepository directorRepository;
-    private final MapStructMapper mapstructMapper;
+    private final DirectorMapper mapstructMapper;
 
     @Autowired
-    public DirectorService(DirectorRepository directorRepository, MapStructMapper mapstructMapper) {
+    public DirectorService(DirectorRepository directorRepository, DirectorMapper mapstructMapper) {
         this.directorRepository = directorRepository;
         this.mapstructMapper = mapstructMapper;
     }

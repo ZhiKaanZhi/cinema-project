@@ -4,14 +4,17 @@ import com.cinema.cinemaproject.entity.Movie;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 import java.util.Set;
 
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor  // generates a default no-arg constructor
+@AllArgsConstructor  // generates an all-args constructor
+@ToString            // generates a toString method
 public class ActorAllDto {
 
     @JsonProperty("actor_id")
@@ -29,18 +32,6 @@ public class ActorAllDto {
     @JsonProperty("actor_gender")
     private Gender actorGender;
 
-    @JsonProperty("actor_movies")
-    private Set<Movie> actorMovies;
-
-    @Override
-    public String toString() {
-        return "ActorAllDto{" +
-                "actorID=" + actorID +
-                ", actorName='" + actorName + '\'' +
-                ", actorNationality=" + actorNationality +
-                ", actorDateOfBirth=" + actorDateOfBirth +
-                ", actorGender=" + actorGender +
-                ", actorMovies=" + actorMovies +
-                '}';
-    }
+    @JsonProperty("actor_movie_ids")
+    private Set<Integer> actorMovieIds;  // Changed from Set<Movie> to Set<Integer>
 }

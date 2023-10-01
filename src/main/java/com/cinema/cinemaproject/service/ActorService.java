@@ -1,13 +1,11 @@
 package com.cinema.cinemaproject.service;
 
-import com.cinema.cinemaproject.entity.Director;
 import com.cinema.cinemaproject.mapstruct.dtos.ActorAllDto;
 import com.cinema.cinemaproject.mapstruct.dtos.ActorDto;
 import com.cinema.cinemaproject.entity.Actor;
 import com.cinema.cinemaproject.entity.enums.Country;
 import com.cinema.cinemaproject.entity.enums.Gender;
-import com.cinema.cinemaproject.mapstruct.dtos.DirectorDto;
-import com.cinema.cinemaproject.mapstruct.mappers.MapStructMapper;
+import com.cinema.cinemaproject.mapstruct.mappers.ActorMapper;
 import com.cinema.cinemaproject.repository.ActorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -20,10 +18,10 @@ import java.util.Optional;
 @Service
 public class ActorService {
     private final ActorRepository actorRepository;
-    private final MapStructMapper mapstructMapper;
+    private final ActorMapper mapstructMapper;
 
     // Constructor to inject dependencies
-    public ActorService(ActorRepository actorRepository, MapStructMapper mapstructMapper) {
+    public ActorService(ActorRepository actorRepository, ActorMapper mapstructMapper) {
         this.actorRepository = actorRepository;
         this.mapstructMapper = mapstructMapper;
     }

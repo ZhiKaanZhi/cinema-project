@@ -3,7 +3,7 @@ package com.cinema.cinemaproject.service;
 import com.cinema.cinemaproject.mapstruct.dtos.MovieAllDto;
 import com.cinema.cinemaproject.mapstruct.dtos.MovieDto;
 import com.cinema.cinemaproject.entity.Movie;
-import com.cinema.cinemaproject.mapstruct.mappers.MapStructMapper;
+import com.cinema.cinemaproject.mapstruct.mappers.MovieMapper;
 import com.cinema.cinemaproject.repository.MovieRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,10 @@ import java.util.*;
 public class MovieService {
 
     private final MovieRepository movieRepository;
-    private final MapStructMapper mapstructMapper;
+    private final MovieMapper mapstructMapper;
 
     @Autowired
-    public MovieService(MovieRepository movieRepository, MapStructMapper mapstructMapper) {
+    public MovieService(MovieRepository movieRepository, MovieMapper mapstructMapper) {
         this.movieRepository = movieRepository;
         this.mapstructMapper = mapstructMapper;
     }
