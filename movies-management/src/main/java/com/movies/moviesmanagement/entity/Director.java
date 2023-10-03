@@ -35,7 +35,7 @@ public class Director {
     private Gender directorGender;
 
     @OneToMany(mappedBy = "movieDirector", cascade=CascadeType.ALL)
-    private Set<Movie> directorMovies = new HashSet<>();;
+    private Set<Movie> directorMovies = new HashSet<>();
 
     public Director() {
     }
