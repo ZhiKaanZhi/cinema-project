@@ -1,5 +1,6 @@
 package com.staff.staffmanagement.entity;
 
+import com.staff.staffmanagement.entity.enums.StaffTitle;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class Position {
     private int positionID;
 
     @Column(name = "position_title")
-    private String positionTitle;
+    private StaffTitle positionTitle;
 
     @Column(name = "position_description")
     private String positionDescription;
@@ -35,7 +36,7 @@ public class Position {
     public Position(String title) {
     }
 
-    public Position(String positionTitle, String positionDescription, Set<Staff> positionStaffMembers) {
+    public Position(StaffTitle positionTitle, String positionDescription, Set<Staff> positionStaffMembers) {
         this.positionTitle = positionTitle;
         this.positionDescription = positionDescription;
         this.positionStaffMembers = positionStaffMembers;

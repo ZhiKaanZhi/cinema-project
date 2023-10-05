@@ -1,6 +1,7 @@
 package com.staff.staffmanagement.mapstruct.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.staff.staffmanagement.entity.enums.StaffTitle;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -28,5 +29,5 @@ public class StaffSimpleDto {
     private Date staffHireDate;
 
     @JsonProperty("staff_position")
-    private String staffPositionTitle;
+    private StaffTitle staffPositionTitle;
 }

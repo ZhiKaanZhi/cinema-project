@@ -7,8 +7,9 @@ import com.staff.staffmanagement.mapstruct.dtos.StaffSimpleDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.mapstruct.NullValueMappingStrategy;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 public interface StaffMapper {
 
     @Mapping(source = "staffPositionTitle", target = "position", qualifiedByName = "titleToPosition")

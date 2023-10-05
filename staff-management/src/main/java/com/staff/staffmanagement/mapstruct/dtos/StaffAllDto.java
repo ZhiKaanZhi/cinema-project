@@ -2,6 +2,7 @@ package com.staff.staffmanagement.mapstruct.dtos;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.staff.staffmanagement.entity.enums.StaffTitle;
 import lombok.*;
 
 import java.util.Date;
@@ -27,7 +28,7 @@ public class StaffAllDto {
     private Date staffHireDate;
 
     @JsonProperty("staff_position")
-    private String staffPositionTitle;
+    private StaffTitle staffPositionTitle;
 
     @JsonProperty("staff_shifts_ids")
     private List<Integer> staffShiftsIDs;

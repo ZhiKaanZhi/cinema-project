@@ -1,6 +1,7 @@
 package com.staff.staffmanagement.mapstruct.dtos;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import com.staff.staffmanagement.entity.enums.StaffTitle;
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -17,7 +18,7 @@ public class PositionSimpleDto {
     private int positionID;
 
     @JsonProperty("position_title")
-    private String positionTitle;
+    private StaffTitle positionTitle;
 
     @JsonProperty("position_description")
     private String positionDescription;

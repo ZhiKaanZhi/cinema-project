@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface PositionRepository extends JpaRepository<Position, Integer> {
 
-    Position findByTitle(String staffPositionTitle);
+    Position findByPositionTitle(String staffPositionTitle);
 }
