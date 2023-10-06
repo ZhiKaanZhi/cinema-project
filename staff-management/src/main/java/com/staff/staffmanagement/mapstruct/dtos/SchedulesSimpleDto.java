@@ -17,6 +17,9 @@ public class SchedulesSimpleDto {
     @JsonProperty("schedule_id")
     private Integer scheduleID;
 
+    @JsonProperty("schedule_movie_title")
+    private MovieDto scheduleMovieTitle; // Assumed to reference a movie in another microservice.
+
     @JsonProperty("schedule_start_time")
     private Time scheduleStartTime;
 

@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.movies.moviesmanagement.entity.enums.Genre;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter
@@ -15,6 +16,7 @@ public class MovieDto {
     @JsonProperty("movie_id")
     private int movieID;
 
+    @NotBlank(message = "Title is mandatory")
     @JsonProperty("movie_title")
     private String movieTitle;
 

@@ -1,12 +1,15 @@
 package com.staff.staffmanagement.service;
 
 import com.staff.staffmanagement.entity.Schedules;
+import com.staff.staffmanagement.mapstruct.dtos.MovieDto;
 import com.staff.staffmanagement.mapstruct.dtos.ScheduleAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.SchedulesSimpleDto;
 import com.staff.staffmanagement.mapstruct.mappers.SchedulesMapper;
 import com.staff.staffmanagement.repository.SchedulesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
 
 import java.sql.Time;
 import java.util.Date;
@@ -22,8 +25,8 @@ public class SchedulesService {
     @Autowired
     private SchedulesMapper schedulesMapper;
 
-    //@Autowired
-    //private MovieService movieService; // Assume this is another service that communicates with the microservice managing movies.
+    @Autowired
+    private MovieService movieService; // Assume this is another service that communicates with the microservice managing movies.
 
     /**
      * Retrieves details of all schedules.
@@ -56,18 +59,6 @@ public class SchedulesService {
     public SchedulesSimpleDto getSimpleScheduleById(Integer id) {
         return schedulesRepository.findById(id)
                 .map(schedulesMapper::schedulesToSchedulesSimpleDto)
-                .orElse(null);
-    }
-
-    /**
-     * Retrieves detailed information of a specific schedule.
-     *
-     * @param id the ID of the desired schedule.
-     * @return ScheduleAllDto containing detailed information of the specified schedule.
-     */
-    public ScheduleAllDto getScheduleDetailById(Integer id) {
-        return schedulesRepository.findById(id)
-                .map(schedulesMapper::schedulesToScheduleAllDto)
                 .orElse(null);
     }
 
@@ -127,4 +118,45 @@ public class SchedulesService {
                 .map(schedulesMapper::schedulesToScheduleAllDto)
                 .collect(Collectors.toList());
     }
+
+
+    /**
+     * Retrieves detailed information of a specific schedule.
+     *
+     * @param id the ID of the desired schedule.
+     * @return ScheduleAllDto containing detailed information of the specified schedule.
+     */
+    public Mono<ScheduleAllDto> getScheduleDetailById(Integer id) {
+        return Mono.fromCallable(() -> schedulesRepository.findById(id))
+                .flatMap(optionalSchedules -> {
+                    if (optionalSchedules.isPresent()) {
+                        Schedules schedules = optionalSchedules.get();
+                        return movieService.getMovieById(schedules.getScheduleMovie().getMovieID())
+                                .map(movieDto -> {
+                                    ScheduleAllDto scheduleAllDto = mapSchedulesToDto(schedules, movieDto);
+                                    return scheduleAllDto;
+                                });
+                    } else {
+                        return Mono.empty();
+                    }
+                });
+    }
+
+    private ScheduleAllDto mapSchedulesToDto(Schedules schedules, MovieDto movieDto) {
+        ScheduleAllDto scheduleAllDto = new ScheduleAllDto();
+
+        // Mapping fields from `schedules` to `scheduleAllDto`
+        scheduleAllDto.setScheduleID(schedules.getScheduleID());
+        scheduleAllDto.setScheduleStartTime(schedules.getScheduleStartTime());
+        scheduleAllDto.setScheduleEndTime(schedules.getScheduleEndTime());
+        scheduleAllDto.setScheduleScreenDate(schedules.getScheduleScreenDate());
+        scheduleAllDto.setScheduleAvailableSeats(schedules.getScheduleAvailableSeats());
+        scheduleAllDto.setScheduleTotalSeats(schedules.getScheduleTotalSeats());
+
+        // Mapping fields from `movieDto` to `scheduleAllDto`
+        scheduleAllDto.setScheduleMovie(movieDto);
+
+        return scheduleAllDto;
+    }
+
 }

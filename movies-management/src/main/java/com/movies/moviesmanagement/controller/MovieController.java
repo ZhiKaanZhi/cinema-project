@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/movies")
+@RequestMapping("/api/movies")
 public class MovieController {
     private final MovieService movieService;
 
@@ -44,7 +44,7 @@ public class MovieController {
         movieService.save(movie);
     }
 
-    @ResponseStatus(HttpStatus.FOUND)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{id}")
     public void deleteMovie(@PathVariable int id){
         movieService.deleteById(id);
@@ -52,8 +52,8 @@ public class MovieController {
 
 
     @ResponseStatus(HttpStatus.FOUND)
-    @GetMapping("/{title}")
-    public MovieDto findMovieById(@PathVariable String title){
+    @GetMapping("/title/{title}")
+    public MovieDto findMovieByTitle(@PathVariable String title){
         return movieService.findMovieByTitle(title);
     }
 

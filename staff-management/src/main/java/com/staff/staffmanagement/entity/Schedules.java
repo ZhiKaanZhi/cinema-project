@@ -1,5 +1,6 @@
 package com.staff.staffmanagement.entity;
 
+import com.staff.staffmanagement.mapstruct.dtos.MovieDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,7 @@ public class Schedules {
     private Integer scheduleID;
 
     @Column(name = "movie_id")
-    private Integer scheduleMovieID; // Assumed to reference a movie in another microservice.
+    private MovieDto scheduleMovie; // Assumed to reference a movie in another microservice.
 
     @Column(name = "schedule_start_time")
     private Time scheduleStartTime;
@@ -41,8 +42,8 @@ public class Schedules {
     @Column(name = "schedule_total_seats")
     private Integer scheduleTotalSeats;
 
-    public Schedules(Integer scheduleMovieID, Time scheduleStartTime, Time scheduleEndTime, Date scheduleScreenDate, Integer scheduleAvailableSeats, Integer scheduleTotalSeats) {
-        this.scheduleMovieID = scheduleMovieID;
+    public Schedules(MovieDto scheduleMovie, Time scheduleStartTime, Time scheduleEndTime, Date scheduleScreenDate, Integer scheduleAvailableSeats, Integer scheduleTotalSeats) {
+        this.scheduleMovie = scheduleMovie;
         this.scheduleStartTime = scheduleStartTime;
         this.scheduleEndTime = scheduleEndTime;
         this.scheduleScreenDate = scheduleScreenDate;

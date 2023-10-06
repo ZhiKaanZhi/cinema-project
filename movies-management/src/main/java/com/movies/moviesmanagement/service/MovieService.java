@@ -17,6 +17,7 @@ public class MovieService {
     private final MovieRepository movieRepository;
     private final MovieMapper mapstructMapper;
 
+
     @Autowired
     public MovieService(MovieRepository movieRepository, MovieMapper mapstructMapper) {
         this.movieRepository = movieRepository;
@@ -114,8 +115,6 @@ public class MovieService {
         return movieDtoList;
     }
 
-    // ... (Similar methods for other queries)
-
     /**
      * Find movies directed by a director with a given ID.
      *
@@ -132,4 +131,5 @@ public class MovieService {
 
         return movieDtoList;
     }
+
 }
