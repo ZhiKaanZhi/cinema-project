@@ -29,5 +29,4 @@ public class ShiftsSimpleDto {
 
     @JsonProperty("shift_date")
     private Date shiftDate;
-
 }

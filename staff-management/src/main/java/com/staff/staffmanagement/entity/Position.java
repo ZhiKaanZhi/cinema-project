@@ -24,6 +24,7 @@ public class Position {
     @Column(name = "position_id")
     private int positionID;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "position_title")
     private StaffTitle positionTitle;
 
@@ -34,6 +35,11 @@ public class Position {
     private Set<Staff> positionStaffMembers = new HashSet<>();
 
     public Position(String title) {
+    }
+
+    public Position(StaffTitle positionTitle, String positionDescription) {
+        this.positionTitle = positionTitle;
+        this.positionDescription = positionDescription;
     }
 
     public Position(StaffTitle positionTitle, String positionDescription, Set<Staff> positionStaffMembers) {

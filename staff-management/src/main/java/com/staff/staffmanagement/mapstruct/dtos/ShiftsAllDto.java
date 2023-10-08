@@ -27,6 +27,6 @@ public class ShiftsAllDto {
     @JsonProperty("shift_date")
     private Date shiftDate;
 
-    @JsonProperty("shift_staff_id")
-    private Integer shiftStaffID;
+    @JsonProperty("shift_staff_ids")
+    private List<Integer> shiftStaffIDs;
 }

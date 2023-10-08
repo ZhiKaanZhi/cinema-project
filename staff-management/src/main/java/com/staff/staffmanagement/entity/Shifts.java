@@ -8,7 +8,9 @@ import lombok.ToString;
 
 import java.sql.Time;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -32,11 +34,10 @@ public class Shifts {
     @Column(name = "shift_date")
     private Date shiftDate;
 
-    @ManyToOne
-    @JoinColumn(name = "staff_id")
-    private Staff shiftStaff;
+    @ManyToMany(mappedBy = "staffShifts")
+    private Set<Staff> shiftStaff = new HashSet<>();
 
-    public Shifts(Time shiftStartTime, Time shiftEndTime, Date shiftDate, Staff shiftStaff) {
+    public Shifts(Time shiftStartTime, Time shiftEndTime, Date shiftDate, Set<Staff> shiftStaff) {
         this.shiftStartTime = shiftStartTime;
         this.shiftEndTime = shiftEndTime;
         this.shiftDate = shiftDate;
@@ -47,6 +48,16 @@ public class Shifts {
         this.shiftStartTime = shiftStartTime;
         this.shiftEndTime = shiftEndTime;
         this.shiftDate = shiftDate;
+    }
+
+    public void addStaff(Staff staff) {
+        shiftStaff.add(staff);
+        staff.getStaffShifts().add(this);
+    }
+
+    public void removeStaff(Staff staff) {
+        shiftStaff.remove(staff);
+        staff.getStaffShifts().remove(this);
     }
 
     @Override

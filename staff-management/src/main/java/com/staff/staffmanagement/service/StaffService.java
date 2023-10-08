@@ -148,4 +148,17 @@ public class StaffService {
     public void deleteStaff(Integer id) {
         staffRepository.deleteById(id);
     }
+
+
+
+    @Transactional
+    public void assignShiftToStaff(Integer staffId, Integer shiftId) {
+        Staff staff = staffRepository.findById(staffId).orElseThrow(
+                () -> new EntityNotFoundException("Staff not found")
+        );
+        Shifts shift = shiftRepository.findById(shiftId).orElseThrow(
+                () -> new EntityNotFoundException("Shift not found")
+        );
+        staff.addShift(shift);
+    }
 }

@@ -42,7 +42,12 @@ public class Staff {
     @JoinColumn(name = "position_id")
     private Position staffPosition;
 
-    @OneToMany(mappedBy = "shiftStaff")
+    @ManyToMany
+    @JoinTable(
+            name = "staff_shift",
+            joinColumns = @JoinColumn(name = "staff_id"),
+            inverseJoinColumns = @JoinColumn(name = "shift_id")
+    )
     private Set<Shifts> staffShifts = new HashSet<>();
 
     public Staff(String staffName, Date staffDOB, Date staffHireDate, Position staffPosition, Set<Shifts> staffShifts) {
@@ -71,6 +76,17 @@ public class Staff {
         this.staffDOB = staffDOB;
         this.staffHireDate = staffHireDate;
         this.staffShifts = staffShifts;
+    }
+
+
+    public void addShift(Shifts shift) {
+        staffShifts.add(shift);
+        shift.getShiftStaff().add(this);
+    }
+
+    public void removeShift(Shifts shift) {
+        staffShifts.remove(shift);
+        shift.getShiftStaff().remove(this);
     }
 
     @Override

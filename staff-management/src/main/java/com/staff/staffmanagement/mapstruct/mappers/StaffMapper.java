@@ -9,7 +9,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.mapstruct.NullValueMappingStrategy;
 
-@Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+@Mapper(componentModel = "spring", uses = PositionMapper.class)
 public interface StaffMapper {
 
     @Mapping(source = "staffPositionTitle", target = "position", qualifiedByName = "titleToPosition")
@@ -20,5 +20,4 @@ public interface StaffMapper {
 
     StaffSimpleDto staffToStaffSimpleDto(Staff staff);
     Staff staffSimpleDtoToStaff(StaffSimpleDto staffSimpleDto);
-
 }

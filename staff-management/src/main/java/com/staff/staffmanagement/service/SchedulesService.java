@@ -133,8 +133,7 @@ public class SchedulesService {
                         Schedules schedules = optionalSchedules.get();
                         return movieService.getMovieById(schedules.getScheduleMovie().getMovieID())
                                 .map(movieDto -> {
-                                    ScheduleAllDto scheduleAllDto = mapSchedulesToDto(schedules, movieDto);
-                                    return scheduleAllDto;
+                                    return mapSchedulesToDto(schedules, movieDto);
                                 });
                     } else {
                         return Mono.empty();
