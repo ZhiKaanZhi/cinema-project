@@ -1,16 +1,19 @@
 package com.staff.staffmanagement.service;
 
 import com.staff.staffmanagement.entity.Position;
+import com.staff.staffmanagement.entity.Staff;
 import com.staff.staffmanagement.mapstruct.dtos.PositionAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.PositionSimpleDto;
 import com.staff.staffmanagement.mapstruct.mappers.PositionMapper;
 import com.staff.staffmanagement.repository.PositionRepository;
 import com.staff.staffmanagement.repository.StaffRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,7 +59,7 @@ public class PositionService {
     public PositionAllDto getPositionById(int id) {
         return positionRepository.findById(id)
                 .map(positionMapper::positionToPositionAllDto)
-                .orElse(null);
+                .orElseThrow(() -> new EntityNotFoundException("Position not found: " + id));
     }
 
     /**
@@ -68,7 +71,17 @@ public class PositionService {
     @Transactional
     public PositionAllDto savePosition(PositionAllDto positionAllDto) {
         Position position = positionMapper.positionAllDtoToPosition(positionAllDto);
-        position = positionRepository.saveAndFlush(position);
+
+        // Handle position staff member ids if they're present in the DTO
+        if (positionAllDto.getPositionStaffMemberIDs() != null) {
+            Set<Staff> staffMembers = positionAllDto.getPositionStaffMemberIDs().stream()
+                    .map(staffId -> staffRepository.findById(staffId)
+                            .orElseThrow(() -> new EntityNotFoundException("Staff member not found: " + staffId)))  // Handle not found scenario
+                    .collect(Collectors.toSet());
+            position.setPositionStaffMembers(staffMembers);
+        }
+
+        position = positionRepository.save(position);
         return positionMapper.positionToPositionAllDto(position);
     }
 

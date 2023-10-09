@@ -8,40 +8,47 @@ import com.staff.staffmanagement.repository.StaffRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
-import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {ShiftsMapper.StaffIdMapper.class})
 public interface ShiftsMapper {
 
-    @Mapping(source = "shiftStaff", target = "shiftStaffIDs", qualifiedByName = "staffSetToIdList")
+    @Mapping(source = "shiftStaff", target = "shiftStaffIDs")
     ShiftsAllDto shiftsToShiftsAllDto(Shifts shifts);
 
-    @Mapping(source = "shiftStaffIDs", target = "shiftStaff", qualifiedByName = "idListToStaffSet")
+    @Mapping(source = "shiftStaffIDs", target = "shiftStaff")
     Shifts shiftsAllDtoToShifts(ShiftsAllDto shiftsAllDto);
-
 
     ShiftsSimpleDto shiftsToShiftsSimpleDto(Shifts shifts);
 
-
     Shifts shiftsSimpleDtoToShifts(ShiftsSimpleDto shiftsSimpleDto);
 
+    // Nested Mapper for handling the conversion from Staff Set to ID List
+    @Mapper(componentModel = "spring")
+    public abstract class StaffIdMapper {
 
-    @Named("staffSetToIdList")
-    default List<Integer> staffSetToIdList(Set<Staff> staff) {
-        return staff.stream().map(Staff::getStaffID).collect(Collectors.toList());
-    }
+        @Autowired
+        protected StaffRepository staffRepository;
 
-    @Named("idListToStaffSet")
-    default Set<Staff> idListToStaffSet(List<Integer> staffIds, StaffRepository staffRepository) {
-        return staffIds.stream()
-                .map(staffRepository::findById)
-                .flatMap(optionalStaff -> optionalStaff.map(Stream::of).orElseGet(Stream::empty))
-                .collect(Collectors.toSet());
+        // Specify how to convert Staff to Integer (presumably the ID).
+        public Integer staffToId(Staff staff) {
+            return staff.getStaffID();  // Adjust if getter is named differently.
+        }
+
+        // Mapstruct will use the method defined above to convert Set<Staff> to List<Integer>.
+        public abstract List<Integer> staffSetToIdList(Set<Staff> staff);
+
+        public Set<Staff> idListToStaffSet(List<Integer> staffIds) {
+            return staffIds.stream()
+                    .map(staffRepository::findById)
+                    .flatMap(optionalStaff -> optionalStaff.map(Stream::of).orElseGet(Stream::empty))
+                    .collect(Collectors.toSet());
+        }
     }
 }
 

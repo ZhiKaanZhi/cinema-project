@@ -18,7 +18,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor  // generates a default no-arg constructor
 @Table(name = "staff")
 public class Staff {
 
@@ -50,12 +49,7 @@ public class Staff {
     )
     private Set<Shifts> staffShifts = new HashSet<>();
 
-    public Staff(String staffName, Date staffDOB, Date staffHireDate, Position staffPosition, Set<Shifts> staffShifts) {
-        this.staffName = staffName;
-        this.staffDOB = staffDOB;
-        this.staffHireDate = staffHireDate;
-        this.staffPosition = staffPosition;
-        this.staffShifts = staffShifts;
+    public Staff() {
     }
 
     public Staff(String staffName, Date staffDOB, Date staffHireDate) {
@@ -63,21 +57,6 @@ public class Staff {
         this.staffDOB = staffDOB;
         this.staffHireDate = staffHireDate;
     }
-
-    public Staff(String staffName, Date staffDOB, Date staffHireDate, Position staffPosition) {
-        this.staffName = staffName;
-        this.staffDOB = staffDOB;
-        this.staffHireDate = staffHireDate;
-        this.staffPosition = staffPosition;
-    }
-
-    public Staff(String staffName, Date staffDOB, Date staffHireDate, Set<Shifts> staffShifts) {
-        this.staffName = staffName;
-        this.staffDOB = staffDOB;
-        this.staffHireDate = staffHireDate;
-        this.staffShifts = staffShifts;
-    }
-
 
     public void addShift(Shifts shift) {
         staffShifts.add(shift);

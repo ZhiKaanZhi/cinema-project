@@ -1,8 +1,8 @@
 package com.staff.staffmanagement.entity;
 
 import jakarta.persistence.*;
+
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -16,7 +16,6 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor  // generates a default no-arg constructor
 @Table(name = "shifts")
 public class Shifts {
 
@@ -37,17 +36,54 @@ public class Shifts {
     @ManyToMany(mappedBy = "staffShifts")
     private Set<Staff> shiftStaff = new HashSet<>();
 
-    public Shifts(Time shiftStartTime, Time shiftEndTime, Date shiftDate, Set<Staff> shiftStaff) {
-        this.shiftStartTime = shiftStartTime;
-        this.shiftEndTime = shiftEndTime;
-        this.shiftDate = shiftDate;
-        this.shiftStaff = shiftStaff;
+
+    public Shifts() {
     }
 
     public Shifts(Time shiftStartTime, Time shiftEndTime, Date shiftDate) {
         this.shiftStartTime = shiftStartTime;
         this.shiftEndTime = shiftEndTime;
         this.shiftDate = shiftDate;
+    }
+
+    public Integer getShiftID() {
+        return shiftID;
+    }
+
+    public void setShiftID(Integer shiftID) {
+        this.shiftID = shiftID;
+    }
+
+    public Time getShiftStartTime() {
+        return shiftStartTime;
+    }
+
+    public void setShiftStartTime(Time shiftStartTime) {
+        this.shiftStartTime = shiftStartTime;
+    }
+
+    public Time getShiftEndTime() {
+        return shiftEndTime;
+    }
+
+    public void setShiftEndTime(Time shiftEndTime) {
+        this.shiftEndTime = shiftEndTime;
+    }
+
+    public Date getShiftDate() {
+        return shiftDate;
+    }
+
+    public void setShiftDate(Date shiftDate) {
+        this.shiftDate = shiftDate;
+    }
+
+    public Set<Staff> getShiftStaff() {
+        return shiftStaff;
+    }
+
+    public void setShiftStaff(Set<Staff> shiftStaff) {
+        this.shiftStaff = shiftStaff;
     }
 
     public void addStaff(Staff staff) {
