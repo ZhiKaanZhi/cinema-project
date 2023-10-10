@@ -30,44 +30,4 @@ public class ShiftsAllDto {
     @JsonProperty("shift_staff_ids")
     private List<Integer> shiftStaffIDs;
 
-
-    public Integer getShiftID() {
-        return shiftID;
-    }
-
-    public void setShiftID(Integer shiftID) {
-        this.shiftID = shiftID;
-    }
-
-    public Time getShiftStartTime() {
-        return shiftStartTime;
-    }
-
-    public void setShiftStartTime(Time shiftStartTime) {
-        this.shiftStartTime = shiftStartTime;
-    }
-
-    public Time getShiftEndTime() {
-        return shiftEndTime;
-    }
-
-    public void setShiftEndTime(Time shiftEndTime) {
-        this.shiftEndTime = shiftEndTime;
-    }
-
-    public Date getShiftDate() {
-        return shiftDate;
-    }
-
-    public void setShiftDate(Date shiftDate) {
-        this.shiftDate = shiftDate;
-    }
-
-    public List<Integer> getShiftStaffIDs() {
-        return shiftStaffIDs;
-    }
-
-    public void setShiftStaffIDs(List<Integer> shiftStaffIDs) {
-        this.shiftStaffIDs = shiftStaffIDs;
-    }
 }

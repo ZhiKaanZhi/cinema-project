@@ -4,10 +4,7 @@ package com.staff.staffmanagement.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -15,9 +12,10 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Getter
-@Setter
 @ToString
+@Setter
+@Getter
+@NoArgsConstructor// generates a default no-arg constructor
 @Table(name = "staff")
 public class Staff {
 
@@ -49,8 +47,6 @@ public class Staff {
     )
     private Set<Shifts> staffShifts = new HashSet<>();
 
-    public Staff() {
-    }
 
     public Staff(String staffName, Date staffDOB, Date staffHireDate) {
         this.staffName = staffName;

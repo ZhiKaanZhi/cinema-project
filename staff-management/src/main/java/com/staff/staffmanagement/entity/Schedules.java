@@ -2,20 +2,19 @@ package com.staff.staffmanagement.entity;
 
 import com.staff.staffmanagement.mapstruct.dtos.MovieDto;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import java.sql.Time;
 import java.util.Date;
 import java.util.Objects;
 
+
+
 @Entity
-@Getter
-@Setter
 @ToString
-@NoArgsConstructor  // generates a default no-arg constructor
+@Setter
+@Getter
+@NoArgsConstructor// generates a default no-arg constructor
 @Table(name = "schedules")
 public class Schedules {
 
@@ -51,6 +50,7 @@ public class Schedules {
         this.scheduleTotalSeats = scheduleTotalSeats;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -63,4 +63,5 @@ public class Schedules {
     public int hashCode() {
         return Objects.hash(scheduleID);
     }
+
 }

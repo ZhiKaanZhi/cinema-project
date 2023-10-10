@@ -4,29 +4,42 @@ import com.staff.staffmanagement.entity.Position;
 import com.staff.staffmanagement.entity.Staff;
 import com.staff.staffmanagement.mapstruct.dtos.PositionAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.PositionSimpleDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import com.staff.staffmanagement.repository.StaffRepository;
+import org.mapstruct.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface PositionMapper {
 
-    @Mapping(source = "positionStaffMembers", target = "positionStaffMemberIDs", qualifiedByName = "staffSetToIdList")
     PositionAllDto positionToPositionAllDto(Position position);
 
-    @Mapping(target = "positionStaffMembers", ignore = true)  // We ignore this mapping because it requires database interaction
     Position positionAllDtoToPosition(PositionAllDto positionAllDto);
 
     PositionSimpleDto positionToPositionSimpleDto(Position position);
 
     Position positionSimpleDtoToPosition(PositionSimpleDto positionSimpleDto);
 
-    @Named("staffSetToIdList")
-    default List<Integer> staffSetToIdList(Set<Staff> staff) {
-        return staff == null ? null : staff.stream().map(Staff::getStaffID).collect(Collectors.toList());
+
+    @AfterMapping
+    default void afterPositionMapping (@MappingTarget PositionAllDto target, Position source) {
+        target.setPositionStaffMemberIDs(source.getPositionStaffMembers().stream()
+                .map(Staff::getStaffID)
+                .collect(Collectors.toList()));
     }
+
+    @AfterMapping
+    default void dtoToEntityAfterMapping(@MappingTarget Position target, PositionAllDto source, StaffRepository staffRepository) {
+        Set<Staff> staffSet = source.getPositionStaffMemberIDs().stream()
+                .map(staffRepository::findById)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toSet());
+
+        target.setPositionStaffMembers(staffSet);
+    }
+
 }

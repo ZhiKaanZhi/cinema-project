@@ -1,17 +1,16 @@
 package com.staff.staffmanagement.mapstruct.dtos;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import com.staff.staffmanagement.entity.Staff;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.staff.staffmanagement.entity.enums.StaffTitle;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
-@Getter
-@Setter
 @ToString
-@NoArgsConstructor  // generates a default no-arg constructor
-@AllArgsConstructor  // generates an all-args constructor
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PositionAllDto {
 
     @JsonProperty("position_id")
@@ -24,5 +23,6 @@ public class PositionAllDto {
     private String positionDescription;
 
     @JsonProperty("position_staff_ids")
-    private Set<Integer> positionStaffMemberIDs;
+    private List<Integer> positionStaffMemberIDs;
+
 }

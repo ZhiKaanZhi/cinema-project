@@ -2,6 +2,7 @@ package com.staff.staffmanagement.service;
 
 import com.staff.staffmanagement.entity.Position;
 import com.staff.staffmanagement.entity.Staff;
+import com.staff.staffmanagement.entity.enums.StaffTitle;
 import com.staff.staffmanagement.mapstruct.dtos.PositionAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.PositionSimpleDto;
 import com.staff.staffmanagement.mapstruct.mappers.PositionMapper;
@@ -70,18 +71,7 @@ public class PositionService {
      */
     @Transactional
     public PositionAllDto savePosition(PositionAllDto positionAllDto) {
-        Position position = positionMapper.positionAllDtoToPosition(positionAllDto);
-
-        // Handle position staff member ids if they're present in the DTO
-        if (positionAllDto.getPositionStaffMemberIDs() != null) {
-            Set<Staff> staffMembers = positionAllDto.getPositionStaffMemberIDs().stream()
-                    .map(staffId -> staffRepository.findById(staffId)
-                            .orElseThrow(() -> new EntityNotFoundException("Staff member not found: " + staffId)))  // Handle not found scenario
-                    .collect(Collectors.toSet());
-            position.setPositionStaffMembers(staffMembers);
-        }
-
-        position = positionRepository.save(position);
+        Position position = positionRepository.saveAndFlush(positionMapper.positionAllDtoToPosition(positionAllDto));
         return positionMapper.positionToPositionAllDto(position);
     }
 
@@ -98,15 +88,21 @@ public class PositionService {
 
         // Dissociate all staff members from the position being deleted
         if(position != null) {
-            position.getPositionStaffMembers().forEach(staff -> {
+
+            Set<Staff> staffSet = position.getPositionStaffMembers();
+            for (Staff staff: staffSet) {
                 staff.setStaffPosition(null);
                 staffRepository.saveAndFlush(staff);
-            });
+            }
+
+
+            /*position.getPositionStaffMembers().forEach(staff -> {
+                staff.setStaffPosition(null);
+                staffRepository.saveAndFlush(staff);
+            });*/
             // Delete the position
             positionRepository.delete(position);
         }
-
-
     }
 
     /**

@@ -60,13 +60,14 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- Lombok -->
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.22</version>
+			<version>1.18.30</version>
 			<scope>provided</scope>
 		</dependency>
+
 
 
 		<dependency>
@@ -102,12 +103,6 @@
 							<groupId>org.mapstruct</groupId>
 							<artifactId>mapstruct-processor</artifactId>
 							<version>1.4.2.Final</version>
-						</path>
-						<!-- Additional path for Lombok, if you're using Lombok annotations -->
-						<path>
-							<groupId>org.projectlombok</groupId>
-							<artifactId>lombok</artifactId>
-							<version>1.18.22</version>
 						</path>
 					</annotationProcessorPaths>
 				</configuration>
