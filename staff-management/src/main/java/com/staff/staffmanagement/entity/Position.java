@@ -27,7 +27,7 @@ public class Position {
     @Column(name = "position_description")
     private String positionDescription;
 
-    @OneToMany(mappedBy = "position")
+    @OneToMany(mappedBy = "staffPosition")
     private Set<Staff> positionStaffMembers = new HashSet<>();
 
 

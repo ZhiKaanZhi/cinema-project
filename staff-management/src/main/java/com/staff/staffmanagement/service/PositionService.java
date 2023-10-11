@@ -2,7 +2,6 @@ package com.staff.staffmanagement.service;
 
 import com.staff.staffmanagement.entity.Position;
 import com.staff.staffmanagement.entity.Staff;
-import com.staff.staffmanagement.entity.enums.StaffTitle;
 import com.staff.staffmanagement.mapstruct.dtos.PositionAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.PositionSimpleDto;
 import com.staff.staffmanagement.mapstruct.mappers.PositionMapper;

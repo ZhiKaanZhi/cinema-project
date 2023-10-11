@@ -1,6 +1,11 @@
-package com.movies.moviesmanagement.entity.enums;
+package com.staff.staffmanagement.entity.enums;
 
-public enum Genre {
+import lombok.Getter;
+
+import java.io.Serializable;
+
+@Getter
+public enum Genre implements Serializable {
 
     ACTION("ACTION"),
     ADVENTURE("ADVENTURE"),
@@ -12,12 +17,12 @@ public enum Genre {
     THRILLER("THRILLER"),
     ROMANCE("ROMANCE");
 
-    private String genre;
+    private static final long serialVersionUID = 1L;
+
+    private final String genre;
+
     Genre(String genre) {
         this.genre = genre;
     }
 
-    public String getGenre() {
-        return genre;
-    }
 }
