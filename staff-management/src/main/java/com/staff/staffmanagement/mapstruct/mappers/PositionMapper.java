@@ -15,12 +15,23 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface PositionMapper {
 
+    @Mapping(source = "positionTitle", target = "positionTitle")
+    @Mapping(source = "positionDescription", target = "positionDescription")
     PositionAllDto positionToPositionAllDto(Position position);
 
+
+    @Mapping(source = "positionTitle", target = "positionTitle")
+    @Mapping(source = "positionDescription", target = "positionDescription")
     Position positionAllDtoToPosition(PositionAllDto positionAllDto);
 
+
+    @Mapping(source = "positionTitle", target = "positionTitle")
+    @Mapping(source = "positionDescription", target = "positionDescription")
     PositionSimpleDto positionToPositionSimpleDto(Position position);
 
+
+    @Mapping(source = "positionTitle", target = "positionTitle")
+    @Mapping(source = "positionDescription", target = "positionDescription")
     Position positionSimpleDtoToPosition(PositionSimpleDto positionSimpleDto);
 
 
@@ -41,5 +52,4 @@ public interface PositionMapper {
 
         target.setPositionStaffMembers(staffSet);
     }
-
 }

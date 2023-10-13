@@ -9,8 +9,10 @@ import com.staff.staffmanagement.mapstruct.dtos.StaffSimpleDto;
 import com.staff.staffmanagement.repository.PositionRepository;
 import com.staff.staffmanagement.repository.ShiftsRepository;
 import com.staff.staffmanagement.repository.StaffRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +42,8 @@ public interface StaffMapper {
 
     @AfterMapping
     default void dtoToEntityAfterMapping(@MappingTarget Staff target, StaffAllDto source, ShiftsRepository shiftsRepository, PositionRepository positionRepository) {
+
+        // Handling shifts mapping with validation
         Set<Shifts> shiftsSet = source.getStaffShiftsIDs().stream()
                 .map(shiftsRepository::findById)
                 .filter(Optional::isPresent)
@@ -48,13 +52,19 @@ public interface StaffMapper {
 
         target.setStaffShifts(shiftsSet);
 
-        // Update the relationship on the shift side
+        // Synchronize both sides of the bidirectional association
         for (Shifts shift : shiftsSet) {
-            shift.addStaff(target); // Use the synchronization helper method
+            shift.addStaff(target);
         }
 
-        Position position = positionRepository.findByPositionTitle(source.getStaffPositionTitle().getTitle());
-        target.setStaffPosition(position);
+        // Handling position mapping with validation
+        Position position = positionRepository.findByPositionTitle(source.getStaffPositionTitle());
+        if(position != null){
+            target.setStaffPosition(position);
+        } else {
+            // Handle the case when the position is not found, e.g., log, throw an exception, etc.
+            throw new EntityNotFoundException("Position Not Found with Title: " + source.getStaffPositionTitle().getTitle());
+        }
     }
 
 }

@@ -18,7 +18,8 @@ CREATE TABLE `position` (
   position_id INT NOT NULL AUTO_INCREMENT,
   position_title VARCHAR(45) DEFAULT NULL,
   position_description VARCHAR(255) DEFAULT NULL,
-  PRIMARY KEY (position_id)
+  PRIMARY KEY (position_id),
+  UNIQUE KEY UC_Position (position_title)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
 CREATE TABLE staff (

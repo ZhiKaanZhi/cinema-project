@@ -2,11 +2,13 @@ package com.staff.staffmanagement.service;
 
 import com.staff.staffmanagement.entity.Position;
 import com.staff.staffmanagement.entity.Staff;
+import com.staff.staffmanagement.entity.enums.StaffTitle;
 import com.staff.staffmanagement.mapstruct.dtos.PositionAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.PositionSimpleDto;
 import com.staff.staffmanagement.mapstruct.mappers.PositionMapper;
 import com.staff.staffmanagement.repository.PositionRepository;
 import com.staff.staffmanagement.repository.StaffRepository;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,7 +72,20 @@ public class PositionService {
      */
     @Transactional
     public PositionAllDto savePosition(PositionAllDto positionAllDto) {
-        Position position = positionRepository.saveAndFlush(positionMapper.positionAllDtoToPosition(positionAllDto));
+        // Find an existing position with the same title
+        Position existingPosition = positionRepository.findByPositionTitle(positionAllDto.getPositionTitle());
+
+        // Check if an existing position is found and if its ID is different from the one being saved
+        if (existingPosition != null &&
+                (positionAllDto.getPositionID() == 0 ||
+                        existingPosition.getPositionID() != positionAllDto.getPositionID()))
+        {
+            return positionMapper.positionToPositionAllDto(existingPosition);
+        }
+
+        // Convert DTO to Entity, Save and Flush, and Convert Entity back to DTO
+        Position position = positionMapper.positionAllDtoToPosition(positionAllDto);
+        position = positionRepository.saveAndFlush(position);
         return positionMapper.positionToPositionAllDto(position);
     }
 
@@ -111,7 +126,8 @@ public class PositionService {
      * @return a PositionSimpleDto representing the position, or null if not found.
      */
     public PositionSimpleDto getPositionSimpleByTitle(String title) {
-        Position position = positionRepository.findByPositionTitle(title);
+        StaffTitle positionTitle = StaffTitle.valueOf(title);
+        Position position = positionRepository.findByPositionTitle(positionTitle);
         return position != null ? positionMapper.positionToPositionSimpleDto(position) : null;
     }
 }

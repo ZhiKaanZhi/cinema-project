@@ -113,7 +113,7 @@ public class StaffService {
      */
     @Transactional
     public StaffAllDto createStaffAllDto(StaffAllDto staffAllDto) {
-        Position position = positionRepository.findByPositionTitle(staffAllDto.getStaffPositionTitle().toString());
+        Position position = positionRepository.findByPositionTitle(staffAllDto.getStaffPositionTitle());
 
         Staff staff = staffMapper.staffAllDtoToStaff(staffAllDto);
         staff.setStaffPosition(position);
@@ -130,7 +130,7 @@ public class StaffService {
      */
     @Transactional
     public StaffSimpleDto createStaffSimpleDto(StaffSimpleDto staffSimpleDto) {
-        Position position = positionRepository.findByPositionTitle(staffSimpleDto.getStaffPositionTitle().toString());
+        Position position = positionRepository.findByPositionTitle(staffSimpleDto.getStaffPositionTitle());
 
         Staff staff = staffMapper.staffSimpleDtoToStaff(staffSimpleDto);
         staff.setStaffPosition(position);

@@ -21,7 +21,7 @@ public class Position {
     private int positionID;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "position_title")
+    @Column(name = "position_title", unique = true)
     private StaffTitle positionTitle;
 
     @Column(name = "position_description")
