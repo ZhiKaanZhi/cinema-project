@@ -14,6 +14,7 @@ import org.mapstruct.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -44,11 +45,12 @@ public interface StaffMapper {
     default void dtoToEntityAfterMapping(@MappingTarget Staff target, StaffAllDto source, ShiftsRepository shiftsRepository, PositionRepository positionRepository) {
 
         // Handling shifts mapping with validation
-        Set<Shifts> shiftsSet = source.getStaffShiftsIDs().stream()
-                .map(shiftsRepository::findById)
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .collect(Collectors.toSet());
+        Set<Shifts> shiftsSet = source.getStaffShiftsIDs() == null ? Collections.emptySet() :
+                source.getStaffShiftsIDs().stream()
+                        .map(shiftsRepository::findById)
+                        .filter(Optional::isPresent)
+                        .map(Optional::get)
+                        .collect(Collectors.toSet());
 
         target.setStaffShifts(shiftsSet);
 

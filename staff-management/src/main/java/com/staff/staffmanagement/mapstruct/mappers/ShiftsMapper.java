@@ -20,19 +20,37 @@ import java.util.stream.Stream;
 public interface ShiftsMapper {
 
 
+    @Mapping(target="shiftID", source="shiftID")
+    @Mapping(target="shiftStartTime", source="shiftStartTime")
+    @Mapping(target="shiftEndTime", source="shiftEndTime")
+    @Mapping(target="shiftDate", source="shiftDate")
     ShiftsAllDto shiftsToShiftsAllDto(Shifts shifts);
 
+    @Mapping(target="shiftID", source="shiftID")
+    @Mapping(target="shiftStartTime", source="shiftStartTime")
+    @Mapping(target="shiftEndTime", source="shiftEndTime")
+    @Mapping(target="shiftDate", source="shiftDate")
     Shifts shiftsAllDtoToShifts(ShiftsAllDto shiftsAllDto);
 
+    @Mapping(target="shiftID", source="shiftID")
+    @Mapping(target="shiftStartTime", source="shiftStartTime")
+    @Mapping(target="shiftEndTime", source="shiftEndTime")
+    @Mapping(target="shiftDate", source="shiftDate")
     ShiftsSimpleDto shiftsToShiftsSimpleDto(Shifts shifts);
 
+    @Mapping(target="shiftID", source="shiftID")
+    @Mapping(target="shiftStartTime", source="shiftStartTime")
+    @Mapping(target="shiftEndTime", source="shiftEndTime")
+    @Mapping(target="shiftDate", source="shiftDate")
     Shifts shiftsSimpleDtoToShifts(ShiftsSimpleDto shiftsSimpleDto);
 
     @AfterMapping
     default void afterShiftsMapping (@MappingTarget ShiftsAllDto target, Shifts source) {
-        target.setShiftStaffIDs(source.getShiftStaff().stream()
-                .map(Staff::getStaffID)
-                .collect(Collectors.toList()));
+        if(source != null && source.getShiftStaff() != null) {
+            target.setShiftStaffIDs(source.getShiftStaff().stream()
+                    .map(Staff::getStaffID)
+                    .collect(Collectors.toList()));
+        }
     }
 
     @AfterMapping

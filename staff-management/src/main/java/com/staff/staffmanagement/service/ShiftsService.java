@@ -84,41 +84,23 @@ public class ShiftsService {
      */
     @Transactional
     public ShiftsAllDto saveShift(ShiftsAllDto shiftsAllDto) {
+        Shifts shift = shiftsMapper.shiftsAllDtoToShifts(shiftsAllDto);
 
-        Shifts shift; // Declare shift outside of the if block
+        // Managing associated staff
+        // Fetch staff members from the database using the staff IDs provided in shiftsAllDto.
+        Set<Staff> associatedStaff = new HashSet<>(staffRepository.findAllById(shiftsAllDto.getShiftStaffIDs()));
 
-        // Validate input - ensuring staff IDs are provided
-        List<Integer> staffIds = shiftsAllDto.getShiftStaffIDs();
+        // Clear and add the fetched staff members to manage relationships on both sides.
+        shift.getShiftStaff().clear();
+        shift.getShiftStaff().addAll(associatedStaff);
 
-        if(staffIds != null && !staffIds.isEmpty()) {
-
-            // Retrieve Staff entities from the provided IDs
-            List<Staff> staffList = staffRepository.findAllById(staffIds);
-            Set<Staff> staffMembers = new HashSet<>(staffList);
-
-            // Validate - ensuring all staff entities are found
-            if(staffMembers.size() != staffIds.size()) {
-                throw new EntityNotFoundException("One or more Staff entities not found.");
-            }
-
-            // Map DTO to entity
-            shift = shiftsMapper.shiftsAllDtoToShifts(shiftsAllDto);
-
-            // Associate retrieved staff entities with the shift
-            shift.setShiftStaff(staffMembers);
-
-            // If bi-directional, update the other side of the relationship
-            staffMembers.forEach(staff -> staff.getStaffShifts().add(shift));
-        }
-        else {
-            // If no staff IDs provided, directly map DTO to entity without associating Staff entities
-            shift = shiftsMapper.shiftsAllDtoToShifts(shiftsAllDto);
+        // Ensure that each staff member is also aware of the association.
+        for (Staff staff : associatedStaff) {
+            staff.getStaffShifts().add(shift);
         }
 
-        // Save the shift along with its associations
-        shiftsRepository.saveAndFlush(shift);
+        shift = shiftsRepository.saveAndFlush(shift);
 
-        // Map entity back to DTO for the response
         return shiftsMapper.shiftsToShiftsAllDto(shift);
     }
 

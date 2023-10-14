@@ -85,7 +85,8 @@ public class StaffManagementApplication {
 	}
 
 	private Shifts saveAndPrintShift(ShiftsService shiftsService, ShiftsMapper shiftsMapper, Shifts shift, String message) {
-		ShiftsAllDto responseShift = shiftsService.saveShift(shiftsMapper.shiftsToShiftsAllDto(shift));
+		ShiftsAllDto dto = shiftsMapper.shiftsToShiftsAllDto(shift);
+		ShiftsAllDto responseShift = shiftsService.saveShift(dto);
 		shift.setShiftID(responseShift.getShiftID());
 		System.out.println(message + ": " + responseShift);
 		return shift;
@@ -95,9 +96,7 @@ public class StaffManagementApplication {
 	private Staff saveStaffAssignShiftAssignPositionAndPrint(StaffService staffService, StaffMapper staffMapper, Staff staff, Position position, Shifts shift, String message) {
 		staff.setStaffPosition(position);  // Assuming you have a setter for Position in Staff class
 		staff.addShift(shift);  // Assigning a shift to the staff
-		System.out.println("Before saving a Staff");
 		StaffAllDto responseStaff = staffService.createStaffAllDto(staffMapper.staffToStaffAllDto(staff));
-		System.out.println("After saving a Staff");
 		staff.setStaffID(responseStaff.getStaffID());
 		System.out.println(message + ": " + responseStaff);
 		return staff;

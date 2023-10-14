@@ -39,9 +39,9 @@ public class Staff {
     @JoinColumn(name = "position_id")
     private Position staffPosition;
 
-    @ManyToMany
+    @ManyToMany(cascade = { CascadeType.PERSIST })
     @JoinTable(
-            name = "staff_shift",
+            name = "staff_shifts",
             joinColumns = @JoinColumn(name = "staff_id"),
             inverseJoinColumns = @JoinColumn(name = "shift_id")
     )

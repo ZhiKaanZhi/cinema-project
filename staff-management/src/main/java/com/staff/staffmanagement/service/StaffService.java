@@ -15,9 +15,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,6 +32,9 @@ public class StaffService {
 
     @Autowired
     private StaffMapper staffMapper;
+
+    @Autowired
+    private ShiftsRepository shiftsRepository;
 
     /**
      * Retrieve all available staff entries.
@@ -115,8 +116,28 @@ public class StaffService {
     public StaffAllDto createStaffAllDto(StaffAllDto staffAllDto) {
         Position position = positionRepository.findByPositionTitle(staffAllDto.getStaffPositionTitle());
 
+        // If the position is not found, you may want to create a new position (depending on business rules).
+        if(position == null) {
+            position = new Position();
+            position.setPositionTitle(staffAllDto.getStaffPositionTitle());
+            position = positionRepository.save(position);
+        }
+
         Staff staff = staffMapper.staffAllDtoToStaff(staffAllDto);
         staff.setStaffPosition(position);
+
+        // If the staffAllDto has associated shift IDs, fetch those shifts and manage relationships.
+        if (staffAllDto.getStaffShiftsIDs() != null && !staffAllDto.getStaffShiftsIDs().isEmpty()) {
+            Set<Shifts> shifts = new HashSet<>(shiftsRepository.findAllById(staffAllDto.getStaffShiftsIDs()));
+
+            staff.getStaffShifts().clear();
+            staff.getStaffShifts().addAll(shifts);
+
+            for (Shifts shift : shifts) {
+                shift.getShiftStaff().add(staff);
+            }
+        }
+
         staff = staffRepository.saveAndFlush(staff);
 
         return staffMapper.staffToStaffAllDto(staff);
