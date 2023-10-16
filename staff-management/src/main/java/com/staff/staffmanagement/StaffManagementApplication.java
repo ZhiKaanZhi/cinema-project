@@ -1,20 +1,16 @@
 package com.staff.staffmanagement;
 
 import com.staff.staffmanagement.entity.Position;
+import com.staff.staffmanagement.entity.Schedules;
 import com.staff.staffmanagement.entity.Shifts;
 import com.staff.staffmanagement.entity.Staff;
 import com.staff.staffmanagement.entity.enums.StaffTitle;
-import com.staff.staffmanagement.mapstruct.dtos.PositionAllDto;
-import com.staff.staffmanagement.mapstruct.dtos.ShiftsAllDto;
-import com.staff.staffmanagement.mapstruct.dtos.StaffAllDto;
+import com.staff.staffmanagement.mapstruct.dtos.*;
 import com.staff.staffmanagement.mapstruct.mappers.PositionMapper;
 import com.staff.staffmanagement.mapstruct.mappers.SchedulesMapper;
 import com.staff.staffmanagement.mapstruct.mappers.ShiftsMapper;
 import com.staff.staffmanagement.mapstruct.mappers.StaffMapper;
-import com.staff.staffmanagement.service.PositionService;
-import com.staff.staffmanagement.service.SchedulesService;
-import com.staff.staffmanagement.service.ShiftsService;
-import com.staff.staffmanagement.service.StaffService;
+import com.staff.staffmanagement.service.*;
 import jakarta.transaction.Transactional;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -32,17 +28,29 @@ public class StaffManagementApplication {
 
 	@Bean
 	@Transactional
-	public CommandLineRunner commandLineRunner(PositionService positionService, StaffService staffService, ShiftsService shiftsService, SchedulesService schedulesService, PositionMapper positionMapper, StaffMapper staffMapper, ShiftsMapper shiftsMapper, SchedulesMapper schedulesMapper) {
+	public CommandLineRunner commandLineRunner(PositionService positionService, StaffService staffService, ShiftsService shiftsService, SchedulesService schedulesService, PositionMapper positionMapper, StaffMapper staffMapper, ShiftsMapper shiftsMapper, SchedulesMapper schedulesMapper, MovieService movieService) {
 
 		return runner -> {
 
 			addStaffExample(positionService, staffService, shiftsService, positionMapper, staffMapper, shiftsMapper);
-			addSchedulesExample(schedulesService, schedulesMapper);
+			addSchedulesExample(schedulesService, schedulesMapper, movieService);
 
 		};
 	}
 
-	private void addSchedulesExample(SchedulesService schedulesService, SchedulesMapper schedulesMapper) {
+	private void addSchedulesExample(SchedulesService schedulesService, SchedulesMapper schedulesMapper, MovieService movieService) {
+
+		MovieDto movie1 = movieService.getMovieById(1).block();
+		Schedules schedule1 = new Schedules(movie1,  Time.valueOf("17:00:00"), Time.valueOf("19:00:00"), java.sql.Date.valueOf("2023-11-28"), 100, 100 );
+		ScheduleAllDto savedSchedule1 = schedulesService.saveSchedule(schedulesMapper.schedulesToScheduleAllDto(schedule1));
+		System.out.println("Saved Schedule 1: "+ savedSchedule1);
+
+
+		MovieDto movie2 = movieService.getMovieById(2).block();
+		Schedules schedule2 = new Schedules(movie2,  Time.valueOf("19:30:00"), Time.valueOf("21:00:00"), java.sql.Date.valueOf("2023-11-28"), 100, 100 );
+		ScheduleAllDto savedSchedule2 = schedulesService.saveSchedule(schedulesMapper.schedulesToScheduleAllDto(schedule2));
+		System.out.println("Saved Schedule 2: "+ savedSchedule2);
+
 	}
 
 	private void addStaffExample(PositionService positionService, StaffService staffService, ShiftsService shiftsService, PositionMapper positionMapper, StaffMapper staffMapper, ShiftsMapper shiftsMapper) {
@@ -51,9 +59,10 @@ public class StaffManagementApplication {
 		Position positionManager = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.MANAGER, "Manager of the Cinema"), "Position 1 Saved");
 		Position positionCashier1 = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.CASHIER, "Cashier of the Cinema"), "Position 2 Saved");
 		Position positionCashier2 = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.CASHIER, "Cashier of the Cinema"), "Position 3 Saved");
-		Position positionJanitor1 = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.JANITOR, "Shift janitor"), "Position 4 Saved");
-		Position positionJanitor2 = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.JANITOR, "shift janitor"), "Position 5 Saved");
-		Position positionJanitor3 = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.JANITOR, "shift janitor"), "Position 6 Saved");
+		Position positionProjectionist = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.PROJECTIONIST, "Projectionist of the Cinema"), "Position 4 Saved");
+		Position positionJanitor1 = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.JANITOR, "Shift janitor"), "Position 5 Saved");
+		Position positionJanitor2 = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.JANITOR, "shift janitor"), "Position 6 Saved");
+		Position positionJanitor3 = saveAndPrintPosition(positionService, positionMapper, new Position(StaffTitle.JANITOR, "shift janitor"), "Position 7 Saved");
 
 
 		// Create, Save, and Assign Shifts
@@ -63,16 +72,40 @@ public class StaffManagementApplication {
 		Shifts shift4 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("08:00:00"), Time.valueOf("16:00:00"), java.sql.Date.valueOf("2023-11-29")), "Shift 4 Saved");
 		Shifts shift5 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("16:00:00"), Time.valueOf("00:00:00"), java.sql.Date.valueOf("2023-11-29")), "Shift 5 Saved");
 		Shifts shift6 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("00:00:00"), Time.valueOf("08:00:00"), java.sql.Date.valueOf("2023-11-30")), "Shift 6 Saved");
+		Shifts shift7 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("08:00:00"), Time.valueOf("16:00:00"), java.sql.Date.valueOf("2023-11-30")), "Shift 7 Saved");
+		Shifts shift8 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("16:00:00"), Time.valueOf("00:00:00"), java.sql.Date.valueOf("2023-11-30")), "Shift 8 Saved");
+		Shifts shift9 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("00:00:00"), Time.valueOf("08:00:00"), java.sql.Date.valueOf("2023-12-1")), "Shift 9 Saved");
+		Shifts shift10 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("08:00:00"), Time.valueOf("16:00:00"), java.sql.Date.valueOf("2023-12-1")), "Shift 10 Saved");
+		Shifts shift11 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("16:00:00"), Time.valueOf("00:00:00"), java.sql.Date.valueOf("2023-12-1")), "Shift 11 Saved");
 
 		// Create, Save Staff and Assign Shifts
-		saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Konstantinos Malavazos", java.sql.Date.valueOf("1992-6-2"), java.sql.Date.valueOf("2023-11-27")), positionManager, shift1, "Staff 1 Saved");
-		saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Cashier1", java.sql.Date.valueOf("1982-5-22"), java.sql.Date.valueOf("2022-5-12")), positionCashier1, shift1, "Staff 2 Saved");
-		saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Cashier2", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionCashier2, shift2, "Staff 3 Saved");
-		saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_1", java.sql.Date.valueOf("1982-5-22"), java.sql.Date.valueOf("2022-5-12")), positionJanitor1, shift1, "Staff 4 Saved");
-		saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_2", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionJanitor2, shift2, "Staff 5 Saved");
-		saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_3", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionJanitor3, shift3, "Staff 6 Saved");
+		Staff StaffManager = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Konstantinos Malavazos", java.sql.Date.valueOf("1992-6-2"), java.sql.Date.valueOf("2023-11-27")), positionManager, shift1, "Staff 1 Saved");
+		Staff StaffCashier1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Cashier1", java.sql.Date.valueOf("1982-5-22"), java.sql.Date.valueOf("2022-5-12")), positionCashier1, shift1, "Staff 2 Saved");
+		Staff StaffCashier2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Cashier2", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionCashier2, shift2, "Staff 3 Saved");
+		Staff StaffProjectionist1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Projectionist1", java.sql.Date.valueOf("1991-9-15"), java.sql.Date.valueOf("2022-2-21")), positionProjectionist, shift2, "Staff 4 Saved");
+		Staff StaffProjectionist2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Projectionist2", java.sql.Date.valueOf("1971-9-25"), java.sql.Date.valueOf("1990-2-21")), positionProjectionist, shift3, "Staff 5 Saved");
+		Staff StaffJanitor1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_1", java.sql.Date.valueOf("1982-5-22"), java.sql.Date.valueOf("2022-5-12")), positionJanitor1, shift1, "Staff 6 Saved");
+		Staff StaffJanitor2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_2", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionJanitor2, shift2, "Staff 7 Saved");
+		Staff StaffJanitor3 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_3", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionJanitor3, shift3, "Staff 8 Saved");
+
+		UpdateStaffShifts(staffService, staffMapper, StaffManager, shift7);
+		UpdateStaffShifts(staffService, staffMapper, StaffCashier1, shift7);
+		UpdateStaffShifts(staffService, staffMapper, StaffCashier2, shift8);
+		UpdateStaffShifts(staffService, staffMapper, StaffProjectionist1, shift8);
+		UpdateStaffShifts(staffService, staffMapper, StaffProjectionist2, shift9);
+		UpdateStaffShifts(staffService, staffMapper, StaffJanitor1, shift7);
+		UpdateStaffShifts(staffService, staffMapper, StaffJanitor2, shift8);
+		UpdateStaffShifts(staffService, staffMapper, StaffJanitor3, shift9);
 
 		System.out.println("Done!");
+
+	}
+
+	private Staff UpdateStaffShifts(StaffService staffService, StaffMapper staffMapper, Staff staff, Shifts shift) {
+		staff.addShift(shift);  // Assigning a shift to the staff
+		StaffAllDto responseStaff = staffService.updateStaff(staffMapper.staffToStaffAllDto(staff));
+		System.out.println("Staff Updated: " + responseStaff);
+		return staff;
 
 	}
 

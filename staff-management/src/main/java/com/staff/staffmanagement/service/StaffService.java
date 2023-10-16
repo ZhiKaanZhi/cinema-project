@@ -160,6 +160,47 @@ public class StaffService {
         return staffMapper.staffToStaffSimpleDto(staff);
     }
 
+    @Transactional
+    public StaffAllDto updateStaff(StaffAllDto staffAllDto) {
+        if (staffAllDto.getStaffID() == 0) {
+            throw new IllegalArgumentException("Staff ID is required for update");
+        }
+
+        // Retrieve existing staff entity
+        Staff existingStaff = staffRepository.findById(staffAllDto.getStaffID())
+                .orElseThrow(() -> new EntityNotFoundException("Staff not found with ID: " + staffAllDto.getStaffID()));
+
+        // Update fields from DTO to the existing entity
+        existingStaff.setStaffName(staffAllDto.getStaffName());
+        existingStaff.setStaffDOB(staffAllDto.getStaffDOB());
+        existingStaff.setStaffHireDate(staffAllDto.getStaffHireDate());
+
+        // Update the position (similar logic as in createStaffAllDto)
+        Position position = positionRepository.findByPositionTitle(staffAllDto.getStaffPositionTitle());
+        if (position == null) {
+            position = new Position();
+            position.setPositionTitle(staffAllDto.getStaffPositionTitle());
+            position = positionRepository.save(position);
+        }
+        existingStaff.setStaffPosition(position);
+
+        // Update shifts
+        if (staffAllDto.getStaffShiftsIDs() != null && !staffAllDto.getStaffShiftsIDs().isEmpty()) {
+            Set<Shifts> shifts = new HashSet<>(shiftsRepository.findAllById(staffAllDto.getStaffShiftsIDs()));
+            existingStaff.getStaffShifts().clear();
+            existingStaff.getStaffShifts().addAll(shifts);
+            for (Shifts shift : shifts) {
+                shift.getShiftStaff().add(existingStaff);
+            }
+        }
+
+        // Save updated staff entity
+        Staff updatedStaff = staffRepository.saveAndFlush(existingStaff);
+
+        // Convert updated entity to DTO and return
+        return staffMapper.staffToStaffAllDto(updatedStaff);
+    }
+
     /**
      * Delete a staff entry by ID.
      *
