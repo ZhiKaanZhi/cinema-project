@@ -5,9 +5,11 @@ import com.staff.staffmanagement.entity.Staff;
 import com.staff.staffmanagement.mapstruct.dtos.PositionAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.PositionSimpleDto;
 import com.staff.staffmanagement.repository.StaffRepository;
-import org.mapstruct.*;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;

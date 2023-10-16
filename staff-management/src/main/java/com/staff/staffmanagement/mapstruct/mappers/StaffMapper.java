@@ -3,19 +3,17 @@ package com.staff.staffmanagement.mapstruct.mappers;
 import com.staff.staffmanagement.entity.Position;
 import com.staff.staffmanagement.entity.Shifts;
 import com.staff.staffmanagement.entity.Staff;
-import com.staff.staffmanagement.mapstruct.dtos.ShiftsAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.StaffAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.StaffSimpleDto;
 import com.staff.staffmanagement.repository.PositionRepository;
 import com.staff.staffmanagement.repository.ShiftsRepository;
-import com.staff.staffmanagement.repository.StaffRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.mapstruct.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,12 +21,28 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface StaffMapper {
 
+    @Mapping(target="staffID", source="staffID")
+    @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffDOB", source="staffDOB")
+    @Mapping(target="staffHireDate", source="staffHireDate")
     StaffAllDto staffToStaffAllDto(Staff staff);
 
+    @Mapping(target="staffID", source="staffID")
+    @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffDOB", source="staffDOB")
+    @Mapping(target="staffHireDate", source="staffHireDate")
     StaffSimpleDto staffToStaffSimpleDto(Staff staff);
 
+    @Mapping(target="staffID", source="staffID")
+    @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffDOB", source="staffDOB")
+    @Mapping(target="staffHireDate", source="staffHireDate")
     Staff staffAllDtoToStaff(StaffAllDto staffAllDto);
 
+    @Mapping(target="staffID", source="staffID")
+    @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffDOB", source="staffDOB")
+    @Mapping(target="staffHireDate", source="staffHireDate")
     Staff staffSimpleDtoToStaff(StaffSimpleDto staffSimpleDto);
 
 

@@ -1,20 +1,18 @@
 package com.staff.staffmanagement.mapstruct.mappers;
 
-import com.staff.staffmanagement.entity.Position;
 import com.staff.staffmanagement.entity.Shifts;
 import com.staff.staffmanagement.entity.Staff;
-import com.staff.staffmanagement.mapstruct.dtos.PositionAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.ShiftsAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.ShiftsSimpleDto;
 import com.staff.staffmanagement.repository.StaffRepository;
-import org.mapstruct.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Mapper(componentModel = "spring")
 public interface ShiftsMapper {
