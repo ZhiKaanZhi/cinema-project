@@ -131,7 +131,7 @@ public class SchedulesService {
                 .flatMap(optionalSchedules -> {
                     if (optionalSchedules.isPresent()) {
                         Schedules schedules = optionalSchedules.get();
-                        return movieService.getMovieById(schedules.getScheduleMovie().getMovieID())
+                        return movieService.getMovieById(schedules.getScheduleMovieId())
                                 .map(movieDto -> {
                                     return mapSchedulesToDto(schedules, movieDto);
                                 });

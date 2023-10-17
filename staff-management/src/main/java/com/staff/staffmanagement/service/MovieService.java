@@ -23,4 +23,11 @@ public class MovieService {
                 .retrieve()
                 .bodyToMono(MovieDto.class);
     }
+
+    public Mono<MovieDto> getMovieByTitle(String movieTitle) {
+        return webClient.get()
+                .uri("/title/{movieTitle}", movieTitle)
+                .retrieve()
+                .bodyToMono(MovieDto.class);
+    }
 }

@@ -40,14 +40,16 @@ public class StaffManagementApplication {
 
 	private void addSchedulesExample(SchedulesService schedulesService, SchedulesMapper schedulesMapper, MovieService movieService) {
 
+		System.out.println("Before Fetching 1st Movie");
 		MovieDto movie1 = movieService.getMovieById(1).block();
-		Schedules schedule1 = new Schedules(movie1,  Time.valueOf("17:00:00"), Time.valueOf("19:00:00"), java.sql.Date.valueOf("2023-11-28"), 100, 100 );
+		System.out.println("After Fetching 1st Movie: " + movie1);
+		Schedules schedule1 = new Schedules(movie1.getMovieID(),  Time.valueOf("17:00:00"), Time.valueOf("19:00:00"), java.sql.Date.valueOf("2023-11-28"), 100, 100 );
 		ScheduleAllDto savedSchedule1 = schedulesService.saveSchedule(schedulesMapper.schedulesToScheduleAllDto(schedule1));
 		System.out.println("Saved Schedule 1: "+ savedSchedule1);
 
 
 		MovieDto movie2 = movieService.getMovieById(2).block();
-		Schedules schedule2 = new Schedules(movie2,  Time.valueOf("19:30:00"), Time.valueOf("21:00:00"), java.sql.Date.valueOf("2023-11-28"), 100, 100 );
+		Schedules schedule2 = new Schedules(movie2.getMovieID(),  Time.valueOf("19:30:00"), Time.valueOf("21:00:00"), java.sql.Date.valueOf("2023-11-28"), 100, 100 );
 		ScheduleAllDto savedSchedule2 = schedulesService.saveSchedule(schedulesMapper.schedulesToScheduleAllDto(schedule2));
 		System.out.println("Saved Schedule 2: "+ savedSchedule2);
 

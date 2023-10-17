@@ -24,7 +24,7 @@ public class Schedules {
     private Integer scheduleID;
 
     @Column(name = "movie_id")
-    private MovieDto scheduleMovie; // Assumed to reference a movie in another microservice.
+    private int scheduleMovieId; // Assumed to reference a movie in another microservice.
 
     @Column(name = "schedule_start_time")
     private Time scheduleStartTime;
@@ -41,8 +41,8 @@ public class Schedules {
     @Column(name = "schedule_total_seats")
     private Integer scheduleTotalSeats;
 
-    public Schedules(MovieDto scheduleMovie, Time scheduleStartTime, Time scheduleEndTime, Date scheduleScreenDate, Integer scheduleAvailableSeats, Integer scheduleTotalSeats) {
-        this.scheduleMovie = scheduleMovie;
+    public Schedules(int scheduleMovieId, Time scheduleStartTime, Time scheduleEndTime, Date scheduleScreenDate, Integer scheduleAvailableSeats, Integer scheduleTotalSeats) {
+        this.scheduleMovieId = scheduleMovieId;
         this.scheduleStartTime = scheduleStartTime;
         this.scheduleEndTime = scheduleEndTime;
         this.scheduleScreenDate = scheduleScreenDate;
