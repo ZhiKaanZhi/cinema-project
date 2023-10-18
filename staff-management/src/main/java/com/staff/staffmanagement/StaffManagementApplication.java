@@ -53,6 +53,8 @@ public class StaffManagementApplication {
 		ScheduleAllDto savedSchedule2 = schedulesService.saveSchedule(schedulesMapper.schedulesToScheduleAllDto(schedule2));
 		System.out.println("Saved Schedule 2: "+ savedSchedule2);
 
+		System.out.println("Done!");
+
 	}
 
 	private void addStaffExample(PositionService positionService, StaffService staffService, ShiftsService shiftsService, PositionMapper positionMapper, StaffMapper staffMapper, ShiftsMapper shiftsMapper) {

@@ -5,6 +5,7 @@ import com.staff.staffmanagement.mapstruct.dtos.MovieDto;
 import com.staff.staffmanagement.mapstruct.dtos.ScheduleAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.SchedulesSimpleDto;
 import com.staff.staffmanagement.mapstruct.mappers.SchedulesMapper;
+import com.staff.staffmanagement.mapstruct.mappers.SchedulesMapperDecorator;
 import com.staff.staffmanagement.repository.SchedulesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
@@ -23,7 +24,7 @@ public class SchedulesService {
     private SchedulesRepository schedulesRepository;
 
     @Autowired
-    private SchedulesMapper schedulesMapper;
+    private SchedulesMapperDecorator schedulesMapper;
 
     @Autowired
     private MovieService movieService; // Assume this is another service that communicates with the microservice managing movies.
@@ -69,7 +70,9 @@ public class SchedulesService {
      * @return ScheduleAllDto containing the saved schedule's details.
      */
     public ScheduleAllDto saveSchedule(ScheduleAllDto scheduleAllDto) {
+        System.out.println("DTO Movie ID: " + scheduleAllDto.getScheduleMovie().getMovieID());
         Schedules schedules = schedulesMapper.scheduleAllDtoToSchedules(scheduleAllDto);
+        System.out.println("Entity Movie ID: " + schedules.getScheduleMovieId());
         schedules = schedulesRepository.saveAndFlush(schedules);
         return schedulesMapper.schedulesToScheduleAllDto(schedules);
     }

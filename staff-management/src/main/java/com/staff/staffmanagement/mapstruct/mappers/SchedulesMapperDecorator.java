@@ -32,8 +32,9 @@ public class SchedulesMapperDecorator implements SchedulesMapper {
 
     @Override
     public Schedules scheduleAllDtoToSchedules(ScheduleAllDto scheduleAllDto) {
-
-        return delegate.scheduleAllDtoToSchedules(scheduleAllDto);
+        Schedules schedule = delegate.scheduleAllDtoToSchedules(scheduleAllDto);
+        schedule.setScheduleMovieId(scheduleAllDto.getScheduleMovie().getMovieID());
+        return schedule;
     }
 
     @Override

@@ -19,37 +19,9 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {MovieService.class})
 @DecoratedWith(SchedulesMapperDecorator.class)
 public interface SchedulesMapper {
-
-    /*@Mapping(source = "scheduleID", target = "scheduleID")
-    @Mapping(source = "scheduleStartTime", target = "scheduleStartTime")
-    @Mapping(source = "scheduleEndTime", target = "scheduleEndTime")
-    @Mapping(source = "scheduleScreenDate", target = "scheduleScreenDate")
-    @Mapping(source = "scheduleAvailableSeats", target = "scheduleAvailableSeats")
-    @Mapping(source = "scheduleTotalSeats", target = "scheduleTotalSeats")*/
     ScheduleAllDto schedulesToScheduleAllDto(Schedules schedules);
-
-    /*@Mapping(source = "scheduleID", target = "scheduleID")
-    @Mapping(source = "scheduleStartTime", target = "scheduleStartTime")
-    @Mapping(source = "scheduleEndTime", target = "scheduleEndTime")
-    @Mapping(source = "scheduleScreenDate", target = "scheduleScreenDate")
-    @Mapping(source = "scheduleAvailableSeats", target = "scheduleAvailableSeats")
-    @Mapping(source = "scheduleTotalSeats", target = "scheduleTotalSeats")*/
     Schedules scheduleAllDtoToSchedules(ScheduleAllDto scheduleAllDto);
-
-    /*@Mapping(source = "scheduleID", target = "scheduleID")
-    @Mapping(source = "scheduleStartTime", target = "scheduleStartTime")
-    @Mapping(source = "scheduleEndTime", target = "scheduleEndTime")
-    @Mapping(source = "scheduleScreenDate", target = "scheduleScreenDate")
-    @Mapping(source = "scheduleAvailableSeats", target = "scheduleAvailableSeats")
-    @Mapping(source = "scheduleTotalSeats", target = "scheduleTotalSeats")*/
     SchedulesSimpleDto schedulesToSchedulesSimpleDto(Schedules schedules);
-
-    /*@Mapping(source = "scheduleID", target = "scheduleID")
-    @Mapping(source = "scheduleStartTime", target = "scheduleStartTime")
-    @Mapping(source = "scheduleEndTime", target = "scheduleEndTime")
-    @Mapping(source = "scheduleScreenDate", target = "scheduleScreenDate")
-    @Mapping(source = "scheduleAvailableSeats", target = "scheduleAvailableSeats")
-    @Mapping(source = "scheduleTotalSeats", target = "scheduleTotalSeats")*/
     Schedules schedulesSimpleDtoToSchedules(SchedulesSimpleDto schedulesSimpleDto);
 
 }
