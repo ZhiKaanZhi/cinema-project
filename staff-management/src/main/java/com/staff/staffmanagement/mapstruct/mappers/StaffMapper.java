@@ -23,24 +23,32 @@ public interface StaffMapper {
 
     @Mapping(target="staffID", source="staffID")
     @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffEmail", source="staffEmail")
+    @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
     @Mapping(target="staffHireDate", source="staffHireDate")
     StaffAllDto staffToStaffAllDto(Staff staff);
 
     @Mapping(target="staffID", source="staffID")
     @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffEmail", source="staffEmail")
+    @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
     @Mapping(target="staffHireDate", source="staffHireDate")
     StaffSimpleDto staffToStaffSimpleDto(Staff staff);
 
     @Mapping(target="staffID", source="staffID")
     @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffEmail", source="staffEmail")
+    @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
     @Mapping(target="staffHireDate", source="staffHireDate")
     Staff staffAllDtoToStaff(StaffAllDto staffAllDto);
 
     @Mapping(target="staffID", source="staffID")
     @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffEmail", source="staffEmail")
+    @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
     @Mapping(target="staffHireDate", source="staffHireDate")
     Staff staffSimpleDtoToStaff(StaffSimpleDto staffSimpleDto);
@@ -57,7 +65,7 @@ public interface StaffMapper {
 
     @AfterMapping
     default void dtoToEntityAfterMapping(@MappingTarget Staff target, StaffAllDto source, ShiftsRepository shiftsRepository, PositionRepository positionRepository) {
-
+        System.out.println("Staff before mapping: "+ target);
         // Handling shifts mapping with validation
         Set<Shifts> shiftsSet = source.getStaffShiftsIDs() == null ? Collections.emptySet() :
                 source.getStaffShiftsIDs().stream()
@@ -81,6 +89,7 @@ public interface StaffMapper {
             // Handle the case when the position is not found, e.g., log, throw an exception, etc.
             throw new EntityNotFoundException("Position Not Found with Title: " + source.getStaffPositionTitle().getTitle());
         }
+        System.out.println("Staff after mapping: "+ target);
     }
 
 }

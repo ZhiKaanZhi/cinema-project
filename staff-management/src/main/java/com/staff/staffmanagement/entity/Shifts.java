@@ -31,6 +31,7 @@ public class Shifts {
     @Column(name = "shift_date")
     private Date shiftDate;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "staffShifts", cascade = CascadeType.PERSIST)
     private Set<Staff> shiftStaff = new HashSet<>();
 

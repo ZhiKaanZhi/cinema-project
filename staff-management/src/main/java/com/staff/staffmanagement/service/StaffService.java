@@ -13,6 +13,7 @@ import com.staff.staffmanagement.repository.StaffRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -35,6 +36,9 @@ public class StaffService {
 
     @Autowired
     private ShiftsRepository shiftsRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     /**
      * Retrieve all available staff entries.
@@ -113,7 +117,7 @@ public class StaffService {
      * @return StaffAllDto containing detailed information of the created staff.
      */
     @Transactional
-    public StaffAllDto createStaffAllDto(StaffAllDto staffAllDto) {
+    public StaffAllDto registerStaffAllDto(StaffAllDto staffAllDto) {
         Position position = positionRepository.findByPositionTitle(staffAllDto.getStaffPositionTitle());
 
         // If the position is not found, you may want to create a new position (depending on business rules).
@@ -138,6 +142,9 @@ public class StaffService {
             }
         }
 
+        // Hash the password
+        staff.setStaffPassword(passwordEncoder.encode(staff.getStaffPassword()));
+
         staff = staffRepository.saveAndFlush(staff);
 
         return staffMapper.staffToStaffAllDto(staff);
@@ -150,11 +157,15 @@ public class StaffService {
      * @return StaffSimpleDto containing basic information of the created staff.
      */
     @Transactional
-    public StaffSimpleDto createStaffSimpleDto(StaffSimpleDto staffSimpleDto) {
+    public StaffSimpleDto registerStaffSimpleDto(StaffSimpleDto staffSimpleDto) {
         Position position = positionRepository.findByPositionTitle(staffSimpleDto.getStaffPositionTitle());
 
         Staff staff = staffMapper.staffSimpleDtoToStaff(staffSimpleDto);
         staff.setStaffPosition(position);
+
+        // Hash the password
+        staff.setStaffPassword(passwordEncoder.encode(staff.getStaffPassword()));
+
         staff = staffRepository.saveAndFlush(staff);
 
         return staffMapper.staffToStaffSimpleDto(staff);
@@ -222,5 +233,30 @@ public class StaffService {
                 () -> new EntityNotFoundException("Shift not found")
         );
         staff.addShift(shift);
+    }
+
+
+    /**
+     * Authenticates a staff member using their email and raw password.
+     *
+     * @param email the email address of the staff member.
+     * @param rawPassword the plaintext password entered by the staff member.
+     * @return true if authentication was successful, false otherwise.
+     */
+    public boolean authenticateStaff(String email, String rawPassword) {
+        // Retrieve the staff member by their email address
+        Staff staff = staffRepository.findByStaffEmail(email);
+
+        // If no staff member was found with the given email or the password is null, authentication fails
+        if (staff == null || staff.getStaffPassword() == null) {
+            return false;
+        }
+
+        // Compare the plaintext password with the hashed version stored in the database
+        if (passwordEncoder.matches(rawPassword, staff.getStaffPassword())) {
+            return true; // Authenticated successfully
+        } else {
+            return false; // Authentication failed
+        }
     }
 }

@@ -12,6 +12,7 @@ import com.staff.staffmanagement.mapstruct.mappers.ShiftsMapper;
 import com.staff.staffmanagement.mapstruct.mappers.StaffMapper;
 import com.staff.staffmanagement.service.*;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,6 +36,7 @@ public class StaffManagementApplication {
 			addStaffExample(positionService, staffService, shiftsService, positionMapper, staffMapper, shiftsMapper);
 			addSchedulesExample(schedulesService, schedulesMapper, movieService);
 
+			System.out.println("Server listening on port 8082: http://localhost:8082/");
 		};
 	}
 
@@ -83,14 +85,14 @@ public class StaffManagementApplication {
 		Shifts shift11 = saveAndPrintShift(shiftsService, shiftsMapper, new Shifts(Time.valueOf("16:00:00"), Time.valueOf("00:00:00"), java.sql.Date.valueOf("2023-12-1")), "Shift 11 Saved");
 
 		// Create, Save Staff and Assign Shifts
-		Staff StaffManager = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Konstantinos Malavazos", java.sql.Date.valueOf("1992-6-2"), java.sql.Date.valueOf("2023-11-27")), positionManager, shift1, "Staff 1 Saved");
-		Staff StaffCashier1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Cashier1", java.sql.Date.valueOf("1982-5-22"), java.sql.Date.valueOf("2022-5-12")), positionCashier1, shift1, "Staff 2 Saved");
-		Staff StaffCashier2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Cashier2", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionCashier2, shift2, "Staff 3 Saved");
-		Staff StaffProjectionist1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Projectionist1", java.sql.Date.valueOf("1991-9-15"), java.sql.Date.valueOf("2022-2-21")), positionProjectionist, shift2, "Staff 4 Saved");
-		Staff StaffProjectionist2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Projectionist2", java.sql.Date.valueOf("1971-9-25"), java.sql.Date.valueOf("1990-2-21")), positionProjectionist, shift3, "Staff 5 Saved");
-		Staff StaffJanitor1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_1", java.sql.Date.valueOf("1982-5-22"), java.sql.Date.valueOf("2022-5-12")), positionJanitor1, shift1, "Staff 6 Saved");
-		Staff StaffJanitor2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_2", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionJanitor2, shift2, "Staff 7 Saved");
-		Staff StaffJanitor3 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_3", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionJanitor3, shift3, "Staff 8 Saved");
+		Staff StaffManager = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Konstantinos Malavazos", "kmalavazos@gmail.com", "012345678", java.sql.Date.valueOf("1992-6-2"), java.sql.Date.valueOf("2023-11-27")), positionManager, shift1, "Staff 1 Saved");
+		Staff StaffCashier1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Cashier1", "Person_Cashier1@gmail.com", "123456789", java.sql.Date.valueOf("1982-5-22"), java.sql.Date.valueOf("2022-5-12")), positionCashier1, shift1, "Staff 2 Saved");
+		Staff StaffCashier2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Cashier2", "Person_Cashier2@gmail.com", "123456789", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionCashier2, shift2, "Staff 3 Saved");
+		Staff StaffProjectionist1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Projectionist1", "Person_Projectionist1@gmail.com", "123456789", java.sql.Date.valueOf("1991-9-15"), java.sql.Date.valueOf("2022-2-21")), positionProjectionist, shift2, "Staff 4 Saved");
+		Staff StaffProjectionist2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Projectionist2", "Person_Projectionist2@gmail.com", "123456789", java.sql.Date.valueOf("1971-9-25"), java.sql.Date.valueOf("1990-2-21")), positionProjectionist, shift3, "Staff 5 Saved");
+		Staff StaffJanitor1 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_1", "Person_Janitor_1@gmail.com", "123456789", java.sql.Date.valueOf("1982-5-22"), java.sql.Date.valueOf("2022-5-12")), positionJanitor1, shift1, "Staff 6 Saved");
+		Staff StaffJanitor2 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_2", "Person_Janitor_2@gmail.com", "123456789", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionJanitor2, shift2, "Staff 7 Saved");
+		Staff StaffJanitor3 = saveStaffAssignShiftAssignPositionAndPrint(staffService, staffMapper, new Staff("Person_Janitor_3", "Person_Janitor_3@gmail.com", "123456789", java.sql.Date.valueOf("1997-8-15"), java.sql.Date.valueOf("2021-2-2")), positionJanitor3, shift3, "Staff 8 Saved");
 
 		UpdateStaffShifts(staffService, staffMapper, StaffManager, shift7);
 		UpdateStaffShifts(staffService, staffMapper, StaffCashier1, shift7);
@@ -133,7 +135,9 @@ public class StaffManagementApplication {
 	private Staff saveStaffAssignShiftAssignPositionAndPrint(StaffService staffService, StaffMapper staffMapper, Staff staff, Position position, Shifts shift, String message) {
 		staff.setStaffPosition(position);  // Assuming you have a setter for Position in Staff class
 		staff.addShift(shift);  // Assigning a shift to the staff
-		StaffAllDto responseStaff = staffService.createStaffAllDto(staffMapper.staffToStaffAllDto(staff));
+		System.out.println("Staff before saving: "+ staff);
+		StaffAllDto responseStaff = staffService.registerStaffAllDto(staffMapper.staffToStaffAllDto(staff));
+		System.out.println("Staff after saving: "+ staff);
 		staff.setStaffID(responseStaff.getStaffID());
 		System.out.println(message + ": " + responseStaff);
 		return staff;

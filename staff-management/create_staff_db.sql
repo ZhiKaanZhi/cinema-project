@@ -25,6 +25,8 @@ CREATE TABLE `position` (
 CREATE TABLE staff (
   staff_id INT NOT NULL AUTO_INCREMENT,
   staff_name VARCHAR(255) DEFAULT NULL,
+  staff_email VARCHAR(255) NOT NULL UNIQUE,
+  staff_password VARCHAR(255) NOT NULL,
   staff_dob DATE,
   staff_hire_date DATE,
   position_id INT,

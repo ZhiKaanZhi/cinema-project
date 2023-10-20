@@ -22,6 +22,12 @@ public class StaffSimpleDto {
     @JsonProperty("staff_name")
     private String staffName;
 
+    @JsonProperty("staff_email")
+    private String staffEmail;
+
+    @JsonProperty("staff_password")
+    private String staffPassword;
+
     @JsonProperty("staff_dob")
     private Date staffDOB;
 

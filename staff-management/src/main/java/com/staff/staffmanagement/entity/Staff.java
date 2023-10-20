@@ -2,6 +2,7 @@ package com.staff.staffmanagement.entity;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -29,6 +30,14 @@ public class Staff {
     @Size(min = 2, max = 50, message = "Staff name must be between 2 and 50 characters")
     private String staffName;
 
+    @Column(name = "staff_email")
+    @Email(message = "Please provide a valid email address")
+    private String staffEmail;
+
+    @Column(name = "staff_password", nullable = false)
+    @Size(min = 8, message = "Password must be at least 8 characters long")
+    private String staffPassword;
+
     @Column(name = "staff_dob")
     private Date staffDOB;
 
@@ -39,6 +48,7 @@ public class Staff {
     @JoinColumn(name = "position_id")
     private Position staffPosition;
 
+    @ToString.Exclude
     @ManyToMany(cascade = { CascadeType.PERSIST })
     @JoinTable(
             name = "staff_shifts",
@@ -48,8 +58,10 @@ public class Staff {
     private Set<Shifts> staffShifts = new HashSet<>();
 
 
-    public Staff(String staffName, Date staffDOB, Date staffHireDate) {
+    public Staff(String staffName, String staffEmail, String staffPassword, Date staffDOB, Date staffHireDate) {
         this.staffName = staffName;
+        this.staffEmail = staffEmail;
+        this.staffPassword = staffPassword;
         this.staffDOB = staffDOB;
         this.staffHireDate = staffHireDate;
     }

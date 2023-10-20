@@ -65,9 +65,9 @@ public class StaffController {
      * @param staffAllDto Detailed staff information for the new staff entry.
      * @return Detailed information of the created staff entry.
      */
-    @PostMapping("/create-details")
+    @PostMapping("/register-details")
     public ResponseEntity<StaffAllDto> createStaffAllDetails(@RequestBody StaffAllDto staffAllDto) {
-        return new ResponseEntity<>(staffService.createStaffAllDto(staffAllDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(staffService.registerStaffAllDto(staffAllDto), HttpStatus.CREATED);
     }
 
     /**
@@ -76,9 +76,9 @@ public class StaffController {
      * @param staffSimpleDto Basic staff information for the new staff entry.
      * @return Basic information of the created staff entry.
      */
-    @PostMapping("/create-basic")
+    @PostMapping("/register-basic")
     public ResponseEntity<StaffSimpleDto> createStaffSimple(@RequestBody StaffSimpleDto staffSimpleDto) {
-        return new ResponseEntity<>(staffService.createStaffSimpleDto(staffSimpleDto), HttpStatus.CREATED);
+        return new ResponseEntity<>(staffService.registerStaffSimpleDto(staffSimpleDto), HttpStatus.CREATED);
     }
 
     /**
