@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @ToString
@@ -18,7 +18,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor// generates a default no-arg constructor
 @Table(name = "staff")
-public class Staff {
+public class Staff implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,9 @@ public class Staff {
     @NotNull(message = "Staff name cannot be null")
     @Size(min = 2, max = 50, message = "Staff name must be between 2 and 50 characters")
     private String staffName;
+
+    @Column(name = "staff_username")
+    private String staffUsername;
 
     @Column(name = "staff_email")
     @Email(message = "Please provide a valid email address")
@@ -57,9 +60,9 @@ public class Staff {
     )
     private Set<Shifts> staffShifts = new HashSet<>();
 
-
-    public Staff(String staffName, String staffEmail, String staffPassword, Date staffDOB, Date staffHireDate) {
+    public Staff(String staffName, String staffUsername, String staffEmail, String staffPassword, Date staffDOB, Date staffHireDate) {
         this.staffName = staffName;
+        this.staffUsername = staffUsername;
         this.staffEmail = staffEmail;
         this.staffPassword = staffPassword;
         this.staffDOB = staffDOB;
@@ -87,5 +90,40 @@ public class Staff {
     @Override
     public int hashCode() {
         return Objects.hash(staffID);
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(staffPosition.getPositionTitle().getTitle()));
+    }
+
+    @Override
+    public String getPassword() {
+        return staffPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return staffUsername;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

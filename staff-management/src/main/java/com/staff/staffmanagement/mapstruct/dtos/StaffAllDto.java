@@ -24,6 +24,9 @@ public class StaffAllDto {
     @JsonProperty("staff_name")
     private String staffName;
 
+    @JsonProperty("staff_username")
+    private String staffUsername;
+
     @JsonProperty("staff_email")
     private String staffEmail;
 

@@ -23,6 +23,7 @@ public interface StaffMapper {
 
     @Mapping(target="staffID", source="staffID")
     @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffUsername", source="staffUsername")
     @Mapping(target="staffEmail", source="staffEmail")
     @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
@@ -31,6 +32,7 @@ public interface StaffMapper {
 
     @Mapping(target="staffID", source="staffID")
     @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffUsername", source="staffUsername")
     @Mapping(target="staffEmail", source="staffEmail")
     @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
@@ -39,6 +41,7 @@ public interface StaffMapper {
 
     @Mapping(target="staffID", source="staffID")
     @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffUsername", source="staffUsername")
     @Mapping(target="staffEmail", source="staffEmail")
     @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
@@ -47,6 +50,7 @@ public interface StaffMapper {
 
     @Mapping(target="staffID", source="staffID")
     @Mapping(target="staffName", source="staffName")
+    @Mapping(target="staffUsername", source="staffUsername")
     @Mapping(target="staffEmail", source="staffEmail")
     @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
