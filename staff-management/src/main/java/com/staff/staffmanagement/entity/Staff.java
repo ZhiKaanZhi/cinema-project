@@ -16,6 +16,9 @@ import java.util.*;
 @ToString
 @Setter
 @Getter
+@Builder
+@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor// generates a default no-arg constructor
 @Table(name = "staff")
 public class Staff implements UserDetails {

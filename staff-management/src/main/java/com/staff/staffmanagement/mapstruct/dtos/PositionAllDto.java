@@ -6,9 +6,8 @@ import lombok.*;
 
 import java.util.List;
 
-@ToString
-@Setter
-@Getter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class PositionAllDto {

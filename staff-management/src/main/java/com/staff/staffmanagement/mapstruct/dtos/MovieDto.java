@@ -9,11 +9,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor  // generates a default no-arg constructor
 @AllArgsConstructor  // generates an all-args constructor
-@ToString            // generates a toString method
 public class MovieDto implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

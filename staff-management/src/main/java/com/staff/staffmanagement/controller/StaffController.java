@@ -1,9 +1,13 @@
 package com.staff.staffmanagement.controller;
 
+import com.staff.staffmanagement.auth.AuthenticationRequest;
+import com.staff.staffmanagement.auth.AuthenticationResponse;
+import com.staff.staffmanagement.auth.RegisterRequest;
 import com.staff.staffmanagement.entity.Staff;
 import com.staff.staffmanagement.exception.ResourceNotFoundException;
 import com.staff.staffmanagement.mapstruct.dtos.StaffAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.StaffSimpleDto;
+import com.staff.staffmanagement.service.AuthenticationService;
 import com.staff.staffmanagement.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +22,9 @@ public class StaffController {
 
     @Autowired
     private StaffService staffService;
+
+    @Autowired
+    private AuthenticationService authenticationService;
 
     /**
      * Retrieve all available staff entries.
@@ -65,7 +72,7 @@ public class StaffController {
      * @param staffAllDto Detailed staff information for the new staff entry.
      * @return Detailed information of the created staff entry.
      */
-    @PostMapping("/register-details")
+    @PostMapping("/create-details")
     public ResponseEntity<StaffAllDto> createStaffAllDetails(@RequestBody StaffAllDto staffAllDto) {
         return new ResponseEntity<>(staffService.registerStaffAllDto(staffAllDto), HttpStatus.CREATED);
     }
@@ -76,7 +83,7 @@ public class StaffController {
      * @param staffSimpleDto Basic staff information for the new staff entry.
      * @return Basic information of the created staff entry.
      */
-    @PostMapping("/register-basic")
+    @PostMapping("/create-basic")
     public ResponseEntity<StaffSimpleDto> createStaffSimple(@RequestBody StaffSimpleDto staffSimpleDto) {
         return new ResponseEntity<>(staffService.registerStaffSimpleDto(staffSimpleDto), HttpStatus.CREATED);
     }
@@ -92,4 +99,15 @@ public class StaffController {
         staffService.deleteStaff(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/register")
+    public ResponseEntity<AuthenticationResponse> createStaffSimple(@RequestBody RegisterRequest request) {
+        return ResponseEntity.ok(authenticationService.registerStaff(request));
+    }
+
+    @PostMapping("/authenticate")
+    public ResponseEntity<AuthenticationResponse> createStaffSimple(@RequestBody AuthenticationRequest request) {
+        return ResponseEntity.ok(authenticationService.authenticateStaff(request));
+    }
+
 }

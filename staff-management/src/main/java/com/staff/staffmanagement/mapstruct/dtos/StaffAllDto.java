@@ -11,9 +11,8 @@ import lombok.*;
 import java.util.Date;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
+@Data
+@Builder
 @NoArgsConstructor  // generates a default no-arg constructor
 @AllArgsConstructor  // generates an all-args constructor
 public class StaffAllDto {

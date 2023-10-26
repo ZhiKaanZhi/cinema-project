@@ -259,4 +259,27 @@ public class StaffService {
             return false; // Authentication failed
         }
     }
+
+
+
+    public StaffSimpleDto getStaffSimpleDtoByStaffUsername(String username) {
+        Staff staff = staffRepository.findByStaffUsername(username);
+
+        Position position = positionRepository.findById(
+                Objects.requireNonNull(Optional.ofNullable(staff)
+                        .map(Staff::getStaffPosition)
+                        .map(Position::getPositionID)
+                        .orElse(null))
+        ).orElse(null);
+
+        StaffSimpleDto staffSimpleDto = staffMapper.staffToStaffSimpleDto(staff);
+
+        if(position != null) {
+            staffSimpleDto.setStaffPositionTitle(position.getPositionTitle());
+        } else {
+            staffSimpleDto.setStaffPositionTitle(StaffTitle.DEFAULT_EMPLOYEE);  // Replace "Default_Title" with your default title
+        }
+
+        return staffSimpleDto;
+    }
 }
