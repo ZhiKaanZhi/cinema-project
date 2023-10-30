@@ -6,10 +6,11 @@ import lombok.*;
 
 import java.util.List;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor  // generates a default no-arg constructor
+@AllArgsConstructor  // generates an all-args constructor
 public class PositionAllDto {
 
     @JsonProperty("position_id")

@@ -4,7 +4,9 @@ import com.staff.staffmanagement.auth.AuthenticationRequest;
 import com.staff.staffmanagement.auth.AuthenticationResponse;
 import com.staff.staffmanagement.auth.RegisterRequest;
 import com.staff.staffmanagement.configuration.JwtService;
+import com.staff.staffmanagement.entity.Position;
 import com.staff.staffmanagement.entity.Staff;
+import com.staff.staffmanagement.entity.enums.StaffTitle;
 import com.staff.staffmanagement.mapstruct.mappers.StaffMapper;
 import com.staff.staffmanagement.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,15 +26,17 @@ public class AuthenticationService {
 
     public AuthenticationResponse registerStaff(RegisterRequest request) {
 
-        var staff = Staff.builder()
-                .staffName(request.getStaffName())
-                .staffUsername(request.getStaffUsername())
-                .staffEmail(request.getStaffEmail())
-                .staffPassword(request.getStaffPassword())
-                .staffDOB(request.getStaffDOB())
-                .staffHireDate(request.getStaffHireDate())
-                .staffPosition(positionRepository.findByPositionTitle(request.getStaffPosition()))
-                .build();
+        Staff staff = new Staff(request.getStaffName(), request.getStaffUsername(), request.getStaffEmail(), request.getStaffPassword(), request.getStaffDOB(), request.getStaffHireDate());
+        /*staff.setStaffName(request.getStaffName());
+        staff.setStaffUsername(request.getStaffUsername());
+        staff.setStaffEmail(request.getStaffEmail());
+        staff.setStaffPassword(request.getStaffPassword());
+        staff.setStaffDOB(request.getStaffDOB());
+        staff.setStaffHireDate(request.getStaffHireDate());*/
+        staff.setStaffPosition(positionRepository.findByPositionTitle(request.getStaffPosition()));
+
+        System.out.println("The Staff is: " + staff);
+
         staffService.registerStaffSimpleDto(staffMapper.staffToStaffSimpleDto(staff));
         var jwtToken = jwtService.generateToken(staff);
         return AuthenticationResponse.builder()

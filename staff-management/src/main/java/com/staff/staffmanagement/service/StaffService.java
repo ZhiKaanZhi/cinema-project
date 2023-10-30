@@ -120,7 +120,6 @@ public class StaffService {
     public StaffAllDto registerStaffAllDto(StaffAllDto staffAllDto) {
         Position position = positionRepository.findByPositionTitle(staffAllDto.getStaffPositionTitle());
 
-        // If the position is not found, you may want to create a new position (depending on business rules).
         if(position == null) {
             position = new Position();
             position.setPositionTitle(staffAllDto.getStaffPositionTitle());
@@ -159,6 +158,12 @@ public class StaffService {
     @Transactional
     public StaffSimpleDto registerStaffSimpleDto(StaffSimpleDto staffSimpleDto) {
         Position position = positionRepository.findByPositionTitle(staffSimpleDto.getStaffPositionTitle());
+
+        if(position == null) {
+            position = new Position();
+            position.setPositionTitle(staffSimpleDto.getStaffPositionTitle());
+            position = positionRepository.save(position);
+        }
 
         Staff staff = staffMapper.staffSimpleDtoToStaff(staffSimpleDto);
         staff.setStaffPosition(position);

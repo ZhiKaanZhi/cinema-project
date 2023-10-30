@@ -7,8 +7,9 @@ import lombok.*;
 
 
 
-@Data
-@Builder
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor  // generates a default no-arg constructor
 @AllArgsConstructor  // generates an all-args constructor
 public class PositionSimpleDto {

@@ -101,7 +101,7 @@ public class StaffController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> createStaffSimple(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthenticationResponse> registerStaffSimple(@RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authenticationService.registerStaff(request));
     }
 

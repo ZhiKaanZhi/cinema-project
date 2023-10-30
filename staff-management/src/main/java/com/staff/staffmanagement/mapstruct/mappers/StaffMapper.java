@@ -12,6 +12,7 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
+import org.mapstruct.factory.Mappers;
 
 import java.util.Collections;
 import java.util.Optional;
@@ -69,7 +70,6 @@ public interface StaffMapper {
 
     @AfterMapping
     default void dtoToEntityAfterMapping(@MappingTarget Staff target, StaffAllDto source, ShiftsRepository shiftsRepository, PositionRepository positionRepository) {
-        System.out.println("Staff before mapping: "+ target);
         // Handling shifts mapping with validation
         Set<Shifts> shiftsSet = source.getStaffShiftsIDs() == null ? Collections.emptySet() :
                 source.getStaffShiftsIDs().stream()

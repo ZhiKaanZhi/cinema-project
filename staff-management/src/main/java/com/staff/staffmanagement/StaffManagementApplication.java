@@ -135,9 +135,7 @@ public class StaffManagementApplication {
 	private Staff saveStaffAssignShiftAssignPositionAndPrint(StaffService staffService, StaffMapper staffMapper, Staff staff, Position position, Shifts shift, String message) {
 		staff.setStaffPosition(position);  // Assuming you have a setter for Position in Staff class
 		staff.addShift(shift);  // Assigning a shift to the staff
-		System.out.println("Staff before saving: "+ staff);
 		StaffAllDto responseStaff = staffService.registerStaffAllDto(staffMapper.staffToStaffAllDto(staff));
-		System.out.println("Staff after saving: "+ staff);
 		staff.setStaffID(responseStaff.getStaffID());
 		System.out.println(message + ": " + responseStaff);
 		return staff;

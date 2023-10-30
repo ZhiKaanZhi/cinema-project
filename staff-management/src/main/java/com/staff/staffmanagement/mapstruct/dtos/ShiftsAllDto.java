@@ -8,8 +8,9 @@ import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
-@Data
-@Builder
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor  // generates a default no-arg constructor
 @AllArgsConstructor  // generates an all-args constructor
 public class ShiftsAllDto {
