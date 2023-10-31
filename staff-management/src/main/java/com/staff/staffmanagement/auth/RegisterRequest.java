@@ -1,5 +1,6 @@
 package com.staff.staffmanagement.auth;
 
+import com.staff.staffmanagement.entity.enums.Role;
 import com.staff.staffmanagement.entity.enums.StaffTitle;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,5 +21,6 @@ public class RegisterRequest {
     private String staffPassword;
     private Date staffDOB;
     private Date staffHireDate;
-    private StaffTitle staffPosition;
+    private String staffPosition;
+    private Role staffRole;
 }

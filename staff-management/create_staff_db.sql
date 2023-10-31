@@ -30,6 +30,7 @@ CREATE TABLE staff (
   staff_password VARCHAR(255) NOT NULL,
   staff_dob DATE,
   staff_hire_date DATE,
+  staff_role VARCHAR(255) DEFAULT NULL,
   position_id INT,
   PRIMARY KEY (staff_id),
   FOREIGN KEY (position_id) REFERENCES `position`(position_id)

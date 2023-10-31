@@ -29,6 +29,7 @@ public interface StaffMapper {
     @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
     @Mapping(target="staffHireDate", source="staffHireDate")
+    @Mapping(target="staffRole", source="staffRole")
     StaffAllDto staffToStaffAllDto(Staff staff);
 
     @Mapping(target="staffID", source="staffID")
@@ -38,6 +39,7 @@ public interface StaffMapper {
     @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
     @Mapping(target="staffHireDate", source="staffHireDate")
+    @Mapping(target="staffRole", source="staffRole")
     StaffSimpleDto staffToStaffSimpleDto(Staff staff);
 
     @Mapping(target="staffID", source="staffID")
@@ -47,6 +49,7 @@ public interface StaffMapper {
     @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
     @Mapping(target="staffHireDate", source="staffHireDate")
+    @Mapping(target="staffRole", source="staffRole")
     Staff staffAllDtoToStaff(StaffAllDto staffAllDto);
 
     @Mapping(target="staffID", source="staffID")
@@ -56,11 +59,12 @@ public interface StaffMapper {
     @Mapping(target="staffPassword", source="staffPassword")
     @Mapping(target="staffDOB", source="staffDOB")
     @Mapping(target="staffHireDate", source="staffHireDate")
+    @Mapping(target="staffRole", source="staffRole")
     Staff staffSimpleDtoToStaff(StaffSimpleDto staffSimpleDto);
 
 
     @AfterMapping
-    default void afterStaffMapping (@MappingTarget StaffAllDto target, Staff source) {
+    default void afterStaffMappingToAllDto (@MappingTarget StaffAllDto target, Staff source) {
         target.setStaffShiftsIDs(source.getStaffShifts().stream()
                 .map(Shifts::getShiftID)
                 .collect(Collectors.toList()));
@@ -69,7 +73,12 @@ public interface StaffMapper {
     }
 
     @AfterMapping
-    default void dtoToEntityAfterMapping(@MappingTarget Staff target, StaffAllDto source, ShiftsRepository shiftsRepository, PositionRepository positionRepository) {
+    default void afterStaffMappingToSimpleDto (@MappingTarget StaffSimpleDto target, Staff source) {
+        target.setStaffPositionTitle(source.getStaffPosition().getPositionTitle());
+    }
+
+    @AfterMapping
+    default void allDtoToEntityAfterMapping(@MappingTarget Staff target, StaffAllDto source, ShiftsRepository shiftsRepository, PositionRepository positionRepository) {
         // Handling shifts mapping with validation
         Set<Shifts> shiftsSet = source.getStaffShiftsIDs() == null ? Collections.emptySet() :
                 source.getStaffShiftsIDs().stream()
@@ -84,6 +93,22 @@ public interface StaffMapper {
         for (Shifts shift : shiftsSet) {
             shift.addStaff(target);
         }
+
+        // Handling position mapping with validation
+        Position position = positionRepository.findByPositionTitle(source.getStaffPositionTitle());
+        if(position != null){
+            target.setStaffPosition(position);
+        } else {
+            // Handle the case when the position is not found, e.g., log, throw an exception, etc.
+            throw new EntityNotFoundException("Position Not Found with Title: " + source.getStaffPositionTitle().getTitle());
+        }
+        System.out.println("Staff after mapping: "+ target);
+    }
+
+    @AfterMapping
+    default void simpleDtoToEntityAfterMapping(@MappingTarget Staff target, StaffSimpleDto source, ShiftsRepository shiftsRepository, PositionRepository positionRepository) {
+
+        target.setStaffShifts(Collections.emptySet());
 
         // Handling position mapping with validation
         Position position = positionRepository.findByPositionTitle(source.getStaffPositionTitle());

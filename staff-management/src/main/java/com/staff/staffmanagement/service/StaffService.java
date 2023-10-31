@@ -45,8 +45,14 @@ public class StaffService {
      *
      * @return a List of all Staff entities.
      */
-    public List<Staff> getAllStaff() {
-        return staffRepository.findAll();
+    public List<StaffAllDto> getAllStaff() {
+        List<Staff> staffList = staffRepository.findAll();
+        List<StaffAllDto> dtoList = new ArrayList<>();
+
+        for (Staff staff: staffList) {
+            dtoList.add(staffMapper.staffToStaffAllDto(staff));
+        }
+        return dtoList;
     }
 
     /**

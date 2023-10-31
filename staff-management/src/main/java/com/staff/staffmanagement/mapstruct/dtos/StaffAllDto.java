@@ -39,6 +39,9 @@ public class StaffAllDto {
     @JsonProperty("staff_hire_date")
     private Date staffHireDate;
 
+    @JsonProperty("staff_role")
+    private String staffRole;
+
     @JsonProperty("staff_position")
     private StaffTitle staffPositionTitle;
 

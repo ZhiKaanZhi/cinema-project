@@ -7,12 +7,16 @@ import com.staff.staffmanagement.configuration.JwtService;
 import com.staff.staffmanagement.entity.Position;
 import com.staff.staffmanagement.entity.Staff;
 import com.staff.staffmanagement.entity.enums.StaffTitle;
+import com.staff.staffmanagement.mapstruct.mappers.PositionMapper;
 import com.staff.staffmanagement.mapstruct.mappers.StaffMapper;
 import com.staff.staffmanagement.repository.PositionRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,18 +28,11 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    @Transactional
     public AuthenticationResponse registerStaff(RegisterRequest request) {
 
-        Staff staff = new Staff(request.getStaffName(), request.getStaffUsername(), request.getStaffEmail(), request.getStaffPassword(), request.getStaffDOB(), request.getStaffHireDate());
-        /*staff.setStaffName(request.getStaffName());
-        staff.setStaffUsername(request.getStaffUsername());
-        staff.setStaffEmail(request.getStaffEmail());
-        staff.setStaffPassword(request.getStaffPassword());
-        staff.setStaffDOB(request.getStaffDOB());
-        staff.setStaffHireDate(request.getStaffHireDate());*/
-        staff.setStaffPosition(positionRepository.findByPositionTitle(request.getStaffPosition()));
-
-        System.out.println("The Staff is: " + staff);
+        Staff staff = new Staff(request.getStaffName(), request.getStaffUsername(), request.getStaffEmail(), request.getStaffPassword(), request.getStaffDOB(), request.getStaffHireDate(), request.getStaffRole());
+        staff.setStaffPosition(positionRepository.findByPositionTitle(StaffTitle.valueOf(request.getStaffPosition())));
 
         staffService.registerStaffSimpleDto(staffMapper.staffToStaffSimpleDto(staff));
         var jwtToken = jwtService.generateToken(staff);

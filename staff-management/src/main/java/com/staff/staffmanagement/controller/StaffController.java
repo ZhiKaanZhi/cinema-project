@@ -3,7 +3,6 @@ package com.staff.staffmanagement.controller;
 import com.staff.staffmanagement.auth.AuthenticationRequest;
 import com.staff.staffmanagement.auth.AuthenticationResponse;
 import com.staff.staffmanagement.auth.RegisterRequest;
-import com.staff.staffmanagement.entity.Staff;
 import com.staff.staffmanagement.exception.ResourceNotFoundException;
 import com.staff.staffmanagement.mapstruct.dtos.StaffAllDto;
 import com.staff.staffmanagement.mapstruct.dtos.StaffSimpleDto;
@@ -12,12 +11,14 @@ import com.staff.staffmanagement.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/staff")
+@PreAuthorize("hasAnyRole('MANAGER', 'ADMIN')")
 public class StaffController {
 
     @Autowired
@@ -32,7 +33,8 @@ public class StaffController {
      * @return List of all staff entries.
      */
     @GetMapping("/all")
-    public ResponseEntity<List<Staff>> getAllStaff() {
+    @PreAuthorize("hasAnyAuthority('management:read','admin:read')")
+    public ResponseEntity<List<StaffAllDto>> getAllStaff() {
         return new ResponseEntity<>(staffService.getAllStaff(), HttpStatus.OK);
     }
 
@@ -43,6 +45,7 @@ public class StaffController {
      * @return Detailed information of the requested staff.
      */
     @GetMapping("/details/{id}")
+    @PreAuthorize("hasAnyAuthority('management:read','admin:read')")
     public ResponseEntity<StaffAllDto> getStaffAllDetailsById(@PathVariable Integer id) {
         StaffAllDto staff = staffService.getStaffAllDtoById(id);
         if(staff == null) {
@@ -58,6 +61,7 @@ public class StaffController {
      * @return Basic information of the requested staff.
      */
     @GetMapping("/basic/{id}")
+    @PreAuthorize("hasAnyAuthority('management:read','admin:read')")
     public ResponseEntity<StaffSimpleDto> getStaffSimpleById(@PathVariable Integer id) {
         StaffSimpleDto staff = staffService.getStaffSimpleDtoById(id);
         if(staff == null) {
@@ -100,14 +104,5 @@ public class StaffController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> registerStaffSimple(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(authenticationService.registerStaff(request));
-    }
-
-    @PostMapping("/authenticate")
-    public ResponseEntity<AuthenticationResponse> createStaffSimple(@RequestBody AuthenticationRequest request) {
-        return ResponseEntity.ok(authenticationService.authenticateStaff(request));
-    }
 
 }

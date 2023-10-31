@@ -1,5 +1,6 @@
 package com.staff.staffmanagement.entity;
 
+import com.staff.staffmanagement.entity.enums.Role;
 import com.staff.staffmanagement.entity.enums.StaffTitle;
 import jakarta.persistence.*;
 import lombok.*;
@@ -27,6 +28,7 @@ public class Position {
     @Column(name = "position_description")
     private String positionDescription;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "staffPosition")
     private Set<Staff> positionStaffMembers = new HashSet<>();
 

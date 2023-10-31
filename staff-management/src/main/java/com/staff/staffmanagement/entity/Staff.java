@@ -1,6 +1,7 @@
 package com.staff.staffmanagement.entity;
 
 
+import com.staff.staffmanagement.entity.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -48,6 +49,11 @@ public class Staff implements UserDetails {
     @Column(name = "staff_hire_date")
     private Date staffHireDate;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "staff_role")
+    private Role staffRole;
+
+    @ToString.Exclude
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "position_id")
     private Position staffPosition;
@@ -61,13 +67,14 @@ public class Staff implements UserDetails {
     )
     private Set<Shifts> staffShifts = new HashSet<>();
 
-    public Staff(String staffName, String staffUsername, String staffEmail, String staffPassword, Date staffDOB, Date staffHireDate) {
+    public Staff(String staffName, String staffUsername, String staffEmail, String staffPassword, Date staffDOB, Date staffHireDate, Role staffRole) {
         this.staffName = staffName;
         this.staffUsername = staffUsername;
         this.staffEmail = staffEmail;
         this.staffPassword = staffPassword;
         this.staffDOB = staffDOB;
         this.staffHireDate = staffHireDate;
+        this.staffRole = staffRole;
     }
 
     public void addShift(Shifts shift) {
